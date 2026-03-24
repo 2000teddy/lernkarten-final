@@ -53,12 +53,16 @@ Neue Fragensätze können als **JSON** oder **CSV** direkt über die App hochgel
 
 Alternativ Dateien manuell in das Verzeichnis `data/` kopieren – beim nächsten Seitenaufruf erscheinen sie automatisch.
 
+---
+
 ### Format: JSON
+
+#### Vollständige Struktur
 
 ```json
 {
   "title": "Mathe – Grundrechenarten",
-  "description": "Kurze Beschreibung des Themas",
+  "description": "Kurze Beschreibung des Themas (optional)",
   "color": "#F59E0B",
   "cards": [
     {
@@ -67,12 +71,34 @@ Alternativ Dateien manuell in das Verzeichnis `data/` kopieren – beim nächste
       "answer": "56",
       "explanation": "7 × 8 kann man als 7 × 4 × 2 = 28 × 2 = 56 berechnen.",
       "quality": null
+    },
+    {
+      "id": 2,
+      "question": "Was ist eine Primzahl?",
+      "answer": "Eine Zahl, die nur durch 1 und sich selbst teilbar ist.",
+      "explanation": "Beispiele: 2, 3, 5, 7, 11, 13 … Die 1 gilt nicht als Primzahl.",
+      "quality": null
     }
   ]
 }
 ```
 
-**Farbcodes** (Beispiele):
+#### Feldbeschreibung
+
+| Feld | Typ | Pflicht | Beschreibung |
+|------|-----|---------|--------------|
+| `title` | String | Ja | Themengebiet, erscheint als Überschrift auf der Kachel |
+| `description` | String | Nein | Kurzbeschreibung, wird unter dem Titel angezeigt |
+| `color` | String | Nein | Hex-Farbcode für die Kachel (Standard: `#6366F1`) |
+| `cards` | Array | Ja | Liste aller Lernkarten |
+| `cards[].id` | Zahl | Ja | Eindeutige Nummer der Karte (fortlaufend ab 1) |
+| `cards[].question` | String | Ja | Die Frage auf der Vorderseite der Karte |
+| `cards[].answer` | String | Ja | Die Antwort auf der Rückseite der Karte |
+| `cards[].explanation` | String | Nein | Zusätzliche Erklärung, nach dem Aufdecken abrufbar |
+| `cards[].quality` | String\|null | Nein | Qualitätsbewertung: `"good"`, `"bad"` oder `null` (wird von der App gesetzt) |
+
+#### Farbcodes
+
 | Farbe | Hex-Code |
 |-------|----------|
 | Indigo (Standard) | `#6366F1` |
@@ -82,21 +108,60 @@ Alternativ Dateien manuell in das Verzeichnis `data/` kopieren – beim nächste
 | Blau | `#3B82F6` |
 | Lila | `#8B5CF6` |
 
+---
+
 ### Format: CSV
 
+#### Vollständige Struktur
+
 ```csv
-title,Englisch – Farben
-description,Englische Vokabeln: Farben
-color,#3B82F6
+title,Mathe - Begriffe
+description,Mathematische Grundbegriffe für die Grundschule
+color,#EF4444
 question,answer,explanation
-What color is the sky?,blue,The sky appears blue because of light scattering.
-What color is grass?,green,
-What color is a banana?,yellow,
+Was ist ein Produkt?,Das Ergebnis einer Multiplikation heißt Produkt.,"Beispiel: 3 × 4 = 12. Die 12 ist das Produkt, 3 und 4 heißen Faktoren."
+Was ist ein Quotient?,Das Ergebnis einer Division heißt Quotient.,"Beispiel: 12 ÷ 4 = 3. Die 3 ist der Quotient."
+Was ist eine Summe?,Das Ergebnis einer Addition heißt Summe.,
 ```
 
-- Die ersten Zeilen (`title,`, `description,`, `color,`) sind Metadaten
-- Die Kopfzeile `question,answer,explanation` markiert den Start der Karten
-- Die Spalte `explanation` ist optional
+#### Aufbau der CSV-Datei
+
+Die Datei besteht aus zwei Bereichen: einem **Metadaten-Kopf** und dem **Kartenteil**.
+
+**Metadaten-Kopf** (vor der Kopfzeile):
+
+| Zeile | Format | Pflicht | Beschreibung |
+|-------|--------|---------|--------------|
+| `title,…` | `title,<Wert>` | Ja | Themengebiet |
+| `description,…` | `description,<Wert>` | Nein | Kurzbeschreibung |
+| `color,…` | `color,<Hex>` | Nein | Kachelfarbe (z.B. `#3B82F6`) |
+
+**Kopfzeile** (trennt Metadaten von Karten):
+
+```
+question,answer,explanation
+```
+
+Diese Zeile ist **Pflicht** und markiert den Beginn der Kartendaten.
+
+**Karten-Zeilen** (eine Karte pro Zeile):
+
+| Spalte | Pflicht | Beschreibung |
+|--------|---------|--------------|
+| 1 – `question` | Ja | Die Frage |
+| 2 – `answer` | Ja | Die Antwort |
+| 3 – `explanation` | Nein | Erklärung (leer lassen = keine Erklärung) |
+
+> **Hinweis:** Enthält ein Wert ein Komma, muss er in **Anführungszeichen** gesetzt werden:
+> `"Beispiel: 3 × 4 = 12, die 12 ist das Produkt."`
+
+#### Unterschiede zu JSON
+
+| | JSON | CSV |
+|-|------|-----|
+| Qualitätsbewertung speicherbar | Ja (wird persistiert) | Nein (nur während Sitzung) |
+| Mehrzeilige Erklärungen | Ja | Eingeschränkt |
+| Empfohlen für | Vollständige Datensätze | Schnelles Erstellen in Excel/Tabellenprogramm |
 
 ## Enthaltene Beispiel-Datensätze
 
