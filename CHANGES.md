@@ -6,6 +6,13 @@ Alle abgeschlossenen Änderungen und implementierten Features, chronologisch abs
 
 ## 2026-03-24
 
+### 16:50 – Entwicklungsplan mit PAL MCP (Gemini 2.5 Pro) erarbeitet
+- Dreiphasiger Entwicklungsplan in `TODO.md` eingetragen
+- Tech-Stack-Empfehlung: Vanilla JS beibehalten, SQLite ab Phase 2, Alpine.js optional
+- KI-Empfehlung: Ollama lokal (Datenschutz), Claude API als Fallback
+- Benutzerverwaltungskonzept: Name + Emoji-Avatar, kein Passwort, UUID-basiert
+- Abhängigkeiten zwischen Phasen dokumentiert
+
 ### 09:00 – Projektdokumentation angelegt
 - `AGENTS.md` erstellt (Projektbeschreibung für KI-Agenten)
 - `CLAUDE.md` als Symlink auf `AGENTS.md` angelegt

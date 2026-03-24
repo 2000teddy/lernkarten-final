@@ -1,78 +1,124 @@
-# TODO – Geplante Erweiterungen und Verbesserungen
+# TODO – Entwicklungsplan & Erweiterungen
 
-Offene Aufgaben, Ideen und Verbesserungsvorschläge. Abgeschlossenes wird in `CHANGES.md` übertragen.
-
----
-
-## Hohe Priorität
-
-### KI-gestützte Fragengenerierung
-- [ ] Verzeichnis-Scanner: Textdateien aus einem Ordner einlesen
-- [ ] Integration eines LLM (z.B. Ollama lokal oder OpenAI/Claude API) zur automatischen Fragen-/Antworterstellung
-- [ ] Ordnername wird automatisch als Themengebiet übernommen
-- [ ] Generierte Fragen als JSON in `data/` speichern (zur Überprüfung vor Verwendung)
-
-### Lernfortschritt / Wiederholungsalgorithmus
-- [ ] Spaced-Repetition-Algorithmus (z.B. SM-2) implementieren
-- [ ] Karten, die öfter falsch beantwortet wurden, häufiger anzeigen
-- [ ] Langzeit-Lernfortschritt pro Karte und Set speichern (nicht nur Sitzungsstatistik)
-
-### Benutzerverwaltung (Multi-User)
-- [ ] Einfache Benutzerprofile (Name/Avatar, kein Passwort nötig für Schulkontext)
-- [ ] Getrennter Lernfortschritt pro Benutzer
-- [ ] Klassenmodus: Lehrkraft sieht Fortschritt aller Schüler
+Geplante Phasen, erarbeitet gemeinsam mit PAL MCP (Gemini 2.5 Pro), 2026-03-24.
+Abgeschlossenes wird in `CHANGES.md` übertragen.
 
 ---
 
-## Mittlere Priorität
+## Tech-Stack-Empfehlung
 
-### Import-Erweiterungen
-- [ ] XLSX/Excel-Import (via `xlsx`-Paket)
-- [ ] Markdown-Import (Überschrift = Thema, Tabellen = Frage/Antwort)
-- [ ] Import aus Anki-Format (`.apkg`)
-- [ ] Bulk-Import: ZIP-Archiv mit mehreren Dateien
+**Vanilla JS beibehalten** für Phase 1 und 2 – kein Overhead, kein Build-Schritt, direkt wartbar.
+Ab Phase 2/3, wenn Komplexität steigt: **Alpine.js** als minimale Ergänzung erwägen (keine
+Kompilierung nötig, nur ein `<script>`-Tag). SQLite (via `better-sqlite3`) ab Phase 2 als
+Datenbasis für Benutzerfortschritt und Statistiken anstelle der JSON-Dateien.
 
-### Kartenanzeige
-- [ ] Bilder in Fragen und Antworten unterstützen (Base64 in JSON oder Datei-Referenz)
-- [ ] Mathematische Formeln via MathJax oder KaTeX rendern
-- [ ] Code-Blöcke mit Syntax-Highlighting (für Programmier-Lernkarten)
-- [ ] Audio-Unterstützung für Fremdsprachen-Aussprache
+---
+
+## Phase 1 – Sofort, hoher Nutzwert
+
+Keine Architekturänderung nötig. Alle Tasks bauen direkt auf dem bestehenden Code auf.
 
 ### Lernmodi
-- [ ] **Schreibmodus**: Antwort eintippen statt nur aufdecken
-- [ ] **Multiple-Choice-Modus**: 4 Antwortoptionen (3 falsche werden automatisch aus dem Set gewählt)
-- [ ] **Matching-Modus**: Fragen und Antworten per Drag & Drop zuordnen
-- [ ] **Blitz-Modus**: Zeitlimit pro Karte
+- [ ] **Multiple-Choice-Modus** – 4 Antwortoptionen, 3 Falsche automatisch aus dem Set gezogen `[Klein]`
+- [ ] **Schreibmodus** – Antwort eintippen, Vergleich mit Lösung (Groß-/Kleinschreibung ignorieren) `[Klein]`
+- [ ] **Zufallsmodus (Shuffle)** – Reihenfolge der Karten zufällig mischen `[Klein]`
 
-### Karteneditor
-- [ ] Karten direkt in der App erstellen und bearbeiten (ohne externe JSON-Datei)
-- [ ] Karten innerhalb eines Sets umsortieren (Drag & Drop)
-- [ ] Einzelne Karten aus einem Set löschen
+### Bedienung & UX
+- [ ] **Karteneditor in der App** – Karten direkt im Browser erstellen und bearbeiten, ohne externe Datei `[Mittel]`
+- [ ] **Fortschrittsbalken** – Visueller Fortschritt während einer Sitzung (z.B. „Karte 4 von 12") `[Klein]`
+- [ ] **Verbesserter Abschluss-Screen** – Detailauswertung: welche Karten falsch, Wiederholungsvorschlag `[Klein]`
+- [ ] **Dark Mode** – Systemeinstellung automatisch erkennen + manueller Toggle `[Klein]`
+- [ ] **Tastaturnavigation** – Leertaste = Karte umdrehen, Pfeiltasten = Navigation (bereits teilweise vorhanden, vervollständigen) `[Klein]`
+
+### Daten & Import
+- [ ] **XLSX/Excel-Import** – via `xlsx`-Paket, für Lehrkräfte die mit Excel arbeiten `[Klein]`
+- [ ] **Schema-Validierung beim Upload** – Fehlermeldung wenn JSON/CSV fehlerhaft oder leer `[Klein]`
 
 ---
 
-## Niedrige Priorität / Ideen
+## Phase 2 – Mittelfristig, moderate Komplexität
+
+Baut auf Phase 1 auf. Erfordert Datenbankgrundlage (SQLite) und Benutzerkonzept.
+
+### Voraussetzung: Datenbasis
+- [ ] **SQLite-Integration** (`better-sqlite3`) – Benutzerfortschritt, SM-2-Daten und Statistiken in DB statt JSON-Dateien `[Groß]`
+  - Ersetzt `data/.stats/` für Statistiken
+  - Neue Tabellen: `users`, `progress`, `sessions`
+
+### Benutzerverwaltung (kindgerecht, kein Passwort)
+- [ ] **Benutzerprofile** – Name + Avatar (Emoji-Auswahl), keine Registrierung/kein Passwort `[Mittel]`
+  - Auswahl beim ersten Start, gespeichert in `localStorage` (Gerätezuordnung)
+  - Serverseitig via UUID identifiziert
+  - Mehrere Profile auf einem Gerät möglich (z.B. für Geschwisterkinder)
+- [ ] **Getrennter Lernfortschritt** je Benutzerprofil `[Mittel]`
+
+### Lernalgorithmus
+- [ ] **Spaced-Repetition (SM-2)** – Karten die öfter falsch beantwortet wurden, öfter anzeigen `[Mittel]`
+  - Intervall-Berechnung pro Karte und Benutzer
+  - „Fällige Karten heute" als Startansicht anzeigen
+  - Abhängigkeit: SQLite muss vorher implementiert sein
+
+### Statistiken
+- [ ] **Statistik-Dashboard** – Diagramme mit Chart.js: Lernfortschritt über Zeit, Trefferquote je Thema `[Mittel]`
+- [ ] **Schwächste Karten** – Liste der am häufigsten falsch beantworteten Karten je Set `[Klein]`
+
+### Offline & Mobile
+- [ ] **PWA / Offline-Modus** – Service Worker + App-Manifest, App auf Startbildschirm installierbar `[Mittel]`
+
+---
+
+## Phase 3 – Längerfristig, hohe Komplexität
+
+Erfordert abgeschlossene Phase 2. Größere Architekturentscheidungen.
+
+### KI-Fragengenerierung
+
+**Empfehlung: Ollama (lokal) als primäre Option**
+- Datenschutz (kein Daten-Upload an externe Server) – wichtig im Schulkontext
+- Keine laufenden API-Kosten
+- Modelle: `llama3`, `mistral` oder `phi3` je nach Hardware
+- Claude API als Alternative/Fallback konfigurierbar
+
+- [ ] **Verzeichnis-Scanner** – Textdateien (TXT, PDF, MD) aus Ordner einlesen `[Mittel]`
+- [ ] **Ollama-Integration** – REST-Aufruf an lokale Ollama-Instanz, Prompt-Template für Fragen `[Groß]`
+- [ ] **Generierungs-Vorschau** – Generierte Karten vor dem Speichern anzeigen und bearbeiten `[Mittel]`
+- [ ] **Ordnername = Themengebiet** – Verzeichnisname wird automatisch als `title` übernommen `[Klein]`
+- [ ] **Claude API als Fallback** – Konfigurierbar über `.env`, wenn kein Ollama verfügbar `[Mittel]`
+
+### Klassenraum-Modus
+- [ ] **Lehrkraft-Ansicht** – Übersicht über Lernfortschritt aller Schüler je Themengebiet `[Groß]`
+- [ ] **Klassen-Code** – Einfacher Code (kein Passwort) um einer Klasse/Gruppe beizutreten `[Mittel]`
+- [ ] **Aufgaben stellen** – Lehrkraft kann bestimmte Sets als „Hausaufgabe" markieren `[Mittel]`
+
+### Weitere Lernmodi
+- [ ] **Matching-Modus** – Fragen und Antworten per Drag & Drop zuordnen `[Mittel]`
+- [ ] **Blitz-Modus** – Zeitlimit pro Karte, Punkte für schnelle Antworten `[Klein]`
 
 ### Gamification
-- [ ] Punkte-/Erfahrungssystem (XP pro richtiger Antwort)
-- [ ] Badges/Auszeichnungen (z.B. „10 Karten in Folge richtig")
-- [ ] Streak-Anzeige (tägliches Lernen)
-- [ ] Bestenliste (Leaderboard) für Klassenraum-Kontext
+- [ ] **XP-System** – Punkte pro richtiger Antwort, Streak-Anzeige `[Mittel]`
+- [ ] **Badges** – Auszeichnungen (z.B. „10 Karten in Folge", „Set abgeschlossen") `[Mittel]`
 
-### Statistiken & Auswertung
-- [ ] Detaillierter Statistik-Bereich mit Diagrammen (Chart.js)
-- [ ] Exportfunktion für Lernstatistiken als CSV/PDF
-- [ ] Schwächste Karten als separate Übungsliste anzeigen
+---
 
-### Technisches
-- [ ] `.gitignore` für `data/.stats/` und `node_modules/` (kein Upload sensibler Stats)
-- [ ] Docker-Container / `docker-compose.yml` für einfachen Betrieb
-- [ ] Offline-Modus via PWA (Service Worker, App-Manifest)
-- [ ] Dark Mode
-- [ ] Mehrsprachige Oberfläche (DE/EN)
-- [ ] Automatische Backups der `data/`-Dateien
+## Abhängigkeiten zwischen den Phasen
 
-### Qualitätssicherung
-- [ ] Unit-Tests für CSV-Parser und API-Endpunkte (Jest oder Mocha)
-- [ ] Input-Validierung für Upload (maximale Dateigröße, Schema-Prüfung)
-- [ ] Fehler-Handling verbessern (benutzerfreundliche Fehlermeldungen im Frontend)
+```
+Phase 1                    Phase 2                    Phase 3
+-----------                -----------                -----------
+Karteneditor           --> SQLite-DB              --> Ollama-KI
+Multiple-Choice        --> Benutzerverwaltung     --> Klassenraum-Modus
+Shuffle/Zufallsmodus   --> Spaced Repetition      --> Gamification
+XLSX-Import            --> Statistik-Dashboard    --> Matching-Modus
+Dark Mode              --> PWA/Offline
+```
+
+Spaced Repetition (Phase 2) **setzt SQLite voraus** – daher SQLite als ersten Task in Phase 2 beginnen.
+KI-Generierung (Phase 3) ist unabhängig von Benutzerverwaltung, kann parallel gestartet werden.
+
+---
+
+## Legende
+
+- `[Klein]` – Wenige Stunden, isolierte Änderung
+- `[Mittel]` – Mehrere Tage, mehrere Dateien betroffen
+- `[Groß]` – Komplexe Änderung, ggf. Architekturanpassung nötig
