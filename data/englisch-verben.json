@@ -1,0 +1,49 @@
+{
+  "title": "Englisch - Unregelmäßige Verben",
+  "description": "Die wichtigsten unregelmäßigen Verben auf Englisch",
+  "color": "#F59E0B",
+  "cards": [
+    {
+      "id": 1,
+      "question": "Wie lautet die Vergangenheit (Simple Past) von 'go'?",
+      "answer": "went",
+      "explanation": "go → went → gone. Beispiel: 'I went to school yesterday.' (Ich ging gestern zur Schule.) 'Gone' ist das Partizip Perfekt: 'She has gone home.'",
+      "quality": null
+    },
+    {
+      "id": 2,
+      "question": "Wie lautet die Vergangenheit (Simple Past) von 'see'?",
+      "answer": "saw",
+      "explanation": "see → saw → seen. Beispiel: 'I saw a dog in the park.' (Ich sah einen Hund im Park.) 'Seen' ist das Partizip Perfekt: 'Have you seen my keys?'",
+      "quality": null
+    },
+    {
+      "id": 3,
+      "question": "Wie lauten Simple Past und Partizip von 'write'?",
+      "answer": "wrote / written",
+      "explanation": "write → wrote → written. Beispiel: 'She wrote a letter.' (Simple Past) und 'He has written three books.' (Present Perfect mit Partizip)",
+      "quality": null
+    },
+    {
+      "id": 4,
+      "question": "Wie lauten Simple Past und Partizip von 'run'?",
+      "answer": "ran / run",
+      "explanation": "run → ran → run. Achtung: Infinitiv und Partizip sind gleich! Beispiel: 'They ran fast.' und 'He has run a marathon.' Leicht zu verwechseln!",
+      "quality": null
+    },
+    {
+      "id": 5,
+      "question": "Wie lauten Simple Past und Partizip von 'eat'?",
+      "answer": "ate / eaten",
+      "explanation": "eat → ate → eaten. Beispiel: 'She ate breakfast at 7.' und 'I have eaten too much today.' Das Wort 'eaten' klingt wie 'ee-ten'.",
+      "quality": null
+    },
+    {
+      "id": 6,
+      "question": "Wie lauten Simple Past und Partizip von 'take'?",
+      "answer": "took / taken",
+      "explanation": "take → took → taken. Beispiel: 'He took the bus.' und 'She has taken her medicine.' Sehr häufiges Verb im Alltag!",
+      "quality": null
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "title": "HSU - Bayern",
+  "description": "Heimat- und Sachunterricht: Bayern - Geschichte, Geografie und Politik",
+  "color": "#3B82F6",
+  "cards": [
+    {
+      "id": 1,
+      "question": "Warum trägt Bayern den Beinamen „Freistaat"?",
+      "answer": "Es drückt die Befreiung von der Königsherrschaft nach 1918 aus.",
+      "explanation": "Nach dem Ende des Ersten Weltkriegs wurde die Monarchie in Bayern abgeschafft. Am 8. November 1918 rief Kurt Eisner den Freistaat Bayern aus. Der Begriff 'Freistaat' bedeutet, dass Bayern eine Republik ist und kein Königreich mehr. Bayern ist einer von zwei deutschen Bundesländern, die offiziell 'Freistaat' heißen – das andere ist Thüringen.",
+      "quality": null
+    },
+    {
+      "id": 2,
+      "question": "Was ist die Hauptstadt von Bayern?",
+      "answer": "München ist die Hauptstadt und größte Stadt Bayerns.",
+      "explanation": "München liegt im Süden Bayerns und ist mit über 1,5 Millionen Einwohnern die drittgrößte Stadt Deutschlands. Sie ist bekannt für das Oktoberfest, die Frauenkirche und den FC Bayern München.",
+      "quality": null
+    },
+    {
+      "id": 3,
+      "question": "Wie heißt der höchste Berg Bayerns?",
+      "answer": "Die Zugspitze (2.962 m) ist der höchste Berg Bayerns und Deutschlands.",
+      "explanation": "Die Zugspitze liegt an der Grenze zwischen Deutschland und Österreich. Sie gehört zum Wettersteingebirge. Auf dem Gipfel gibt es Gletschereis und eine Wetterstation. Mit der Zahnradbahn oder Seilbahn kann man hinauffahren.",
+      "quality": null
+    },
+    {
+      "id": 4,
+      "question": "Welche Flüsse fließen durch Bayern?",
+      "answer": "Die wichtigsten Flüsse sind Donau, Inn, Isar, Main und Lech.",
+      "explanation": "Die Donau ist der längste Fluss Bayerns und fließt von West nach Ost durch das Bundesland. Die Isar fließt durch München. Der Inn mündet bei Passau in die Donau. Der Main fließt durch Nordbayern (Franken).",
+      "quality": null
+    },
+    {
+      "id": 5,
+      "question": "Welche Regierungsbezirke hat Bayern?",
+      "answer": "Bayern hat 7 Regierungsbezirke: Oberbayern, Niederbayern, Oberpfalz, Oberfranken, Mittelfranken, Unterfranken und Schwaben.",
+      "explanation": "Jeder Regierungsbezirk hat eine Bezirkshauptstadt. Zum Beispiel ist München die Hauptstadt Oberbayerns. Die Bezirke haben eigene Bezirkstage, die sich um regionale Aufgaben kümmern.",
+      "quality": null
+    },
+    {
+      "id": 6,
+      "question": "Was ist das Wappen Bayerns?",
+      "answer": "Das bayerische Wappen zeigt weiß-blaue Rauten, den Löwen, den Pfahl und den Rechen.",
+      "explanation": "Die weiß-blauen Rauten sind das bekannteste Symbol Bayerns. Der Löwe steht für die Wittelsbacher, die Bayern jahrhundertelang regierten. Die Landesfarben Bayerns sind Weiß und Blau, was auch auf der Fahne zu sehen ist.",
+      "quality": null
+    },
+    {
+      "id": 7,
+      "question": "Wer regiert Bayern?",
+      "answer": "Bayern wird von der Staatsregierung mit dem Ministerpräsidenten an der Spitze regiert.",
+      "explanation": "Der Ministerpräsident ist der Chef der Bayerischen Staatsregierung. Das Parlament heißt Bayerischer Landtag und hat 205 Abgeordnete. Der Landtag trifft sich im Maximilianeum in München. Die Bürger wählen alle 5 Jahre einen neuen Landtag.",
+      "quality": null
+    },
+    {
+      "id": 8,
+      "question": "Was ist das Oktoberfest?",
+      "answer": "Das Oktoberfest ist das weltberühmte Volksfest in München, das jährlich Ende September/Anfang Oktober stattfindet.",
+      "explanation": "Das erste Oktoberfest fand 1810 zur Hochzeit von Kronprinz Ludwig statt. Heute kommen jährlich über 6 Millionen Besucher aus aller Welt. Es findet auf der Theresienwiese statt und dauert etwa 16-18 Tage.",
+      "quality": null
+    }
+  ]
+}

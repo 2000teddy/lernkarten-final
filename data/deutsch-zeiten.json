@@ -1,0 +1,42 @@
+{
+  "title": "Deutsch - Zeiten",
+  "description": "Deutsche Grammatik: Zeitformen und ihre Verwendung",
+  "color": "#10B981",
+  "cards": [
+    {
+      "id": 1,
+      "question": "Was ist das Präsens?",
+      "answer": "Das Präsens beschreibt Handlungen, die gerade jetzt passieren oder allgemein gültig sind.",
+      "explanation": "Beispiele: 'Ich esse.' (gerade jetzt) oder 'Die Sonne scheint im Osten auf.' (immer wahr). Das Präsens ist die häufigste Zeitform im Deutschen.",
+      "quality": null
+    },
+    {
+      "id": 2,
+      "question": "Was ist das Perfekt und wann benutzt man es?",
+      "answer": "Das Perfekt beschreibt abgeschlossene Handlungen in der Vergangenheit. Es wird mit 'haben' oder 'sein' + Partizip II gebildet.",
+      "explanation": "Beispiele: 'Ich habe gegessen.' oder 'Er ist gelaufen.' In der Alltagssprache ist das Perfekt die häufigste Vergangenheitsform. Bewegungsverben und Zustandsänderungen nehmen 'sein' (laufen → ist gelaufen).",
+      "quality": null
+    },
+    {
+      "id": 3,
+      "question": "Was ist der Unterschied zwischen Präteritum und Perfekt?",
+      "answer": "Das Präteritum wird vor allem in der Schriftsprache und beim Erzählen verwendet. Das Perfekt nutzt man im Alltag und in der gesprochenen Sprache.",
+      "explanation": "Beispiel Präteritum: 'Er ging nach Hause.' (schriftlich, Erzählung). Beispiel Perfekt: 'Er ist nach Hause gegangen.' (mündlich). Ausnahmen: 'sein', 'haben' und Modalverben werden auch im Alltag im Präteritum genutzt: 'Ich war müde.'",
+      "quality": null
+    },
+    {
+      "id": 4,
+      "question": "Wie wird das Futur I gebildet?",
+      "answer": "Das Futur I wird mit 'werden' + Infinitiv gebildet und beschreibt zukünftige Ereignisse.",
+      "explanation": "Beispiel: 'Ich werde morgen lernen.' Das Futur I kann auch Vermutungen ausdrücken: 'Er wird wohl krank sein.' Im Alltag ersetzt oft das Präsens das Futur I: 'Ich lerne morgen.' statt 'Ich werde morgen lernen.'",
+      "quality": null
+    },
+    {
+      "id": 5,
+      "question": "Was ist das Plusquamperfekt?",
+      "answer": "Das Plusquamperfekt beschreibt eine Handlung, die vor einer anderen Vergangenheit stattfand ('Vorvergangenheit').",
+      "explanation": "Bildung: hatte/war + Partizip II. Beispiel: 'Nachdem er gegessen hatte, ging er spazieren.' Das Plusquamperfekt zeigt, dass 'essen' vor dem 'spazieren gehen' stattfand.",
+      "quality": null
+    }
+  ]
+}
