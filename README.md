@@ -2,6 +2,18 @@
 
 Interaktive Lernkarten-Anwendung für Schüler und Lernende – ähnlich wie NotebookLM, aber lokal und erweiterbar.
 
+## Idee & Hintergrund
+
+Die App entstand aus dem Wunsch, eine NotebookLM-ähnliche Lernkarten-Umgebung zu haben, die man selbst betreiben und beliebig erweitern kann.
+
+Kernidee: Klickt man auf eine Frage, wendet sich die Karte und zeigt die Lösung. Mit dem Pfeil nach rechts kommt die nächste Frage, nach links die vorherige. In der Mitte werden richtige und falsche Antworten hochgezählt. Am Ende gibt es eine kleine Bewertung des Durchgangs.
+
+Neue Fragensätze (Frage/Antwort-Paare) lassen sich über JSON oder CSV in ein Datenverzeichnis importieren. Die Überschrift der Datei gibt das Themengebiet an (z.B. „HSU – Bayern", „Deutsch – Zeiten", „Mathe – Begriffe", „Englisch – unregelmäßige Verben"), sodass schrittweise eine größere Wissens- und Abfragebasis aufgebaut werden kann.
+
+Zusätzlich kann die Qualität der Fragen bewertet werden. Erläuterungen und Erklärungen zu den Antworten sind ebenfalls abrufbar – alles durch das JSON- oder CSV-Schema definiert.
+
+Als nächster Schritt ist geplant, Fragen automatisch per KI aus einem Verzeichnis mit Lernmaterial zu generieren, wobei der Verzeichnisname das Themengebiet bestimmt (siehe [TODO.md](TODO.md)).
+
 ## Features
 
 - **Karteikarten mit Flip-Animation** – Klick auf die Karte dreht sie um und zeigt die Antwort
