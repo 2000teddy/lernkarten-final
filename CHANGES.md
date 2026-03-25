@@ -6,6 +6,17 @@ Alle abgeschlossenen Änderungen und implementierten Features, chronologisch abs
 
 ## 2026-03-25
 
+### 18:05 – Git- und Sicherheits-Härtungen ergänzt
+- SQLite-Dateien (`data/*.db`, `data/*.db-shm`, `data/*.db-wal`) in `.gitignore` aufgenommen, damit lokale Laufzeitdaten nicht versehentlich versioniert werden
+- Dateizugriffe in `server.js` gegen Pfad-Traversal gehärtet: API-Dateinamen werden jetzt vor Lesen, Schreiben und Löschen auf das `data/`-Verzeichnis begrenzt
+- Upload-Dateinamen werden beim Speichern normalisiert, statt den Originalnamen ungeprüft ins Dateisystem zu übernehmen
+- Frontend-Rendering in `public/js/app.js` für Inline-Handler abgesichert: Werte für `onclick`-Parameter werden jetzt getrennt für JavaScript-Strings escaped, damit Namen/Dateien mit `'` das Markup nicht brechen
+
+### 17:59 – Fehlende npm-Abhängigkeiten nach Neustart nachinstalliert
+- Ursache für die Meldung „Server nicht erreichbar“ analysiert: Startseite war erreichbar, aber der aktuelle Server konnte nach Neustart nicht starten, weil `xlsx` und `better-sqlite3` lokal noch nicht installiert waren
+- Fehlende Abhängigkeiten mit `npm install` nachinstalliert
+- `launchd`-Agent danach erneut gestartet und `GET /api/users` erfolgreich mit `200 OK` verifiziert
+
 ### 10:00 – Phase 2 vollständig implementiert
 
 #### SQLite-Datenbasis

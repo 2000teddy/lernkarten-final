@@ -58,6 +58,14 @@ function escHtml(s) {
   return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
+function escJsString(s) {
+  return String(s ?? '')
+    .replace(/\\/g, '\\\\')
+    .replace(/'/g, "\\'")
+    .replace(/\r/g, '\\r')
+    .replace(/\n/g, '\\n');
+}
+
 function formatDate(iso) {
   return new Date(iso).toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'2-digit', hour:'2-digit', minute:'2-digit' });
 }
@@ -135,10 +143,10 @@ function renderProfiles(users) {
     return;
   }
   list.innerHTML = users.map(u => `
-    <button class="profile-card" onclick="selectUser('${u.id}','${escHtml(u.name)}','${u.avatar}')">
+    <button class="profile-card" onclick="selectUser('${escJsString(u.id)}','${escJsString(u.name)}','${escJsString(u.avatar)}')">
       <span class="profile-avatar">${u.avatar}</span>
       <span class="profile-name">${escHtml(u.name)}</span>
-      <button class="profile-del" onclick="event.stopPropagation();deleteUser('${u.id}')" title="Profil löschen">×</button>
+      <button class="profile-del" onclick="event.stopPropagation();deleteUser('${escJsString(u.id)}')" title="Profil löschen">×</button>
     </button>
   `).join('');
 }
@@ -187,7 +195,7 @@ function hideCreateProfile() {
 function renderAvatarPicker() {
   selectedAvatar = AVATARS[0];
   document.getElementById('avatar-picker').innerHTML = AVATARS.map(a => `
-    <button class="avatar-opt${a===selectedAvatar?' selected':''}" onclick="pickAvatar('${a}')">${a}</button>
+    <button class="avatar-opt${a===selectedAvatar?' selected':''}" onclick="pickAvatar('${escJsString(a)}')">${a}</button>
   `).join('');
 }
 
@@ -237,13 +245,13 @@ function renderSets(sets, due = {}) {
     const dueCount = due[s.file] || 0;
     return `
     <div class="set-card" style="--card-color:${s.color};animation-delay:${i*60}ms"
-         onclick="showModeSelector('${s.file}','${escHtml(s.title)}',${dueCount})">
+         onclick="showModeSelector('${escJsString(s.file)}','${escJsString(s.title)}',${dueCount})">
       <div class="set-card-actions">
         ${s.file.endsWith('.json') ? `
-        <button class="btn-edit-set" onclick="event.stopPropagation();showEditorExisting('${s.file}')" title="Bearbeiten">
+        <button class="btn-edit-set" onclick="event.stopPropagation();showEditorExisting('${escJsString(s.file)}')" title="Bearbeiten">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         </button>` : ''}
-        <button class="btn-delete-set" onclick="event.stopPropagation();deleteSet('${s.file}','${escHtml(s.title)}')" title="Löschen">
+        <button class="btn-delete-set" onclick="event.stopPropagation();deleteSet('${escJsString(s.file)}','${escJsString(s.title)}')" title="Löschen">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
         </button>
       </div>
@@ -645,7 +653,7 @@ function closeEditor() { goHome(); }
 function renderColorPicker() {
   document.getElementById('ed-colors').innerHTML = COLORS.map(c => `
     <button class="color-swatch${editorColor===c?' active':''}" style="background:${c}"
-            onclick="selectEditorColor('${c}')" title="${c}"></button>`).join('');
+            onclick="selectEditorColor('${escJsString(c)}')" title="${c}"></button>`).join('');
 }
 function selectEditorColor(c) { editorColor=c; renderColorPicker(); }
 

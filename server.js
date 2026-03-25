@@ -16,7 +16,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, DATA_DIR),
-  filename:    (req, file, cb) => cb(null, file.originalname)
+  filename:    (req, file, cb) => cb(null, sanitizeUploadFilename(file.originalname))
 });
 const upload = multer({ storage, fileFilter: (req, file, cb) => {
   const ext = path.extname(file.originalname).toLowerCase();
@@ -30,6 +30,24 @@ function titleToFilename(title) {
   return title.toLowerCase()
     .replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss')
     .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') + '.json';
+}
+
+function sanitizeUploadFilename(filename) {
+  const ext = path.extname(filename).toLowerCase();
+  const base = path.basename(filename, ext)
+    .toLowerCase()
+    .replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss')
+    .replace(/[^a-z0-9]+/g,'-')
+    .replace(/^-+|-+$/g,'');
+  return `${base || 'upload'}${ext}`;
+}
+
+function resolveDataPath(file) {
+  const normalizedFile = path.basename(file);
+  if (!normalizedFile || normalizedFile !== file) return null;
+  const resolved = path.resolve(DATA_DIR, normalizedFile);
+  if (!resolved.startsWith(DATA_DIR + path.sep)) return null;
+  return resolved;
 }
 
 function parseCsv(content) {
@@ -102,7 +120,8 @@ app.get('/api/sets', (req, res) => {
 });
 
 app.get('/api/sets/:file', (req, res) => {
-  const fp = path.join(DATA_DIR, req.params.file);
+  const fp = resolveDataPath(req.params.file);
+  if (!fp) return res.status(400).json({ error:'Ungültiger Dateiname' });
   if (!fs.existsSync(fp)) return res.status(404).json({ error:'Nicht gefunden' });
   try {
     const content = fs.readFileSync(fp,'utf8');
@@ -124,15 +143,18 @@ app.post('/api/sets', (req, res) => {
 app.put('/api/sets/:file', (req, res) => {
   if (!req.params.file.endsWith('.json'))
     return res.status(400).json({ error:'Nur JSON-Dateien können bearbeitet werden' });
+  const fp = resolveDataPath(req.params.file);
+  if (!fp) return res.status(400).json({ error:'Ungültiger Dateiname' });
   const err = validateCardSet(req.body);
   if (err) return res.status(400).json({ error:err });
   req.body.cards.forEach((c,i) => { c.id = i+1; });
-  fs.writeFileSync(path.join(DATA_DIR, req.params.file), JSON.stringify(req.body, null, 2));
+  fs.writeFileSync(fp, JSON.stringify(req.body, null, 2));
   res.json({ success:true });
 });
 
 app.patch('/api/sets/:file/cards/:id/quality', (req, res) => {
-  const fp = path.join(DATA_DIR, req.params.file);
+  const fp = resolveDataPath(req.params.file);
+  if (!fp) return res.status(400).json({ error:'Ungültiger Dateiname' });
   if (!fp.endsWith('.json')) return res.status(400).json({ error:'Nur für JSON-Dateien' });
   if (!fs.existsSync(fp))   return res.status(404).json({ error:'Nicht gefunden' });
   try {
@@ -147,7 +169,8 @@ app.patch('/api/sets/:file/cards/:id/quality', (req, res) => {
 
 app.post('/api/upload', upload.single('file'), (req, res) => {
   if (!req.file) return res.status(400).json({ error:'Keine Datei hochgeladen' });
-  const uploadedPath = path.join(DATA_DIR, req.file.filename);
+  const uploadedPath = resolveDataPath(req.file.filename);
+  if (!uploadedPath) return res.status(400).json({ error:'Ungültiger Dateiname' });
   const ext = path.extname(req.file.filename).toLowerCase();
   try {
     let data;
@@ -174,7 +197,8 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
 });
 
 app.delete('/api/sets/:file', (req, res) => {
-  const fp = path.join(DATA_DIR, req.params.file);
+  const fp = resolveDataPath(req.params.file);
+  if (!fp) return res.status(400).json({ error:'Ungültiger Dateiname' });
   if (!fs.existsSync(fp)) return res.status(404).json({ error:'Nicht gefunden' });
   fs.unlinkSync(fp);
   res.json({ success:true });
@@ -182,7 +206,9 @@ app.delete('/api/sets/:file', (req, res) => {
 
 // Legacy stats (Rückwärtskompatibilität für Gast-Sitzungen)
 app.get('/api/sets/:file/stats', (req, res) => {
-  const sf = path.join(DATA_DIR, '.stats', req.params.file+'.json');
+  const statsFile = path.basename(req.params.file) + '.json';
+  if (statsFile !== req.params.file + '.json') return res.status(400).json({ error:'Ungültiger Dateiname' });
+  const sf = path.join(DATA_DIR, '.stats', statsFile);
   if (!fs.existsSync(sf)) return res.json({ sessions:[] });
   res.json(JSON.parse(fs.readFileSync(sf,'utf8')));
 });
@@ -190,7 +216,9 @@ app.get('/api/sets/:file/stats', (req, res) => {
 app.post('/api/sets/:file/stats', (req, res) => {
   const statsDir = path.join(DATA_DIR, '.stats');
   if (!fs.existsSync(statsDir)) fs.mkdirSync(statsDir);
-  const sf = path.join(statsDir, req.params.file+'.json');
+  const statsFile = path.basename(req.params.file) + '.json';
+  if (statsFile !== req.params.file + '.json') return res.status(400).json({ error:'Ungültiger Dateiname' });
+  const sf = path.join(statsDir, statsFile);
   let stats = { sessions:[] };
   if (fs.existsSync(sf)) stats = JSON.parse(fs.readFileSync(sf,'utf8'));
   stats.sessions.push({ ...req.body, date: new Date().toISOString() });

@@ -47,6 +47,16 @@ npm start
 
 Danach die App im Browser öffnen: **http://localhost:3004**
 
+### Hinweis nach Updates
+
+Wenn nach einem `git pull` neue Abhängigkeiten dazugekommen sind, vor dem nächsten Start erneut ausführen:
+
+```bash
+npm install
+```
+
+Das gilt besonders dann, wenn der Server nach einem Update zwar geladen wird, aber API-Endpunkte fehlen oder die App im Browser „Server nicht erreichbar" meldet.
+
 ## Start als launchd-Agent unter macOS
 
 Für einen automatischen Start beim Anmelden kann die App als `LaunchAgent` eingerichtet werden.
