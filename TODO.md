@@ -19,20 +19,20 @@ Datenbasis für Benutzerfortschritt und Statistiken anstelle der JSON-Dateien.
 Keine Architekturänderung nötig. Alle Tasks bauen direkt auf dem bestehenden Code auf.
 
 ### Lernmodi
-- [ ] **Multiple-Choice-Modus** – 4 Antwortoptionen, 3 Falsche automatisch aus dem Set gezogen `[Klein]`
-- [ ] **Schreibmodus** – Antwort eintippen, Vergleich mit Lösung (Groß-/Kleinschreibung ignorieren) `[Klein]`
-- [ ] **Zufallsmodus (Shuffle)** – Reihenfolge der Karten zufällig mischen `[Klein]`
+- [x] **Multiple-Choice-Modus** – 4 Antwortoptionen, 3 Falsche automatisch aus dem Set gezogen `[Klein]`
+- [x] **Schreibmodus** – Antwort eintippen, Vergleich mit Lösung (Groß-/Kleinschreibung ignorieren) `[Klein]`
+- [ ] **Zufallsmodus (Shuffle)** – Reihenfolge der Karten zufällig mischen `[Klein]` *(Karten sind standardmäßig bereits gemischt)*
 
 ### Bedienung & UX
-- [ ] **Karteneditor in der App** – Karten direkt im Browser erstellen und bearbeiten, ohne externe Datei `[Mittel]`
-- [ ] **Fortschrittsbalken** – Visueller Fortschritt während einer Sitzung (z.B. „Karte 4 von 12") `[Klein]`
-- [ ] **Verbesserter Abschluss-Screen** – Detailauswertung: welche Karten falsch, Wiederholungsvorschlag `[Klein]`
-- [ ] **Dark Mode** – Systemeinstellung automatisch erkennen + manueller Toggle `[Klein]`
-- [ ] **Tastaturnavigation** – Leertaste = Karte umdrehen, Pfeiltasten = Navigation (bereits teilweise vorhanden, vervollständigen) `[Klein]`
+- [x] **Karteneditor in der App** – Karten direkt im Browser erstellen und bearbeiten, ohne externe Datei `[Mittel]`
+- [x] **Fortschrittsbalken** – Visueller Fortschritt während einer Sitzung (z.B. „Karte 4 von 12") `[Klein]`
+- [x] **Verbesserter Abschluss-Screen** – Fehler-Liste + „Nur Fehler wiederholen" Button `[Klein]`
+- [x] **Dark Mode** – Systemeinstellung automatisch erkennen + manueller Toggle `[Klein]`
+- [x] **Tastaturnavigation** – Leertaste = Karte umdrehen, Pfeiltasten = Navigation `[Klein]`
 
 ### Daten & Import
-- [ ] **XLSX/Excel-Import** – via `xlsx`-Paket, für Lehrkräfte die mit Excel arbeiten `[Klein]`
-- [ ] **Schema-Validierung beim Upload** – Fehlermeldung wenn JSON/CSV fehlerhaft oder leer `[Klein]`
+- [x] **XLSX/Excel-Import** – via `xlsx`-Paket, für Lehrkräfte die mit Excel arbeiten `[Klein]`
+- [x] **Schema-Validierung beim Upload** – Fehlermeldung wenn JSON/CSV/XLSX fehlerhaft oder leer `[Klein]`
 
 ---
 

@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+
   <!-- HOME VIEW -->
   <div id="view-home" class="view active">
     <header class="home-header">
@@ -17,17 +18,23 @@
         <h1>Lernkarten</h1>
       </div>
       <div class="header-actions">
+        <button class="btn-icon-round" onclick="showEditorNew()" title="Neues Set erstellen">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
         <button class="btn-upload" onclick="document.getElementById('upload-modal').classList.add('open')">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
           Importieren
         </button>
+        <button class="btn-darkmode" onclick="toggleDarkMode()" title="Dark Mode">
+          <svg id="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg id="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
       </div>
     </header>
-
     <main class="home-main">
       <div class="welcome-text">
         <h2>Deine Themenbereiche</h2>
-        <p>Wähle ein Thema zum Üben</p>
+        <p>Wähle ein Thema und einen Lernmodus</p>
       </div>
       <div id="sets-grid" class="sets-grid">
         <div class="loading-state">Lade Lernkarten...</div>
@@ -46,15 +53,18 @@
           <span id="learn-title" class="learn-title">Thema</span>
           <span id="learn-progress" class="learn-progress">1 / 10</span>
         </div>
-        <div class="score-display">
-          <span class="score wrong" id="score-wrong">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            <span id="count-wrong">0</span>
-          </span>
-          <span class="score right" id="score-right">
-            <span id="count-right">0</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          </span>
+        <div class="learn-header-right">
+          <span id="mode-badge" class="mode-badge">Karteikarten</span>
+          <div class="score-display">
+            <span class="score wrong">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              <span id="count-wrong">0</span>
+            </span>
+            <span class="score right">
+              <span id="count-right">0</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+          </div>
         </div>
       </div>
 
@@ -62,13 +72,13 @@
         <div id="progress-bar" class="progress-bar" style="width:0%"></div>
       </div>
 
-      <!-- CARD -->
-      <div class="card-scene" onclick="flipCard()">
+      <!-- FLIP CARD (always visible, click disabled in mc/write mode) -->
+      <div class="card-scene" id="card-scene" onclick="flipCard()">
         <div id="flash-card" class="flash-card">
           <div class="card-face card-front">
             <div class="card-number" id="card-num">1</div>
             <div class="card-content" id="card-question">Frage erscheint hier</div>
-            <div class="card-hint">Zum Umdrehen tippen</div>
+            <div class="card-hint" id="card-hint">Zum Umdrehen tippen</div>
           </div>
           <div class="card-face card-back">
             <div class="card-label">Antwort</div>
@@ -81,12 +91,25 @@
         </div>
       </div>
 
+      <!-- MULTIPLE CHOICE OPTIONS -->
+      <div id="mc-options" class="mc-options" style="display:none"></div>
+
+      <!-- WRITE MODE -->
+      <div id="write-mode" class="write-mode" style="display:none">
+        <div class="write-input-wrap">
+          <input type="text" id="write-input" class="write-input"
+                 placeholder="Antwort eintippen..."
+                 onkeydown="if(event.key==='Enter')checkWriteAnswer()">
+          <button class="btn-write-check" onclick="checkWriteAnswer()">Prüfen</button>
+        </div>
+        <div id="write-feedback" class="write-feedback" style="display:none"></div>
+      </div>
+
       <!-- NAV -->
       <div class="card-nav">
         <button class="nav-btn nav-prev" onclick="prevCard()" title="Vorherige Karte">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
-
         <div class="answer-btns" id="answer-btns" style="display:none">
           <button class="answer-btn wrong-btn" onclick="markAnswer(false)">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -95,7 +118,6 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
           </button>
         </div>
-
         <button class="nav-btn nav-next" onclick="nextCard()" title="Nächste Karte">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
@@ -104,8 +126,8 @@
       <!-- QUALITY RATING -->
       <div class="quality-rating" id="quality-rating" style="display:none">
         <span class="quality-label">Frage bewerten:</span>
-        <button class="quality-btn good" onclick="rateQuality('good')" title="Gute Frage">👍 Gut</button>
-        <button class="quality-btn bad" onclick="rateQuality('bad')" title="Schlechte Frage">👎 Verbesserbar</button>
+        <button class="quality-btn good" onclick="rateQuality('good')">👍 Gut</button>
+        <button class="quality-btn bad" onclick="rateQuality('bad')">👎 Verbesserbar</button>
       </div>
     </div>
   </div>
@@ -134,9 +156,77 @@
             <div class="stat-row skip"><span>Übersprungen</span><strong id="res-skip">0</strong></div>
           </div>
         </div>
+
+        <!-- Wrong cards detail -->
+        <div id="wrong-cards-section" class="wrong-cards-section" style="display:none">
+          <h4>Noch mal anschauen:</h4>
+          <div id="wrong-cards-list" class="wrong-cards-list"></div>
+        </div>
+
         <div class="results-actions">
           <button class="btn-primary" onclick="restartLearn()">Nochmal üben</button>
+          <button id="btn-retry-wrong" class="btn-secondary btn-retry-wrong" onclick="restartWithWrong()" style="display:none">Nur Fehler wiederholen</button>
           <button class="btn-secondary" onclick="goHome()">Zurück</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDITOR VIEW -->
+  <div id="view-editor" class="view">
+    <div class="editor-wrapper">
+      <div class="editor-header">
+        <button class="btn-back" onclick="closeEditor()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <h2 id="editor-heading">Neues Set erstellen</h2>
+        <button class="btn-save-editor" onclick="saveEditor()">Speichern</button>
+      </div>
+
+      <div class="editor-body">
+        <!-- Metadata -->
+        <div class="editor-section">
+          <h3>Themengebiet</h3>
+          <div class="editor-field">
+            <label>Titel *</label>
+            <input type="text" id="ed-title" placeholder="z.B. Mathe – Grundrechenarten" class="editor-input">
+          </div>
+          <div class="editor-field">
+            <label>Beschreibung</label>
+            <input type="text" id="ed-desc" placeholder="Kurze Beschreibung (optional)" class="editor-input">
+          </div>
+          <div class="editor-field">
+            <label>Farbe</label>
+            <div class="color-swatches" id="ed-colors"></div>
+          </div>
+        </div>
+
+        <!-- Card list -->
+        <div class="editor-section">
+          <div class="editor-cards-header">
+            <h3>Karten <span id="ed-card-count" class="ed-count">(0)</span></h3>
+          </div>
+          <div id="editor-cards" class="editor-cards-list"></div>
+
+          <!-- Add card form -->
+          <div class="editor-add-card">
+            <h4>Neue Karte hinzufügen</h4>
+            <div class="editor-add-grid">
+              <div class="editor-field">
+                <label>Frage *</label>
+                <textarea id="ed-new-q" rows="2" placeholder="Frage eingeben..." class="editor-input"></textarea>
+              </div>
+              <div class="editor-field">
+                <label>Antwort *</label>
+                <textarea id="ed-new-a" rows="2" placeholder="Antwort eingeben..." class="editor-input"></textarea>
+              </div>
+              <div class="editor-field editor-field-full">
+                <label>Erläuterung (optional)</label>
+                <textarea id="ed-new-e" rows="2" placeholder="Zusätzliche Erklärung..." class="editor-input"></textarea>
+              </div>
+            </div>
+            <button class="btn-add-card" onclick="addEditorCard()">+ Karte hinzufügen</button>
+          </div>
         </div>
       </div>
     </div>
@@ -156,6 +246,42 @@
     </div>
   </div>
 
+  <!-- MODE SELECTOR MODAL -->
+  <div id="mode-modal" class="modal">
+    <div class="modal-backdrop" onclick="closeModeSelector()"></div>
+    <div class="modal-box mode-modal-box">
+      <div class="modal-header">
+        <h3 id="mode-modal-title">Lernmodus wählen</h3>
+        <button onclick="closeModeSelector()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="mode-options">
+        <button class="mode-option" onclick="startLearnWithMode('flip')">
+          <span class="mode-opt-icon">🃏</span>
+          <div>
+            <strong>Karteikarten</strong>
+            <span>Karte umdrehen, Antwort aufdecken</span>
+          </div>
+        </button>
+        <button class="mode-option" onclick="startLearnWithMode('mc')">
+          <span class="mode-opt-icon">🎯</span>
+          <div>
+            <strong>Multiple Choice</strong>
+            <span>Eine von 4 Antworten auswählen</span>
+          </div>
+        </button>
+        <button class="mode-option" onclick="startLearnWithMode('write')">
+          <span class="mode-opt-icon">✏️</span>
+          <div>
+            <strong>Tippen</strong>
+            <span>Antwort selbst eintippen</span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- UPLOAD MODAL -->
   <div id="upload-modal" class="modal">
     <div class="modal-backdrop" onclick="document.getElementById('upload-modal').classList.remove('open')"></div>
@@ -166,12 +292,12 @@
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
-      <p class="modal-desc">JSON oder CSV-Datei hochladen. Die Überschrift (title) bestimmt das Themengebiet.</p>
+      <p class="modal-desc">JSON, CSV oder Excel-Datei hochladen. Der Titel bestimmt das Themengebiet.</p>
       <div class="upload-zone" id="upload-zone">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         <p>Datei hier ablegen oder <label for="file-input" class="file-label">auswählen</label></p>
-        <span class="file-types">JSON · CSV</span>
-        <input type="file" id="file-input" accept=".json,.csv" style="display:none" onchange="uploadFile(this)">
+        <span class="file-types">JSON · CSV · XLSX</span>
+        <input type="file" id="file-input" accept=".json,.csv,.xlsx" style="display:none" onchange="uploadFile(this)">
       </div>
       <div id="upload-status"></div>
       <div class="format-hint">
@@ -181,7 +307,8 @@
   "cards": [{ "question": "...", "answer": "...",
     "explanation": "..." }] }
 
-CSV: title,Fach - Thema
+CSV / XLSX:
+title,Fach - Thema
 color,#3B82F6
 question,answer,explanation
 Frage 1,Antwort 1,Erklärung...</pre>
