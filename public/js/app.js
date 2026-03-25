@@ -327,13 +327,13 @@ async function startLearn(file) {
 
     document.getElementById('learn-title').textContent = currentSet.title;
     document.getElementById('mode-badge').textContent  = MODE_LABELS[currentMode] || '';
+    document.getElementById('flash-card').style.setProperty('--topic-color', currentSet.color || '#6366F1');
 
     if (currentMode === 'mc' && currentCards.length < 2) {
       alert('Multiple Choice benötigt mindestens 2 Karten.');
       currentMode = 'flip';
       document.getElementById('mode-badge').textContent = MODE_LABELS.flip;
     }
-
     updateProgress();
     renderCard();
     updateScore();

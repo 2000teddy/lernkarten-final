@@ -47,6 +47,46 @@ npm start
 
 Danach die App im Browser öffnen: **http://localhost:3004**
 
+## Start als launchd-Agent unter macOS
+
+Für einen automatischen Start beim Anmelden kann die App als `LaunchAgent` eingerichtet werden.
+
+Die Projektdatei dafür liegt hier:
+
+```bash
+launchd/de.lernkarten.app.plist
+```
+
+### Installation
+
+```bash
+mkdir -p ~/Library/LaunchAgents
+cp launchd/de.lernkarten.app.plist ~/Library/LaunchAgents/de.lernkarten.app.plist
+launchctl unload ~/Library/LaunchAgents/de.lernkarten.app.plist 2>/dev/null || true
+launchctl load -w ~/Library/LaunchAgents/de.lernkarten.app.plist
+```
+
+Danach ist die App unter **http://localhost:3004** erreichbar und wird beim nächsten Login automatisch gestartet.
+
+### Status prüfen
+
+```bash
+launchctl list | grep de.lernkarten.app
+```
+
+### Stoppen
+
+```bash
+launchctl unload ~/Library/LaunchAgents/de.lernkarten.app.plist
+```
+
+### Logs
+
+```bash
+tail -f ~/Library/Logs/lernkarten-app.log
+tail -f ~/Library/Logs/lernkarten-app-error.log
+```
+
 ## Eigene Fragensätze erstellen
 
 Neue Fragensätze können als **JSON** oder **CSV** direkt über die App hochgeladen werden (Button „Datei hochladen" auf der Startseite).

@@ -39,6 +39,12 @@ Alle abgeschlossenen Änderungen und implementierten Features, chronologisch abs
 - `public/icon.svg`: App-Icon mit grünem Hintergrund und 🎴-Emoji
 - App auf Startbildschirm installierbar (iOS/Android/Desktop)
 
+### 17:36 – Themenfarbe auf Fragekarte, launchd-Setup und Datensatz repariert
+- Vorderseite der Lernkarte verwendet jetzt die jeweilige Themenfarbe des aktiven Fragensatzes als hellen Verlauf (`public/js/app.js`, `public/css/style.css`)
+- `launchd`-Konfiguration für macOS als `LaunchAgent` ergänzt und in `README.md` dokumentiert (`launchd/de.lernkarten.app.plist`)
+- App lokal als `launchd`-Agent `de.lernkarten.app` eingerichtet und Start über `launchctl load -w` verifiziert
+- Syntaxfehler in `data/hsu-bayern.json` behoben, sodass der Datensatz wieder korrekt in `/api/sets` erscheint
+
 ---
 
 ## 2026-03-24
