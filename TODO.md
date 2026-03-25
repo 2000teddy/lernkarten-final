@@ -41,29 +41,29 @@ Keine Architekturänderung nötig. Alle Tasks bauen direkt auf dem bestehenden C
 Baut auf Phase 1 auf. Erfordert Datenbankgrundlage (SQLite) und Benutzerkonzept.
 
 ### Voraussetzung: Datenbasis
-- [ ] **SQLite-Integration** (`better-sqlite3`) – Benutzerfortschritt, SM-2-Daten und Statistiken in DB statt JSON-Dateien `[Groß]`
+- [x] **SQLite-Integration** (`better-sqlite3`) – Benutzerfortschritt, SM-2-Daten und Statistiken in DB statt JSON-Dateien `[Groß]`
   - Ersetzt `data/.stats/` für Statistiken
   - Neue Tabellen: `users`, `progress`, `sessions`
 
 ### Benutzerverwaltung (kindgerecht, kein Passwort)
-- [ ] **Benutzerprofile** – Name + Avatar (Emoji-Auswahl), keine Registrierung/kein Passwort `[Mittel]`
+- [x] **Benutzerprofile** – Name + Avatar (Emoji-Auswahl), keine Registrierung/kein Passwort `[Mittel]`
   - Auswahl beim ersten Start, gespeichert in `localStorage` (Gerätezuordnung)
   - Serverseitig via UUID identifiziert
   - Mehrere Profile auf einem Gerät möglich (z.B. für Geschwisterkinder)
-- [ ] **Getrennter Lernfortschritt** je Benutzerprofil `[Mittel]`
+- [x] **Getrennter Lernfortschritt** je Benutzerprofil `[Mittel]`
 
 ### Lernalgorithmus
-- [ ] **Spaced-Repetition (SM-2)** – Karten die öfter falsch beantwortet wurden, öfter anzeigen `[Mittel]`
+- [x] **Spaced-Repetition (SM-2)** – Karten die öfter falsch beantwortet wurden, öfter anzeigen `[Mittel]`
   - Intervall-Berechnung pro Karte und Benutzer
   - „Fällige Karten heute" als Startansicht anzeigen
   - Abhängigkeit: SQLite muss vorher implementiert sein
 
 ### Statistiken
-- [ ] **Statistik-Dashboard** – Diagramme mit Chart.js: Lernfortschritt über Zeit, Trefferquote je Thema `[Mittel]`
+- [x] **Statistik-Dashboard** – Diagramme mit Chart.js: Lernfortschritt über Zeit, Trefferquote je Thema `[Mittel]`
 - [ ] **Schwächste Karten** – Liste der am häufigsten falsch beantworteten Karten je Set `[Klein]`
 
 ### Offline & Mobile
-- [ ] **PWA / Offline-Modus** – Service Worker + App-Manifest, App auf Startbildschirm installierbar `[Mittel]`
+- [x] **PWA / Offline-Modus** – Service Worker + App-Manifest, App auf Startbildschirm installierbar `[Mittel]`
 
 ---
 

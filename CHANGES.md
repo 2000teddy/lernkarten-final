@@ -4,6 +4,43 @@ Alle abgeschlossenen Änderungen und implementierten Features, chronologisch abs
 
 ---
 
+## 2026-03-25
+
+### 10:00 – Phase 2 vollständig implementiert
+
+#### SQLite-Datenbasis
+- `db.js` neu erstellt: `better-sqlite3`-Integration mit Tabellen `users`, `card_progress`, `sessions`
+- SM-2-Algorithmus (`sm2Update`) serverseitig implementiert: Ease Factor, Intervall-Berechnung, Wiederholungszähler
+- Rückwärtskompatibilität: Legacy-JSON-Stats für Gastmodus behalten
+
+#### Benutzerverwaltung (kindgerecht, kein Passwort)
+- Profilauswahl beim ersten Start: Name + Emoji-Avatar (18 Emojis zur Auswahl)
+- UUID-basierte Identifikation serverseitig, `localStorage`-Bindung am Gerät
+- Mehrere Profile auf einem Gerät möglich (z.B. für Geschwisterkinder)
+- Gastmodus ohne Profil weiterhin verfügbar
+- API: `GET/POST /api/users`, `DELETE /api/users/:id`
+
+#### Spaced Repetition (SM-2)
+- Kartenfortschritt je Benutzer und Set in SQLite gespeichert
+- Fällige Karten: `GET /api/users/:userId/due`, `GET /api/users/:userId/sets/:file/due`
+- Sitzungen mit SM-2-Update pro Karte: `POST /api/users/:userId/sets/:file/session`
+- Neuer Lernmodus „Fällige Karten" in Modusauswahl (nur sichtbar bei eingeloggtem Benutzer + fälligen Karten)
+- Kacheln zeigen Badge mit Anzahl fälliger Karten
+
+#### Statistik-Dashboard
+- `GET /api/users/:userId/stats` liefert Fortschritt je Set + Sitzungshistorie
+- Neuer Stats-View mit Fortschrittsbalken je Themengebiet
+- Chart.js (CDN) Balkendiagramm: richtige vs. falsche Antworten der letzten Sitzungen
+- Sitzungstabelle mit Datum, Modus, Ergebnis je Set
+
+#### PWA (Progressive Web App)
+- `public/manifest.json`: App-Name, Theme-Color, Standalone-Display
+- `public/sw.js`: Service Worker mit Cache-First (statische Assets) + Network-First (`/api/`)
+- `public/icon.svg`: App-Icon mit grünem Hintergrund und 🎴-Emoji
+- App auf Startbildschirm installierbar (iOS/Android/Desktop)
+
+---
+
 ## 2026-03-24
 
 ### 17:30 – Phase 1 vollständig implementiert
