@@ -6,6 +6,10 @@ Alle abgeschlossenen Änderungen und implementierten Features, chronologisch abs
 
 ## 2026-03-25
 
+### 18:10 – Qualitätsbewertung im Englisch-Datensatz übernommen
+- In `data/englisch-verben.json` wurde die Karte zum Verb `take` mit `quality: "good"` als positiv bewertete Frage übernommen
+- Datensatz auf gültiges JSON geprüft
+
 ### 18:05 – Git- und Sicherheits-Härtungen ergänzt
 - SQLite-Dateien (`data/*.db`, `data/*.db-shm`, `data/*.db-wal`) in `.gitignore` aufgenommen, damit lokale Laufzeitdaten nicht versehentlich versioniert werden
 - Dateizugriffe in `server.js` gegen Pfad-Traversal gehärtet: API-Dateinamen werden jetzt vor Lesen, Schreiben und Löschen auf das `data/`-Verzeichnis begrenzt
