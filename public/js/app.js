@@ -558,6 +558,7 @@ async function printSet(file) {
 }
 
 function goHome() {
+  window.speechSynthesis?.cancel();
   showView('home');
   loadSets();
 }
@@ -636,6 +637,7 @@ async function startLearn(file) {
 function renderCard() {
   const card = currentCards[currentIndex];
   if (!card) return;
+  window.speechSynthesis?.cancel();
 
   // Weiter-Timer stoppen falls aktiv
   if (window._weiterInterval) { clearInterval(window._weiterInterval); window._weiterInterval = null; }
@@ -855,6 +857,18 @@ function showExplanation() {
 }
 function closeExplanation() {
   document.getElementById('explain-modal').classList.remove('open');
+}
+
+function speakCurrentCard(part = 'question') {
+  const card = currentCards[currentIndex];
+  if (!card || !window.speechSynthesis) return;
+  const text = part === 'answer' ? card.answer : card.question;
+  if (!text) return;
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = (currentSet?.language || navigator.language || 'de-DE');
+  utterance.rate = 0.95;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(utterance);
 }
 
 // ─── RESULTS ──────────────────────────────────────────────────────────────────

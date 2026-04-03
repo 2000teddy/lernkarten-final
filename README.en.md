@@ -18,6 +18,7 @@ This project is a lightweight flashcard application built with Node.js, Express,
 - Export of existing sets as CSV or XLSX
 - Daily card spotlight on the home screen
 - Quick-add block for creating many cards from plain text
+- Browser text-to-speech for question and answer playback
 - User profiles with separate learning progress
 - Spaced repetition (SM-2)
 - Statistics dashboard

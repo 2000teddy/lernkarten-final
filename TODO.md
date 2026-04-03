@@ -39,7 +39,7 @@ Diese Roadmap wurde in dieser Runde mit PAL und Modellperspektiven von `gpt-5.4`
 
 - [ ] **UI-Mehrsprachigkeit (DE/EN zuerst)** – Alle festen UI-Texte in eine kleine i18n-Struktur auslagern `[Mittel]`
 - [ ] **Weitere Sprachen für die Oberfläche** – z.B. Französisch, Türkisch, Spanisch `[Klein]`
-- [ ] **Text-to-Speech** – Wörter oder Antworten über die Browser-Sprachausgabe vorlesen `[Klein]`
+- [x] **Text-to-Speech** – Wörter oder Antworten über die Browser-Sprachausgabe vorlesen `[Klein]`
 - [ ] **Audio je Karte** – Eigene Aussprache oder Lehrer-Audio an Karten hängen `[Mittel]`
 - [ ] **Mehrsprachige Kartenpaare** – Fragen/Antworten mit expliziten Sprachfeldern erweitern `[Mittel]`
 

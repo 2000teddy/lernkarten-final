@@ -131,11 +131,17 @@
         <div id="flash-card" class="flash-card">
           <div class="card-face card-front">
             <div class="card-number" id="card-num">1</div>
+            <button class="btn-speak-card" type="button" onclick="event.stopPropagation(); speakCurrentCard('question')" title="Frage vorlesen">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+            </button>
             <div class="card-content" id="card-question">Frage erscheint hier</div>
             <div class="card-hint" id="card-hint">Zum Umdrehen tippen</div>
           </div>
           <div class="card-face card-back">
             <div class="card-label">Antwort</div>
+            <button class="btn-speak-card" type="button" onclick="event.stopPropagation(); speakCurrentCard('answer')" title="Antwort vorlesen">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+            </button>
             <div class="card-content" id="card-answer">Antwort erscheint hier</div>
             <button class="btn-explain" id="btn-explain" onclick="event.stopPropagation(); showExplanation()" style="display:none">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
