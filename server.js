@@ -480,7 +480,38 @@ app.get('/api/users/:userId/stats', (req, res) => {
     FROM card_progress WHERE user_id=? GROUP BY set_file
   `).all(today, userId);
 
-  res.json({ sessions, progress });
+  const weakestRows = db.prepare(`
+    SELECT set_file, card_id, total_correct, total_wrong,
+      (total_wrong - total_correct) AS weakness_score
+    FROM card_progress
+    WHERE user_id=? AND (total_wrong - total_correct) > 0
+    ORDER BY weakness_score DESC, total_wrong DESC, total_correct ASC
+    LIMIT 12
+  `).all(userId);
+
+  const weakestCards = weakestRows.map(row => {
+    try {
+      const fp = resolveSetPath(row.set_file);
+      if (!fs.existsSync(fp)) return null;
+      const content = fs.readFileSync(fp, 'utf8');
+      const setData = fp.endsWith('.json') ? normalizeSetMetadata(JSON.parse(content)) : parseCsv(content);
+      const card = (setData.cards || []).find(entry => Number(entry.id) === Number(row.card_id));
+      if (!card) return null;
+      return {
+        set_file: row.set_file,
+        card_id: row.card_id,
+        question: card.question,
+        answer: card.answer,
+        total_correct: row.total_correct,
+        total_wrong: row.total_wrong,
+        weakness_score: row.weakness_score
+      };
+    } catch (e) {
+      return null;
+    }
+  }).filter(Boolean);
+
+  res.json({ sessions, progress, weakestCards });
 });
 
 // ─── Start ───────────────────────────────────────────────────────────────────

@@ -31,6 +31,8 @@ Als nächster Schritt ist geplant, Fragen automatisch per KI aus einem Verzeichn
 - **Vorlagen** – Downloadbare Startvorlagen für Vokabeln und Unterrichtssätze
 - **Download** – Vorhandene Sets können direkt aus der Oberfläche heruntergeladen werden
 - **Filter** – Sets lassen sich nach Fach, Klassenstufe und Sprache einschränken
+- **Druckansicht** – Sets können als druckfreundliche Kartenübersicht geöffnet werden
+- **Problemkarten** – Statistiken zeigen die aktuell schwächsten Karten eines Profils
 
 ## Voraussetzungen
 

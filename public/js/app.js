@@ -261,9 +261,10 @@ async function loadSets() {
 
 function renderSetFilterOptions(sets) {
   const subjectSel = document.getElementById('filter-subject');
+  const topicSel = document.getElementById('filter-topic');
   const gradeSel = document.getElementById('filter-grade');
   const languageSel = document.getElementById('filter-language');
-  if (!subjectSel || !gradeSel || !languageSel) return;
+  if (!subjectSel || !topicSel || !gradeSel || !languageSel) return;
 
   const fillSelect = (el, values, defaultLabel, formatter = value => value) => {
     const current = el.value;
@@ -274,23 +275,32 @@ function renderSetFilterOptions(sets) {
   };
 
   const subjects = [...new Set(sets.map(set => String(set.subject || '').trim()).filter(Boolean))].sort((a,b) => a.localeCompare(b,'de'));
+  const topics = [...new Set(sets.map(set => String(set.topic || '').trim()).filter(Boolean))].sort((a,b) => a.localeCompare(b,'de'));
   const grades = [...new Set(sets.map(set => String(set.grade || '').trim()).filter(Boolean))].sort((a,b) => a.localeCompare(b,'de', { numeric:true }));
   const languages = [...new Set(sets.map(set => String(set.language || '').trim()).filter(Boolean))].sort((a,b) => a.localeCompare(b,'de'));
 
   fillSelect(subjectSel, subjects, 'Alle Fächer');
+  fillSelect(topicSel, topics, 'Alle Themen');
   fillSelect(gradeSel, grades, 'Alle Klassen', value => `Klasse ${value}`);
   fillSelect(languageSel, languages, 'Alle Sprachen', value => value.toUpperCase());
 }
 
 function applySetFilters() {
   const subject = document.getElementById('filter-subject')?.value || '';
+  const topic = document.getElementById('filter-topic')?.value || '';
   const grade = document.getElementById('filter-grade')?.value || '';
   const language = document.getElementById('filter-language')?.value || '';
+  const tag = (document.getElementById('filter-tag')?.value || '').trim().toLowerCase();
 
   const filtered = allSets.filter(set => {
     if (subject && String(set.subject || '') !== subject) return false;
+    if (topic && String(set.topic || '') !== topic) return false;
     if (grade && String(set.grade || '') !== grade) return false;
     if (language && String(set.language || '') !== language) return false;
+    if (tag) {
+      const tags = Array.isArray(set.tags) ? set.tags.map(value => String(value).toLowerCase()) : [];
+      if (!tags.some(value => value.includes(tag))) return false;
+    }
     return true;
   });
   renderSets(filtered, dueCounts);
@@ -298,17 +308,26 @@ function applySetFilters() {
 
 function resetSetFilters() {
   document.getElementById('filter-subject').value = '';
+  document.getElementById('filter-topic').value = '';
   document.getElementById('filter-grade').value = '';
   document.getElementById('filter-language').value = '';
+  document.getElementById('filter-tag').value = '';
   applySetFilters();
 }
 
 function renderSets(sets, due = {}) {
   const grid = document.getElementById('sets-grid');
   if (!sets.length) {
+    const hasActiveFilters = Boolean(
+      document.getElementById('filter-subject')?.value ||
+      document.getElementById('filter-topic')?.value ||
+      document.getElementById('filter-grade')?.value ||
+      document.getElementById('filter-language')?.value ||
+      (document.getElementById('filter-tag')?.value || '').trim()
+    );
     grid.innerHTML = `<div class="loading-state">
-      <p>Noch keine Lernkarten vorhanden.</p>
-      <p>Erstelle ein neues Set oder importiere eine Datei.</p></div>`;
+      <p>${hasActiveFilters ? 'Keine Sets passen zu den aktuellen Filtern.' : 'Noch keine Lernkarten vorhanden.'}</p>
+      <p>${hasActiveFilters ? 'Passe die Filter an oder setze sie zurück.' : 'Erstelle ein neues Set oder importiere eine Datei.'}</p></div>`;
     return;
   }
   grid.innerHTML = sets.map((s,i) => {
@@ -322,6 +341,9 @@ function renderSets(sets, due = {}) {
         </button>` : ''}
         <button class="btn-download-set" data-set-download="${i}" title="Herunterladen">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </button>
+        <button class="btn-print-set" data-set-print="${i}" title="Drucken">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
         </button>
         <button class="btn-delete-set" data-set-delete="${i}" title="Löschen">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
@@ -376,6 +398,15 @@ function renderSets(sets, due = {}) {
       downloadSet(set.file);
     });
   });
+
+  grid.querySelectorAll('.btn-print-set').forEach(button => {
+    const set = sets[Number(button.dataset.setPrint)];
+    if (!set) return;
+    button.addEventListener('click', event => {
+      event.stopPropagation();
+      printSet(set.file);
+    });
+  });
 }
 
 async function deleteSet(file, title) {
@@ -386,6 +417,75 @@ async function deleteSet(file, title) {
 
 function downloadSet(file) {
   window.location.href = `/api/sets/${encodeURIComponent(file)}/download`;
+}
+
+async function printSet(file) {
+  const win = window.open('', '_blank', 'noopener,noreferrer,width=960,height=720');
+  if (!win) {
+    alert('Druckfenster konnte nicht geöffnet werden');
+    return;
+  }
+
+  try {
+    win.document.write('<!DOCTYPE html><html lang="de"><head><meta charset="utf-8"><title>Druckansicht wird vorbereitet</title></head><body style="font-family:Georgia,serif;padding:24px;color:#1c1917">Druckansicht wird vorbereitet...</body></html>');
+    win.document.close();
+
+    const res = await fetch(`/api/sets/${encodeURIComponent(file)}`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Set konnte nicht geladen werden');
+
+    const cardsMarkup = (data.cards || []).map((card, index) => `
+      <article class="print-card">
+        <div class="print-card-side">
+          <div class="print-label">Frage ${index + 1}</div>
+          <h2>${escHtml(card.question)}</h2>
+        </div>
+        <div class="print-card-side print-answer">
+          <div class="print-label">Antwort</div>
+          <p>${escHtml(card.answer)}</p>
+          ${card.explanation ? `<div class="print-explanation">${escHtml(card.explanation)}</div>` : ''}
+        </div>
+      </article>
+    `).join('');
+
+    win.document.open();
+    win.document.write(`<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>${escHtml(data.title)} – Druckansicht</title>
+  <style>
+    body { font-family: Georgia, serif; margin: 24px; color: #1c1917; }
+    h1 { margin: 0 0 8px; font-size: 28px; }
+    .print-meta { margin: 0 0 20px; color: #57534e; font-size: 14px; }
+    .print-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .print-card { border: 1px solid #d6d3d1; border-radius: 14px; overflow: hidden; break-inside: avoid; }
+    .print-card-side { padding: 16px; min-height: 140px; }
+    .print-answer { border-top: 1px dashed #d6d3d1; background: #fafaf9; }
+    .print-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #78716c; margin-bottom: 10px; }
+    .print-card h2 { margin: 0; font-size: 18px; line-height: 1.35; }
+    .print-card p { margin: 0; font-size: 16px; line-height: 1.45; }
+    .print-explanation { margin-top: 10px; font-size: 13px; color: #57534e; }
+    @media print {
+      body { margin: 12mm; }
+      .print-grid { gap: 10mm; }
+      .print-card { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <h1>${escHtml(data.title)}</h1>
+  <div class="print-meta">${escHtml(data.description || 'Druckansicht für Unterricht und Lernen')}</div>
+  <section class="print-grid">${cardsMarkup}</section>
+</body>
+</html>`);
+    win.document.close();
+    win.focus();
+    setTimeout(() => win.print(), 250);
+  } catch (error) {
+    win.close();
+    alert('Fehler beim Erstellen der Druckansicht: ' + error.message);
+  }
 }
 
 function goHome() {
@@ -911,7 +1011,7 @@ async function showStats() {
   } catch(e) { alert('Fehler beim Laden der Statistiken.'); }
 }
 
-function renderStats({ sessions, progress }) {
+function renderStats({ sessions, progress, weakestCards = [] }) {
   // Progress per set
   const progList = document.getElementById('stats-progress');
   if (!progress.length) {
@@ -986,6 +1086,22 @@ function renderStats({ sessions, progress }) {
           </tr>`).join('')}
         </tbody>
       </table>`;
+  }
+
+  const weakestList = document.getElementById('stats-weakest-list');
+  if (!weakestCards.length) {
+    weakestList.innerHTML = '<p class="editor-empty">Noch keine auffälligen Problemkarten vorhanden.</p>';
+  } else {
+    weakestList.innerHTML = weakestCards.map(card => `
+      <div class="weak-card-item">
+        <div class="weak-card-top">
+          <strong>${escHtml(card.question)}</strong>
+          <span class="weak-card-score">${card.total_wrong}× falsch / ${card.total_correct}× richtig</span>
+        </div>
+        <div class="weak-card-answer">${escHtml(card.answer)}</div>
+        <div class="weak-card-set">${escHtml(card.set_file.replace('.json','').replace('.csv','').replace(/-/g,' '))}</div>
+      </div>
+    `).join('');
   }
 }
 

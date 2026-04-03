@@ -20,6 +20,13 @@ Alle abgeschlossenen Änderungen und implementierten Features, chronologisch abs
 - Editor um Eingabefelder für die neuen Metadaten ergänzt
 - Set-Kacheln zeigen nun erste Metadaten-Badges an
 - Erste Filterleiste in der Startansicht für Fach, Klassenstufe und Sprache ergänzt
+- Filter um Thema und freie Tag-Suche erweitert
+
+#### Druck & Statistik
+- Druckansicht pro Set ergänzt, um Karten in einem eigenen Druckfenster auszugeben
+- Statistik-API und Statistikansicht um eine Liste der schwächsten Karten ergänzt
+- Druckfenster so abgesichert, dass Browser-Popup-Blocker die Funktion seltener unterbrechen
+- Leerer Filterzustand in der Set-Ansicht zeigt nun eine passende Meldung statt eines generischen No-Data-Texts
 
 #### Dokumentation & Roadmap
 - `README.en.md` als englische Projektübersicht ergänzt

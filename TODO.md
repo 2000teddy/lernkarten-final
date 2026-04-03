@@ -21,9 +21,9 @@ Diese Roadmap wurde in dieser Runde mit PAL und Modellperspektiven von `gpt-5.4`
 
 ### Priorität A – Nächste sinnvolle Schritte
 
-- [ ] **Themen-Filter ergänzen** – Zusätzlich zum Fach/Klassen-/Sprachfilter auch `topic` und ggf. `tags` aufnehmen `[Klein]`
-- [ ] **Druckansicht / Print-Layout** – Karten oder ganze Sets auf A4 druckbar machen `[Klein]`
-- [ ] **Schwächste Karten** – Häufig falsch beantwortete Karten in den Statistiken sichtbar machen `[Klein]`
+- [x] **Themen-Filter ergänzen** – Zusätzlich zum Fach/Klassen-/Sprachfilter auch `topic` und ggf. `tags` aufnehmen `[Klein]`
+- [x] **Druckansicht / Print-Layout** – Karten oder ganze Sets auf A4 druckbar machen `[Klein]`
+- [x] **Schwächste Karten** – Häufig falsch beantwortete Karten in den Statistiken sichtbar machen `[Klein]`
 - [ ] **CSV- und XLSX-Export** – Vorhandene Sets nicht nur herunterladen, sondern in mehreren Formaten exportieren `[Mittel]`
 - [ ] **Import-Vorschau** – Vor dem endgültigen Speichern eine Vorschau der importierten Karten anzeigen `[Mittel]`
 

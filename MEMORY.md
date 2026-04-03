@@ -28,6 +28,8 @@
 - Quick Wins umgesetzt: Set-Download, Template-Dateien, englische README, Metadatenfelder im Set-Schema und Editor.
 - Arbeitsweise in `AGENTS.md` um Lead-Developer-/Orchestrator-Rolle und gezielten PAL-/CLINK-Einsatz ergänzt.
 - Nächster logischer Schritt umgesetzt: clientseitige Filter für Fach, Klassenstufe und Sprache.
+- Nachtarbeit fortgeführt: Thema-/Tag-Filter ergänzt, Druckansicht pro Set implementiert, schwächste Karten in den Statistiken sichtbar gemacht.
+- Precommit-Review eingearbeitet: Druckfenster synchron geöffnet, Problemkarten enger gefiltert, leerer Filterzustand im UI präzisiert.
 
 ## Offene sinnvolle Nacharbeiten
 
