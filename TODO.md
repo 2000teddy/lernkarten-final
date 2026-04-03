@@ -3,6 +3,10 @@
 Geplante Phasen, erarbeitet gemeinsam mit PAL MCP (Gemini 2.5 Pro), 2026-03-24.
 Abgeschlossenes wird in `CHANGES.md` übertragen.
 
+## Kurzfristige Nacharbeit
+
+- [ ] Manuellen Browser-Smoke-Test für Upload-Kollision, Profilnamen mit Sonderzeichen, Stats-Empty-State und Mehrfachklicks auf Antwortaktionen durchführen `[Klein]`
+
 ---
 
 ## Tech-Stack-Empfehlung

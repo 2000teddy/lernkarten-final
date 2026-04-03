@@ -75,6 +75,13 @@ Frage 2?,Antwort 2,
 - CSV-Parsing erfolgt synchron via `csv-parse/sync`
 - Kartenqualität (`quality: 'good' | 'bad'`) wird nur in JSON-Dateien persistiert
 
+## Arbeitsregeln für Agenten
+
+- Vor Implementierungen immer zuerst `git pull` versuchen, dann die vorhandenen Markdown-Dateien (`AGENTS.md`, `README.md`, `CHANGES.md`, `TODO.md`, `MEMORY.md`) lesen.
+- Nach jeder inhaltlichen Änderung die betroffenen `*.md`-Dateien aktualisieren, mindestens aber `CHANGES.md` und bei Nutzer-relevanten Änderungen auch `README.md`.
+- Nach abgeschlossener Änderung einen gezielten Commit mit nur den passenden Dateien erstellen; bestehende fremde Worktree-Änderungen nicht ungeprüft mit committen.
+- `MEMORY.md` als kurze Arbeitsnotiz pflegen: letzter relevanter Prompt, letzte umgesetzte Arbeiten, offene Punkte.
+
 ## Start
 
 ```bash

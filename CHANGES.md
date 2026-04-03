@@ -4,6 +4,34 @@ Alle abgeschlossenen Änderungen und implementierten Features, chronologisch abs
 
 ---
 
+## 2026-04-03
+
+### 11:30 – Sicherheits- und Stabilitätsfixes nach Codereview
+
+#### Frontend-Härtung
+- Riskante dynamische Inline-Handler in Profil- und Set-Rendering entfernt
+- Ereignisse für Profilwahl, Set-Start, Bearbeiten und Löschen nach dem Rendern per Listener gebunden
+- HTML-Escaping für Anführungszeichen ergänzt, damit Sonderzeichen Daten- und Attributkontexte nicht mehr aufbrechen
+
+#### Lernfluss stabilisiert
+- Schutz gegen Mehrfachauslösung in `markAnswer()` ergänzt
+- Doppelte Timeouts/Intervalle für Auto-Weiter verhindert
+- Ergebnis- und Kartenfluss dadurch robuster bei schnellen Klicks oder Tastatureingaben
+
+#### Statistikansicht robuster
+- Empty-State der Sitzungsstatistik so angepasst, dass das Chart-Canvas im DOM erhalten bleibt
+- Spätere erneute Anzeige mit echten Sitzungen funktioniert nun ohne vollständigen Reload
+
+#### Backend-Härtung
+- Dateinamen- und Set-Pfade serverseitig normalisiert und validiert
+- Uploads werden zuerst temporär gespeichert und erst nach Prüfung unter sicherem Namen übernommen
+- Kollisionsschutz für Uploads und XLSX→JSON-Konvertierung ergänzt
+- Session-API validiert eingereichte `cardId`s jetzt gegen das tatsächliche Set
+
+#### Projektdokumentation
+- Arbeitsregeln für Agenten in `AGENTS.md` ergänzt
+- `MEMORY.md` als Kurzprotokoll für letzten Prompt, letzte Tätigkeiten und offene Punkte angelegt
+
 ## 2026-03-25
 
 ### 10:00 – Phase 2 vollständig implementiert

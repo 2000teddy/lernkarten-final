@@ -25,6 +25,7 @@ Als nächster Schritt ist geplant, Fragen automatisch per KI aus einem Verzeichn
 - **Statistiken** – Die letzten 20 Lernsitzungen je Themengebiet werden gespeichert
 - **Themengebiete** – Beliebig viele Fragensätze verwaltbar (z.B. Deutsch, Englisch, Mathe, HSU)
 - **Import** – Neue Fragensätze per JSON oder CSV importieren
+- **Sicherer Import** – Upload-Dateinamen werden serverseitig normalisiert und bei Kollisionen abgewiesen
 
 ## Voraussetzungen
 
@@ -52,6 +53,8 @@ Danach die App im Browser öffnen: **http://localhost:3004**
 Neue Fragensätze können als **JSON** oder **CSV** direkt über die App hochgeladen werden (Button „Datei hochladen" auf der Startseite).
 
 Alternativ Dateien manuell in das Verzeichnis `data/` kopieren – beim nächsten Seitenaufruf erscheinen sie automatisch.
+
+> Hinweis: Beim Upload normalisiert der Server Dateinamen. Wenn bereits ein Set mit demselben abgeleiteten Dateinamen existiert, wird der Import mit einer Fehlermeldung abgewiesen statt eine bestehende Datei zu überschreiben.
 
 ---
 

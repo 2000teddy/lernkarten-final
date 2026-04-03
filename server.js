@@ -1,4 +1,5 @@
 const express  = require('express');
+const crypto   = require('crypto');
 const fs       = require('fs');
 const path     = require('path');
 const multer   = require('multer');
@@ -9,6 +10,9 @@ const { db, sm2Update } = require('./db');
 const app      = express();
 const PORT     = 3004;
 const DATA_DIR = path.join(__dirname, 'data');
+const STATS_DIR = path.join(DATA_DIR, '.stats');
+const SET_EXTENSIONS = new Set(['.json', '.csv']);
+const UPLOAD_EXTENSIONS = new Set(['.json', '.csv', '.xlsx']);
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -16,20 +20,51 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, DATA_DIR),
-  filename:    (req, file, cb) => cb(null, file.originalname)
+  filename:    (req, file, cb) => {
+    const ext = path.extname(path.basename(file.originalname || '')).toLowerCase();
+    if (!UPLOAD_EXTENSIONS.has(ext)) return cb(new Error('Nur JSON, CSV und XLSX Dateien erlaubt'));
+    cb(null, `.upload-${Date.now()}-${crypto.randomUUID()}${ext}`);
+  }
 });
 const upload = multer({ storage, fileFilter: (req, file, cb) => {
-  const ext = path.extname(file.originalname).toLowerCase();
-  if (['.json','.csv','.xlsx'].includes(ext)) cb(null, true);
+  const ext = path.extname(path.basename(file.originalname || '')).toLowerCase();
+  if (UPLOAD_EXTENSIONS.has(ext)) cb(null, true);
   else cb(new Error('Nur JSON, CSV und XLSX Dateien erlaubt'));
 }});
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
-function titleToFilename(title) {
-  return title.toLowerCase()
+function slugifyNamePart(value) {
+  return String(value || '')
+    .toLowerCase()
     .replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss')
-    .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') + '.json';
+    .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+}
+
+function titleToFilename(title) {
+  return `${slugifyNamePart(title) || 'set'}.json`;
+}
+
+function sanitizeSetFilename(name, allowedExtensions = SET_EXTENSIONS) {
+  const input = String(name || '').trim();
+  const base = path.basename(input);
+  if (!base || base !== input) throw new Error('Ungültiger Dateiname');
+
+  const ext = path.extname(base).toLowerCase();
+  if (!allowedExtensions.has(ext)) throw new Error('Ungültige Dateiendung');
+
+  const stem = slugifyNamePart(path.basename(base, ext));
+  if (!stem) throw new Error('Ungültiger Dateiname');
+
+  return `${stem}${ext}`;
+}
+
+function resolveSetPath(name, allowedExtensions = SET_EXTENSIONS) {
+  return path.join(DATA_DIR, sanitizeSetFilename(name, allowedExtensions));
+}
+
+function resolveStatsPath(name) {
+  return path.join(STATS_DIR, `${sanitizeSetFilename(name)}.json`);
 }
 
 function parseCsv(content) {
@@ -102,11 +137,13 @@ app.get('/api/sets', (req, res) => {
 });
 
 app.get('/api/sets/:file', (req, res) => {
-  const fp = path.join(DATA_DIR, req.params.file);
+  let fp;
+  try { fp = resolveSetPath(req.params.file); }
+  catch (e) { return res.status(400).json({ error:e.message }); }
   if (!fs.existsSync(fp)) return res.status(404).json({ error:'Nicht gefunden' });
   try {
     const content = fs.readFileSync(fp,'utf8');
-    res.json(req.params.file.endsWith('.json') ? JSON.parse(content) : parseCsv(content));
+    res.json(fp.endsWith('.json') ? JSON.parse(content) : parseCsv(content));
   } catch(e) { res.status(500).json({ error:e.message }); }
 });
 
@@ -122,17 +159,22 @@ app.post('/api/sets', (req, res) => {
 });
 
 app.put('/api/sets/:file', (req, res) => {
-  if (!req.params.file.endsWith('.json'))
+  let fp;
+  try { fp = resolveSetPath(req.params.file, new Set(['.json'])); }
+  catch (e) { return res.status(400).json({ error:e.message }); }
+  if (!fp.endsWith('.json'))
     return res.status(400).json({ error:'Nur JSON-Dateien können bearbeitet werden' });
   const err = validateCardSet(req.body);
   if (err) return res.status(400).json({ error:err });
   req.body.cards.forEach((c,i) => { c.id = i+1; });
-  fs.writeFileSync(path.join(DATA_DIR, req.params.file), JSON.stringify(req.body, null, 2));
+  fs.writeFileSync(fp, JSON.stringify(req.body, null, 2));
   res.json({ success:true });
 });
 
 app.patch('/api/sets/:file/cards/:id/quality', (req, res) => {
-  const fp = path.join(DATA_DIR, req.params.file);
+  let fp;
+  try { fp = resolveSetPath(req.params.file, new Set(['.json'])); }
+  catch (e) { return res.status(400).json({ error:e.message }); }
   if (!fp.endsWith('.json')) return res.status(400).json({ error:'Nur für JSON-Dateien' });
   if (!fs.existsSync(fp))   return res.status(404).json({ error:'Nicht gefunden' });
   try {
@@ -148,25 +190,40 @@ app.patch('/api/sets/:file/cards/:id/quality', (req, res) => {
 app.post('/api/upload', upload.single('file'), (req, res) => {
   if (!req.file) return res.status(400).json({ error:'Keine Datei hochgeladen' });
   const uploadedPath = path.join(DATA_DIR, req.file.filename);
-  const ext = path.extname(req.file.filename).toLowerCase();
+  const originalExt = path.extname(path.basename(req.file.originalname || '')).toLowerCase();
   try {
     let data;
-    if (ext==='.json') {
+    if (originalExt === '.json') {
       data = JSON.parse(fs.readFileSync(uploadedPath,'utf8'));
-    } else if (ext==='.xlsx') {
+    } else if (originalExt === '.xlsx') {
       data = parseXlsx(fs.readFileSync(uploadedPath));
-      const jsonFile = titleToFilename(data.title || req.file.filename.replace('.xlsx',''));
-      fs.writeFileSync(path.join(DATA_DIR, jsonFile), JSON.stringify(data, null, 2));
-      fs.unlinkSync(uploadedPath);
       const err2 = validateCardSet(data);
-      if (err2) { try { fs.unlinkSync(path.join(DATA_DIR, jsonFile)); } catch {} return res.status(400).json({ error:err2 }); }
+      if (err2) {
+        fs.unlinkSync(uploadedPath);
+        return res.status(400).json({ error:err2 });
+      }
+      const jsonFile = titleToFilename(data.title || path.basename(req.file.originalname, originalExt));
+      const targetPath = resolveSetPath(jsonFile, new Set(['.json']));
+      if (fs.existsSync(targetPath)) {
+        fs.unlinkSync(uploadedPath);
+        return res.status(409).json({ error:'Ein Set mit diesem Dateinamen existiert bereits', file:jsonFile });
+      }
+      fs.writeFileSync(targetPath, JSON.stringify(data, null, 2));
+      fs.unlinkSync(uploadedPath);
       return res.json({ success:true, file:jsonFile });
     } else {
       data = parseCsv(fs.readFileSync(uploadedPath,'utf8'));
     }
     const err = validateCardSet(data);
     if (err) { fs.unlinkSync(uploadedPath); return res.status(400).json({ error:err }); }
-    res.json({ success:true, file:req.file.filename });
+    const finalName = sanitizeSetFilename(req.file.originalname, new Set([originalExt]));
+    const finalPath = resolveSetPath(finalName, new Set([originalExt]));
+    if (fs.existsSync(finalPath)) {
+      fs.unlinkSync(uploadedPath);
+      return res.status(409).json({ error:'Ein Set mit diesem Dateinamen existiert bereits', file:finalName });
+    }
+    fs.renameSync(uploadedPath, finalPath);
+    res.json({ success:true, file:finalName });
   } catch(e) {
     try { fs.unlinkSync(uploadedPath); } catch {}
     res.status(400).json({ error:'Datei konnte nicht verarbeitet werden: '+e.message });
@@ -174,7 +231,9 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
 });
 
 app.delete('/api/sets/:file', (req, res) => {
-  const fp = path.join(DATA_DIR, req.params.file);
+  let fp;
+  try { fp = resolveSetPath(req.params.file); }
+  catch (e) { return res.status(400).json({ error:e.message }); }
   if (!fs.existsSync(fp)) return res.status(404).json({ error:'Nicht gefunden' });
   fs.unlinkSync(fp);
   res.json({ success:true });
@@ -182,15 +241,18 @@ app.delete('/api/sets/:file', (req, res) => {
 
 // Legacy stats (Rückwärtskompatibilität für Gast-Sitzungen)
 app.get('/api/sets/:file/stats', (req, res) => {
-  const sf = path.join(DATA_DIR, '.stats', req.params.file+'.json');
+  let sf;
+  try { sf = resolveStatsPath(req.params.file); }
+  catch (e) { return res.status(400).json({ error:e.message }); }
   if (!fs.existsSync(sf)) return res.json({ sessions:[] });
   res.json(JSON.parse(fs.readFileSync(sf,'utf8')));
 });
 
 app.post('/api/sets/:file/stats', (req, res) => {
-  const statsDir = path.join(DATA_DIR, '.stats');
-  if (!fs.existsSync(statsDir)) fs.mkdirSync(statsDir);
-  const sf = path.join(statsDir, req.params.file+'.json');
+  if (!fs.existsSync(STATS_DIR)) fs.mkdirSync(STATS_DIR);
+  let sf;
+  try { sf = resolveStatsPath(req.params.file); }
+  catch (e) { return res.status(400).json({ error:e.message }); }
   let stats = { sessions:[] };
   if (fs.existsSync(sf)) stats = JSON.parse(fs.readFileSync(sf,'utf8'));
   stats.sessions.push({ ...req.body, date: new Date().toISOString() });
@@ -253,6 +315,32 @@ app.post('/api/users/:userId/sets/:file/session', (req, res) => {
   const { userId } = req.params;
   const { file }   = req.params;
   const { mode, right, wrong, skipped, total, pct, duration, answers } = req.body;
+  let fp;
+  try { fp = resolveSetPath(file); }
+  catch (e) { return res.status(400).json({ error:e.message }); }
+  if (!fs.existsSync(fp)) return res.status(404).json({ error:'Set nicht gefunden' });
+
+  let setData;
+  try {
+    const content = fs.readFileSync(fp, 'utf8');
+    setData = fp.endsWith('.json') ? JSON.parse(content) : parseCsv(content);
+  } catch (e) {
+    return res.status(500).json({ error:'Set konnte nicht geladen werden' });
+  }
+
+  const validCardIds = new Set((setData.cards || []).map(card => Number(card.id)));
+  const normalizedAnswers = [];
+  if (Array.isArray(answers)) {
+    const deduped = new Map();
+    for (const entry of answers) {
+      const cardId = Number(entry?.cardId);
+      if (!Number.isInteger(cardId) || !validCardIds.has(cardId)) {
+        return res.status(400).json({ error:'Ungültige cardId in answers' });
+      }
+      deduped.set(cardId, { cardId, correct: !!entry.correct });
+    }
+    normalizedAnswers.push(...deduped.values());
+  }
 
   // Save session
   db.prepare(`
@@ -261,9 +349,9 @@ app.post('/api/users/:userId/sets/:file/session', (req, res) => {
   `).run(userId, file, mode||'flip', right||0, wrong||0, skipped||0, total||0, pct||0, duration||0);
 
   // SM-2 update per card
-  if (Array.isArray(answers) && answers.length) {
+  if (normalizedAnswers.length) {
     const doUpdate = db.transaction(() => {
-      for (const { cardId, correct } of answers) {
+      for (const { cardId, correct } of normalizedAnswers) {
         const quality = correct ? 4 : 1;
         const existing = db.prepare(`
           SELECT * FROM card_progress WHERE user_id=? AND set_file=? AND card_id=?

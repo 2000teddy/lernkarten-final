@@ -17,6 +17,8 @@ let sessionStart  = null;
 let pendingFile   = null;
 let pendingDue    = 0;         // due-card-count für mode-modal
 let mcOptions     = [];
+let answerLocked  = false;
+let nextCardTimeout = null;
 
 // User state
 let currentUserId   = null;
@@ -55,7 +57,12 @@ function getIcon(title) {
 }
 
 function escHtml(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return String(s||'')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
 }
 
 function formatDate(iso) {
@@ -134,13 +141,36 @@ function renderProfiles(users) {
     showCreateProfile();
     return;
   }
-  list.innerHTML = users.map(u => `
-    <button class="profile-card" onclick="selectUser('${u.id}','${escHtml(u.name)}','${u.avatar}')">
-      <span class="profile-avatar">${u.avatar}</span>
+  hideCreateProfile();
+  list.innerHTML = users.map((u, index) => `
+    <div class="profile-card" data-user-index="${index}" role="button" tabindex="0">
+      <span class="profile-avatar">${escHtml(u.avatar)}</span>
       <span class="profile-name">${escHtml(u.name)}</span>
-      <button class="profile-del" onclick="event.stopPropagation();deleteUser('${u.id}')" title="Profil löschen">×</button>
-    </button>
+      <button class="profile-del" data-user-delete="${index}" title="Profil löschen">×</button>
+    </div>
   `).join('');
+
+  list.querySelectorAll('.profile-card').forEach(card => {
+    const user = users[Number(card.dataset.userIndex)];
+    if (!user) return;
+    const activate = () => selectUser(user.id, user.name, user.avatar);
+    card.addEventListener('click', activate);
+    card.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        activate();
+      }
+    });
+  });
+
+  list.querySelectorAll('.profile-del').forEach(button => {
+    const user = users[Number(button.dataset.userDelete)];
+    if (!user) return;
+    button.addEventListener('click', event => {
+      event.stopPropagation();
+      deleteUser(user.id);
+    });
+  });
 }
 
 function selectUser(id, name, avatar) {
@@ -236,14 +266,13 @@ function renderSets(sets, due = {}) {
   grid.innerHTML = sets.map((s,i) => {
     const dueCount = due[s.file] || 0;
     return `
-    <div class="set-card" style="--card-color:${s.color};animation-delay:${i*60}ms"
-         onclick="showModeSelector('${s.file}','${escHtml(s.title)}',${dueCount})">
+    <div class="set-card" data-set-index="${i}" style="--card-color:${s.color};animation-delay:${i*60}ms">
       <div class="set-card-actions">
         ${s.file.endsWith('.json') ? `
-        <button class="btn-edit-set" onclick="event.stopPropagation();showEditorExisting('${s.file}')" title="Bearbeiten">
+        <button class="btn-edit-set" data-set-edit="${i}" title="Bearbeiten">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         </button>` : ''}
-        <button class="btn-delete-set" onclick="event.stopPropagation();deleteSet('${s.file}','${escHtml(s.title)}')" title="Löschen">
+        <button class="btn-delete-set" data-set-delete="${i}" title="Löschen">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
         </button>
       </div>
@@ -257,6 +286,30 @@ function renderSets(sets, due = {}) {
       </div>
     </div>`;
   }).join('');
+
+  grid.querySelectorAll('.set-card').forEach(card => {
+    const set = sets[Number(card.dataset.setIndex)];
+    if (!set) return;
+    card.addEventListener('click', () => showModeSelector(set.file, set.title, due[set.file] || 0));
+  });
+
+  grid.querySelectorAll('.btn-edit-set').forEach(button => {
+    const set = sets[Number(button.dataset.setEdit)];
+    if (!set) return;
+    button.addEventListener('click', event => {
+      event.stopPropagation();
+      showEditorExisting(set.file);
+    });
+  });
+
+  grid.querySelectorAll('.btn-delete-set').forEach(button => {
+    const set = sets[Number(button.dataset.setDelete)];
+    if (!set) return;
+    button.addEventListener('click', event => {
+      event.stopPropagation();
+      deleteSet(set.file, set.title);
+    });
+  });
 }
 
 async function deleteSet(file, title) {
@@ -345,11 +398,22 @@ function renderCard() {
   const card = currentCards[currentIndex];
   if (!card) return;
 
+  // Weiter-Timer stoppen falls aktiv
+  if (window._weiterInterval) { clearInterval(window._weiterInterval); window._weiterInterval = null; }
+  if (nextCardTimeout) { clearTimeout(nextCardTimeout); nextCardTimeout = null; }
+  answerLocked = false;
+  document.getElementById('weiter-container').style.display = 'none';
+
   document.getElementById('flash-card').classList.remove('flipped');
   isFlipped = false;
   document.getElementById('card-num').textContent      = `Karte ${currentIndex+1}`;
   document.getElementById('card-question').textContent = card.question;
   document.getElementById('card-answer').textContent   = card.answer;
+
+  // Hintergrund der Fragevorderseite in Set-Farbe (Fading-Gradient)
+  const color = currentSet && currentSet.color ? currentSet.color : '#2D6A4F';
+  document.querySelector('.card-front').style.background =
+    `linear-gradient(135deg, ${color}28 0%, var(--surface) 65%)`;
 
   const hints = { flip:'Zum Umdrehen tippen', mc:'Wähle die richtige Antwort', write:'Tippe deine Antwort unten ein', spaced:'Zum Umdrehen tippen' };
   document.getElementById('card-hint').textContent = hints[currentMode] || hints.flip;
@@ -462,6 +526,10 @@ function prevCard() {
 }
 
 function markAnswer(correct) {
+  if (answerLocked) return;
+  if ((currentMode === 'flip' || currentMode === 'spaced') && !isFlipped) return;
+  answerLocked = true;
+
   if (answeredMap.has(currentIndex)) {
     if (answeredMap.get(currentIndex)) scoreRight--; else scoreWrong--;
   }
@@ -472,7 +540,42 @@ function markAnswer(correct) {
   const scene = document.querySelector('.card-scene');
   scene.style.transform = correct ? 'scale(1.02)' : 'scale(0.98)';
   setTimeout(() => { scene.style.transform = ''; }, 150);
-  setTimeout(() => nextCard(), (currentMode==='flip'||currentMode==='spaced') ? 400 : 900);
+
+  if (currentMode === 'flip' || currentMode === 'spaced') {
+    if (nextCardTimeout) clearTimeout(nextCardTimeout);
+    nextCardTimeout = setTimeout(() => {
+      nextCardTimeout = null;
+      nextCard();
+    }, 400);
+  } else {
+    // MC / Write: Weiter-Button mit 5s-Countdown anzeigen
+    const container = document.getElementById('weiter-container');
+    const countdown = document.getElementById('weiter-countdown');
+    const btn       = document.getElementById('btn-weiter');
+    btn.style.borderColor = currentSet && currentSet.color ? currentSet.color : '';
+    btn.style.color       = currentSet && currentSet.color ? currentSet.color : '';
+    container.style.display = 'flex';
+    let secs = 5;
+    countdown.textContent = `(${secs}s)`;
+    if (window._weiterInterval) clearInterval(window._weiterInterval);
+    window._weiterInterval = setInterval(() => {
+      secs--;
+      if (secs > 0) {
+        countdown.textContent = `(${secs}s)`;
+      } else {
+        clearInterval(window._weiterInterval);
+        window._weiterInterval = null;
+        weiterCard();
+      }
+    }, 1000);
+  }
+}
+
+function weiterCard() {
+  if (nextCardTimeout) { clearTimeout(nextCardTimeout); nextCardTimeout = null; }
+  if (window._weiterInterval) { clearInterval(window._weiterInterval); window._weiterInterval = null; }
+  document.getElementById('weiter-container').style.display = 'none';
+  nextCard();
 }
 
 function updateScore() {
@@ -746,7 +849,17 @@ function renderStats({ sessions, progress }) {
 
   if (sessionsChart) { sessionsChart.destroy(); sessionsChart=null; }
   const ctx = document.getElementById('sessions-chart');
+  const chartWrap = document.querySelector('.chart-wrap');
+  let emptyState = chartWrap.querySelector('.chart-empty');
+  if (!emptyState) {
+    emptyState = document.createElement('p');
+    emptyState.className = 'editor-empty chart-empty';
+    emptyState.textContent = 'Noch keine Sitzungen vorhanden.';
+    chartWrap.appendChild(emptyState);
+  }
   if (last10.length) {
+    ctx.style.display = 'block';
+    emptyState.style.display = 'none';
     sessionsChart = new Chart(ctx, {
       type: 'bar',
       data: { labels, datasets:[{ data:scores, backgroundColor:colors, borderRadius:6, borderSkipped:false }] },
@@ -759,7 +872,8 @@ function renderStats({ sessions, progress }) {
       }
     });
   } else {
-    ctx.parentElement.innerHTML='<p class="editor-empty">Noch keine Sitzungen vorhanden.</p>';
+    ctx.style.display = 'none';
+    emptyState.style.display = 'block';
   }
 
   // Sessions table
