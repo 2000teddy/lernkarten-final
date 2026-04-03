@@ -1,0 +1,67 @@
+{
+  "title": "Bayerns 7 Regierungsbezirke",
+  "description": "Die sieben Regierungsbezirke Bayerns mit ihren Hauptstädten (Regierungssitzen)",
+  "color": "#1565C0",
+  "cards": [
+    {
+      "question": "Wie heißt der Regierungssitz von Oberbayern?",
+      "answer": "München",
+      "explanation": "Oberbayern ist der größte und bevölkerungsreichste Regierungsbezirk Bayerns. München ist gleichzeitig die Landeshauptstadt Bayerns."
+    },
+    {
+      "question": "Wie heißt der Regierungssitz von Niederbayern?",
+      "answer": "Landshut",
+      "explanation": "Niederbayern liegt östlich von Oberbayern. Bekannt ist dort der Bayerische Wald und die Dreiflüssestadt Passau."
+    },
+    {
+      "question": "Wie heißt der Regierungssitz der Oberpfalz?",
+      "answer": "Regensburg",
+      "explanation": "Die Oberpfalz liegt im Nordosten Bayerns. In Regensburg gibt es die älteste Brücke der Welt (Steinerne Brücke)."
+    },
+    {
+      "question": "Wie heißt der Regierungssitz von Oberfranken?",
+      "answer": "Bayreuth",
+      "explanation": "Oberfranken liegt ganz im Norden Bayerns. Die Landschaft ist geprägt vom Fluss Main und dem Fichtelgebirge."
+    },
+    {
+      "question": "Wie heißt der Regierungssitz von Mittelfranken?",
+      "answer": "Ansbach",
+      "explanation": "Mittelfranken liegt in der Mitte Nordbayerns. Die größte Stadt dort ist aber Nürnberg mit der berühmten Kaiserburg."
+    },
+    {
+      "question": "Wie heißt der Regierungssitz von Unterfranken?",
+      "answer": "Würzburg",
+      "explanation": "Unterfranken liegt ganz im Westen Bayerns am Main. Bekannt ist die Festung Marienberg in Würzburg."
+    },
+    {
+      "question": "Wie heißt der Regierungssitz von Schwaben?",
+      "answer": "Augsburg",
+      "explanation": "Schwaben liegt im Südwesten Bayerns. Dort befindet sich das berühmte Schloss Neuschwanstein bei Füssen."
+    },
+    {
+      "question": "In welchem Regierungsbezirk liegt München?",
+      "answer": "Oberbayern",
+      "explanation": "München ist Regierungssitz von Oberbayern und gleichzeitig Landeshauptstadt von ganz Bayern."
+    },
+    {
+      "question": "In welchem Regierungsbezirk liegt Augsburg?",
+      "answer": "Schwaben",
+      "explanation": "Augsburg ist der Regierungssitz von Schwaben. In Schwaben gibt es auch das berühmte Schloss Neuschwanstein."
+    },
+    {
+      "question": "In welchem Regierungsbezirk liegt Nürnberg?",
+      "answer": "Mittelfranken",
+      "explanation": "Nürnberg liegt in Mittelfranken, aber der offizielle Regierungssitz des Bezirks ist Ansbach."
+    },
+    {
+      "question": "Wie viele Regierungsbezirke hat Bayern?",
+      "answer": "7 Regierungsbezirke",
+      "explanation": "Die 7 Bezirke sind: Oberbayern, Niederbayern, Oberpfalz, Oberfranken, Mittelfranken, Unterfranken und Schwaben."
+    },
+    {
+      "question": "Nenne alle 7 bayerischen Regierungsbezirke!",
+      "answer": "Oberbayern, Niederbayern, Oberpfalz, Oberfranken, Mittelfranken, Unterfranken, Schwaben",
+      "explanation": "Merkhilfe: Drei beginnen mit 'Ober-' (Bayern, pfalz, franken), dann Nieder-, Mittel-, Unter-franken und Schwaben."
+    }
+  ]
+}

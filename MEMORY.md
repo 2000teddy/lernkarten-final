@@ -19,8 +19,12 @@
 - Session-API auf gültige `cardId`s des jeweiligen Sets eingeschränkt.
 - Lernfluss gegen Mehrfachauslösung abgesichert.
 - Statistik-Empty-State so angepasst, dass das Chart-Canvas erhalten bleibt.
+- Verwaisten Worktree-Stand geprüft: fehlende Weiter-Button-Markup/Styles als sinnvoller Nachzug erkannt.
+- Fünf neue HSU-Datensätze als plausible Inhalts-Erweiterung eingeordnet.
+- `.gitignore` für SQLite- und Statistik-Laufzeitdateien ergänzt.
 
 ## Offene sinnvolle Nacharbeiten
 
 - Manuellen Browser-Smoke-Test für Upload, Stats und Lernmodi ausführen.
 - Prüfen, ob auch der Avatar-Picker mittelfristig ohne Inline-`onclick` vereinheitlicht werden soll.
+- Offenen Einzelstand in `data/englisch-verben.json` bewusst entscheiden: Inhaltsänderung übernehmen oder verwerfen.

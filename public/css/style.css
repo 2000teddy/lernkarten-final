@@ -292,6 +292,19 @@ html, body {
 .write-feedback.wrong   { background:var(--wrong-light); color:var(--wrong); }
 .write-feedback em { font-style:normal; font-weight:600; }
 
+/* ========= WEITER-BUTTON (MC & Write) ========= */
+.weiter-container { display:flex; justify-content:center; margin-bottom:14px; }
+.btn-weiter {
+  display:flex; align-items:center; gap:8px;
+  padding:11px 28px; background:transparent;
+  border:2px solid var(--accent); border-radius:50px;
+  font-family:var(--font-body); font-size:15px; font-weight:600;
+  color:var(--accent); cursor:pointer; transition:all .2s;
+  animation:fadeInUp .25s ease both;
+}
+.btn-weiter:hover { background:var(--accent-light); transform:translateY(-1px); }
+.weiter-countdown { font-size:12px; font-weight:400; opacity:.7; }
+
 /* ========= NAVIGATION ========= */
 .card-nav { display:flex; align-items:center; justify-content:space-between; padding:0 8px; margin-bottom:16px; gap:16px; }
 .nav-btn { background:var(--surface); border:1.5px solid var(--border); color:var(--text); width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .2s; flex-shrink:0; }

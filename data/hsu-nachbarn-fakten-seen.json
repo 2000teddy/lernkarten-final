@@ -1,0 +1,67 @@
+{
+  "title": "Bayern: Nachbarn, Fakten & Seen",
+  "description": "Bayerns Nachbarn (Bundesländer & Staaten), wichtige Fakten und die bayerischen Seen",
+  "color": "#2E7D32",
+  "cards": [
+    {
+      "question": "Welche 4 deutschen Bundesländer grenzen an Bayern?",
+      "answer": "Baden-Württemberg, Hessen, Thüringen, Sachsen",
+      "explanation": "Im Westen: Baden-Württemberg und Hessen. Im Norden: Thüringen und Sachsen."
+    },
+    {
+      "question": "Welche 2 Staaten grenzen direkt an Bayern?",
+      "answer": "Österreich und die Tschechische Republik (Tschechien)",
+      "explanation": "Im Süden grenzt Bayern an Österreich. Im Osten grenzt Bayern an die Tschechische Republik."
+    },
+    {
+      "question": "Wie ist Bayern mit der Schweiz verbunden?",
+      "answer": "Indirekt über den Bodensee (kurze Seegrenze)",
+      "explanation": "Bayern hat eine kleine Seegrenze am Bodensee, der sich Bayern, Baden-Württemberg, Österreich und die Schweiz teilen."
+    },
+    {
+      "question": "Wie groß ist Bayern?",
+      "answer": "70.542 km² – das größte Bundesland Deutschlands",
+      "explanation": "Bayern ist das flächenmäßig größte der 16 deutschen Bundesländer."
+    },
+    {
+      "question": "Wie viele Menschen leben in Bayern?",
+      "answer": "Etwa 13,12 Millionen Menschen",
+      "explanation": "Nur in Nordrhein-Westfalen leben noch mehr Menschen als in Bayern."
+    },
+    {
+      "question": "Was ist der höchste Berg Bayerns und Deutschlands?",
+      "answer": "Die Zugspitze (2962 m)",
+      "explanation": "Die Zugspitze liegt in Oberbayern im Wettersteingebirge bei Garmisch-Partenkirchen."
+    },
+    {
+      "question": "Welcher ist der größte See Bayerns?",
+      "answer": "Der Chiemsee",
+      "explanation": "Der Chiemsee wird auch 'Bayerisches Meer' genannt. Er liegt im Osten Bayerns in Oberbayern."
+    },
+    {
+      "question": "Wo liegt der Chiemsee?",
+      "answer": "Im Osten Bayerns (Oberbayern), südöstlich von München",
+      "explanation": "Der Chiemsee ist der größte See Bayerns und heißt auch 'Bayerisches Meer'. Auf einer Insel im Chiemsee steht Schloss Herrenchiemsee."
+    },
+    {
+      "question": "Wo liegt der Starnberger See?",
+      "answer": "Direkt südlich von München (Oberbayern)",
+      "explanation": "Im Starnberger See liegt die berühmte Roseninsel. Der See ist ein beliebtes Ausflugsziel der Münchner."
+    },
+    {
+      "question": "Wo liegt der Ammersee?",
+      "answer": "Im Voralpenland westlich des Starnberger Sees (Oberbayern)",
+      "explanation": "Der Ammersee liegt in direkter Nachbarschaft zum Starnberger See im Voralpenland südwestlich von München."
+    },
+    {
+      "question": "Wo liegt der Bodensee und in welchem Regierungsbezirk?",
+      "answer": "Im äußersten Südwesten Bayerns, in Schwaben",
+      "explanation": "Der Bodensee verbindet Bayern indirekt mit der Schweiz und Österreich. Bayern hat nur einen kleinen Teil des Sees."
+    },
+    {
+      "question": "Wie heißt der Ministerpräsident von Bayern?",
+      "answer": "Markus Söder",
+      "explanation": "Markus Söder ist der Ministerpräsident Bayerns. Er hat seinen Sitz in München, der Landeshauptstadt."
+    }
+  ]
+}

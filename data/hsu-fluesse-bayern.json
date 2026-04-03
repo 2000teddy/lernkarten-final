@@ -1,0 +1,67 @@
+{
+  "title": "Flüsse in Bayern",
+  "description": "Bayerische Flüsse, ihre Fließrichtung und wohin sie fließen",
+  "color": "#0277BD",
+  "cards": [
+    {
+      "question": "In welche Richtung fließt die Donau?",
+      "answer": "Nach Osten – zum Schwarzen Meer",
+      "explanation": "Die Donau ist der wichtigste Fluss Bayerns. Sie sammelt fast alle anderen Flüsse ein und fließt weit nach Osten bis zum Schwarzen Meer."
+    },
+    {
+      "question": "In welche Richtung fließt der Main?",
+      "answer": "Nach Westen – in den Rhein",
+      "explanation": "Der Main ist der längste Fluss, der durch Bayern fließt. Er sammelt das Wasser aus Nordbayern und fließt westlich in den Rhein."
+    },
+    {
+      "question": "Welcher Fluss ist der längste, der durch Bayern fließt?",
+      "answer": "Der Main",
+      "explanation": "Der Main fließt durch Nordbayern (Unterfranken, Mittelfranken, Oberfranken) von Ost nach West und mündet dann in den Rhein."
+    },
+    {
+      "question": "Welche 4 Flüsse fließen von rechts (von Süden) in die Donau?",
+      "answer": "Iller, Lech, Isar, Inn",
+      "explanation": "Merksatz: 'Iller, Lech, Isar, Inn, fließen rechts zur Donau hin.' Diese Flüsse kommen alle aus den Alpen im Süden."
+    },
+    {
+      "question": "Welche 4 Flüsse fließen von links (von Norden) in die Donau?",
+      "answer": "Wörnitz, Altmühl, Naab, Regen",
+      "explanation": "Merksatz: 'Wörnitz, Altmühl, Naab und Regen, kommen ihr von links entgegen.' Diese Flüsse kommen aus Nordbayern."
+    },
+    {
+      "question": "Wohin fließt die Isar?",
+      "answer": "In die Donau (von rechts/Süden)",
+      "explanation": "Die Isar fließt durch München und mündet dann östlich in die Donau. München liegt also an der Isar."
+    },
+    {
+      "question": "Wohin fließt der Inn?",
+      "answer": "In die Donau (von rechts/Süden) bei Passau",
+      "explanation": "Der Inn kommt aus Österreich, fließt durch Rosenheim und mündet bei der Dreiflüssestadt Passau in die Donau."
+    },
+    {
+      "question": "Wohin fließt der Lech?",
+      "answer": "In die Donau (von rechts/Süden)",
+      "explanation": "Der Lech fließt von Süden durch Augsburg und mündet dann in die Donau. Augsburg liegt also am Lech."
+    },
+    {
+      "question": "An welchem Fluss liegt München?",
+      "answer": "An der Isar",
+      "explanation": "Die Isar fließt mitten durch München und mündet dann weiter östlich in die Donau."
+    },
+    {
+      "question": "An welchem Fluss liegt Würzburg?",
+      "answer": "Am Main",
+      "explanation": "Würzburg liegt am Main in Unterfranken. Der Main fließt durch den Norden Bayerns und dann weiter nach Westen in den Rhein."
+    },
+    {
+      "question": "An welchem Fluss liegt Regensburg?",
+      "answer": "An der Donau",
+      "explanation": "Regensburg liegt direkt an der Donau und ist der Regierungssitz der Oberpfalz."
+    },
+    {
+      "question": "Welche zwei großen Flusssysteme gibt es in Bayern?",
+      "answer": "Das Donau-System (fließt nach Osten) und das Main-System (fließt nach Westen)",
+      "explanation": "Fast alle Flüsse Bayerns fließen entweder in die Donau oder in den Main. Die Donau geht zum Schwarzen Meer, der Main in den Rhein."
+    }
+  ]
+}

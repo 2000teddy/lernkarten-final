@@ -32,6 +32,24 @@ Alle abgeschlossenen Änderungen und implementierten Features, chronologisch abs
 - Arbeitsregeln für Agenten in `AGENTS.md` ergänzt
 - `MEMORY.md` als Kurzprotokoll für letzten Prompt, letzte Tätigkeiten und offene Punkte angelegt
 
+### 12:10 – Verwaisten Arbeitsstand bereinigt
+
+#### UI-Vervollständigung
+- Markup und Styles für den „Weiter“-Button im Multiple-Choice- und Schreibmodus nachgezogen
+- Dadurch passt `public/index.html`/`public/css/style.css` wieder zum bereits genutzten Frontend-Code in `app.js`
+
+#### Neue Beispieldatensätze
+- Fünf weitere HSU-Sets in `data/` übernommen:
+  - Bundesländer Deutschlands
+  - Flüsse in Bayern
+  - München und Berlin
+  - Bayerns Nachbarn, Fakten und Seen
+  - Bayerns Regierungsbezirke
+
+#### Git-Hygiene
+- `.gitignore` für SQLite-Laufzeitdateien und Legacy-Statistikordner ergänzt
+- Laufzeitdateien (`lernkarten.db`, `*.wal`, `*.shm`, `data/.stats/`) damit künftig nicht mehr versehentlich als untracked auftauchen
+
 ## 2026-03-25
 
 ### 10:00 – Phase 2 vollständig implementiert

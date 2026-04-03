@@ -1,0 +1,57 @@
+{
+  "title": "München & Berlin: Die zwei Hauptstädte",
+  "description": "Vergleich der Landeshauptstadt München und der Bundeshauptstadt Berlin",
+  "color": "#6A1B9A",
+  "cards": [
+    {
+      "question": "Was ist die Hauptstadt von Bayern?",
+      "answer": "München",
+      "explanation": "München ist die Landeshauptstadt Bayerns und gleichzeitig der Regierungssitz von Oberbayern. Hier sitzt der Ministerpräsident."
+    },
+    {
+      "question": "Was ist die Hauptstadt von Deutschland?",
+      "answer": "Berlin",
+      "explanation": "Berlin ist die Bundeshauptstadt Deutschlands. Hier hat der Bundeskanzler und der Bundespräsident seinen Sitz."
+    },
+    {
+      "question": "Wie viele Menschen leben in München?",
+      "answer": "Etwa 1,5 Millionen Menschen",
+      "explanation": "München ist die größte Stadt Bayerns und die drittgrößte Stadt Deutschlands."
+    },
+    {
+      "question": "Wie viele Menschen leben in Berlin?",
+      "answer": "Etwa 3,8 Millionen Menschen",
+      "explanation": "Berlin ist die größte Stadt Deutschlands. Fast dreimal so viele Menschen wohnen dort wie in München."
+    },
+    {
+      "question": "An welchem Fluss liegt München?",
+      "answer": "An der Isar",
+      "explanation": "Die Isar fließt durch München und mündet weiter östlich in die Donau."
+    },
+    {
+      "question": "An welchen Flüssen liegt Berlin?",
+      "answer": "An der Spree und der Havel",
+      "explanation": "Berlin liegt an der Spree. Die Havel fließt durch den Westteil Berlins. Beide Flüsse gehören zum Elbe-Flusssystem."
+    },
+    {
+      "question": "Nenne 3 Sehenswürdigkeiten in München!",
+      "answer": "Frauenkirche, Marienplatz, Bavaria-Statue (auch: Oktoberfest, Deutsches Museum)",
+      "explanation": "Die Frauenkirche mit ihren zwei Türmen ist das Wahrzeichen Münchens. Der Marienplatz ist der zentrale Platz der Innenstadt."
+    },
+    {
+      "question": "Nenne 3 Sehenswürdigkeiten in Berlin!",
+      "answer": "Brandenburger Tor, Reichstagsgebäude, Fernsehturm (auch: Alexanderplatz)",
+      "explanation": "Das Brandenburger Tor ist das bekannteste Symbol Berlins und ganz Deutschlands. Im Reichstag tagt der Deutsche Bundestag."
+    },
+    {
+      "question": "Was ist der Unterschied zwischen Bundeshauptstadt und Landeshauptstadt?",
+      "answer": "Die Bundeshauptstadt (Berlin) ist Hauptstadt für ganz Deutschland. Die Landeshauptstadt (München) ist nur Hauptstadt des Bundeslandes Bayern.",
+      "explanation": "Jedes der 16 Bundesländer hat eine Landeshauptstadt. Berlin ist die Hauptstadt für alle 16 Bundesländer zusammen."
+    },
+    {
+      "question": "Was ist ein Stadtsstaat?",
+      "answer": "Ein Bundesland, das gleichzeitig eine Stadt ist (Berlin, Hamburg, Bremen)",
+      "explanation": "Berlin, Hamburg und Bremen sind sowohl Stadtgemeinden als auch Bundesländer. Sie haben also keine extra Landeshauptstadt."
+    }
+  ]
+}

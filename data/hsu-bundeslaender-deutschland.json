@@ -1,0 +1,92 @@
+{
+  "title": "Alle 16 Bundesländer Deutschlands",
+  "description": "Die 16 deutschen Bundesländer mit ihren Hauptstädten – Nord, Süd, Ost, West",
+  "color": "#E65100",
+  "cards": [
+    {
+      "question": "Wie heißt die Hauptstadt von Schleswig-Holstein?",
+      "answer": "Kiel",
+      "explanation": "Schleswig-Holstein liegt ganz im Norden Deutschlands zwischen Nord- und Ostsee."
+    },
+    {
+      "question": "Was ist die Hauptstadt von Hamburg?",
+      "answer": "Hamburg (Stadtsstaat – die Stadt ist das Bundesland)",
+      "explanation": "Hamburg ist ein Stadtsstaat: Die Hansestadt Hamburg ist gleichzeitig ein eigenes Bundesland."
+    },
+    {
+      "question": "Was ist die Hauptstadt von Bremen?",
+      "answer": "Bremen (Stadtsstaat – die Stadt ist das Bundesland)",
+      "explanation": "Bremen ist der kleinste deutsche Stadtsstaat. Er besteht aus den Städten Bremen und Bremerhaven."
+    },
+    {
+      "question": "Wie heißt die Hauptstadt von Niedersachsen?",
+      "answer": "Hannover",
+      "explanation": "Niedersachsen ist das zweitgrößte Bundesland Deutschlands und liegt im Nordwesten."
+    },
+    {
+      "question": "Wie heißt die Hauptstadt von Mecklenburg-Vorpommern?",
+      "answer": "Schwerin",
+      "explanation": "Mecklenburg-Vorpommern liegt im Nordosten Deutschlands an der Ostseeküste."
+    },
+    {
+      "question": "Was ist die Hauptstadt von Berlin?",
+      "answer": "Berlin (Stadtsstaat – die Stadt ist das Bundesland und die Bundeshauptstadt)",
+      "explanation": "Berlin ist Stadtsstaat und gleichzeitig die Hauptstadt von ganz Deutschland."
+    },
+    {
+      "question": "Wie heißt die Hauptstadt von Brandenburg?",
+      "answer": "Potsdam",
+      "explanation": "Brandenburg liegt rund um Berlin. Die schönen Schlösser und Parks von Potsdam (Sanssouci) sind berühmt."
+    },
+    {
+      "question": "Wie heißt die Hauptstadt von Sachsen-Anhalt?",
+      "answer": "Magdeburg",
+      "explanation": "Sachsen-Anhalt liegt in Ostdeutschland. Der Fluss Elbe fließt durch Magdeburg."
+    },
+    {
+      "question": "Wie heißt die Hauptstadt von Sachsen?",
+      "answer": "Dresden",
+      "explanation": "Sachsen liegt im Südosten Deutschlands und grenzt an Bayern. Dresden liegt an der Elbe."
+    },
+    {
+      "question": "Wie heißt die Hauptstadt von Thüringen?",
+      "answer": "Erfurt",
+      "explanation": "Thüringen liegt in der Mitte Deutschlands und grenzt im Norden an Bayern."
+    },
+    {
+      "question": "Wie heißt die Hauptstadt von Nordrhein-Westfalen?",
+      "answer": "Düsseldorf",
+      "explanation": "Nordrhein-Westfalen ist das bevölkerungsreichste Bundesland Deutschlands. Die Ruhrgebiet-Städte Köln und Dortmund liegen dort."
+    },
+    {
+      "question": "Wie heißt die Hauptstadt von Hessen?",
+      "answer": "Wiesbaden",
+      "explanation": "Hessen liegt in der Mitte Deutschlands und grenzt im Nordwesten an Bayern. Frankfurt am Main ist die bekannteste Stadt Hessens."
+    },
+    {
+      "question": "Wie heißt die Hauptstadt von Rheinland-Pfalz?",
+      "answer": "Mainz",
+      "explanation": "Rheinland-Pfalz liegt im Westen Deutschlands. Der Rhein fließt durch das Bundesland."
+    },
+    {
+      "question": "Wie heißt die Hauptstadt von Saarland?",
+      "answer": "Saarbrücken",
+      "explanation": "Das Saarland ist das kleinste Flächenland Deutschlands und liegt im äußersten Südwesten an der Grenze zu Frankreich."
+    },
+    {
+      "question": "Wie heißt die Hauptstadt von Baden-Württemberg?",
+      "answer": "Stuttgart",
+      "explanation": "Baden-Württemberg liegt im Südwesten Deutschlands und grenzt im Westen an Bayern. Bekannt für Schwarzwald und Bodensee."
+    },
+    {
+      "question": "Wie heißt die Hauptstadt von Bayern?",
+      "answer": "München",
+      "explanation": "Bayern ist das größte Bundesland Deutschlands. München ist Landes- und Regierungssitz von Oberbayern."
+    },
+    {
+      "question": "Wie viele Bundesländer hat Deutschland?",
+      "answer": "16 Bundesländer",
+      "explanation": "3 davon sind Stadtstaaten (Berlin, Hamburg, Bremen), die anderen 13 sind Flächenländer mit jeweils eigener Hauptstadt."
+    }
+  ]
+}

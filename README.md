@@ -173,6 +173,11 @@ Diese Zeile ist **Pflicht** und markiert den Beginn der Kartendaten.
 | `deutsch-zeiten.json` | Deutsch – Grammatik: Zeitformen |
 | `englisch-verben.json` | Englisch – Unregelmäßige Verben |
 | `hsu-bayern.json` | HSU Bayern – Heimat- und Sachkunde |
+| `hsu-bundeslaender-deutschland.json` | HSU – Alle 16 Bundesländer Deutschlands |
+| `hsu-fluesse-bayern.json` | HSU – Flüsse in Bayern |
+| `hsu-muenchen-und-berlin.json` | HSU – München und Berlin |
+| `hsu-nachbarn-fakten-seen.json` | HSU – Bayerns Nachbarn, Fakten und Seen |
+| `hsu-regierungsbezirke.json` | HSU – Bayerns 7 Regierungsbezirke |
 | `mathe-begriffe.csv` | Mathe – Grundbegriffe (CSV-Beispiel) |
 
 ## Projektstruktur
@@ -189,6 +194,7 @@ lernkarten-final/
 │   └── js/app.js
 ├── README.md          # Diese Datei
 ├── CHANGES.md         # Implementierungshistorie
+├── MEMORY.md          # Letzter Arbeitsstand / Kurznotizen
 └── TODO.md            # Geplante Erweiterungen
 ```
 
