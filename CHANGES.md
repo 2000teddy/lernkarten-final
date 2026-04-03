@@ -37,6 +37,7 @@ Alle abgeschlossenen Änderungen und implementierten Features, chronologisch abs
 - `README.en.md` als englische Projektübersicht ergänzt
 - `README.md` um neue Felder, Vorlagen und Download-Hinweise erweitert
 - `TODO.md` mit priorisierter Roadmap aus PAL/CLINK- und Multi-Model-Brainstorm ergänzt
+- Editor um eine Schnellerfassung für viele Karten aus Textblöcken erweitert
 
 ### 11:30 – Sicherheits- und Stabilitätsfixes nach Codereview
 

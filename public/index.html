@@ -325,6 +325,12 @@
             </div>
             <button class="btn-add-card" onclick="addEditorCard()">+ Karte hinzufügen</button>
           </div>
+          <div class="editor-quick-add">
+            <h4>Schnellerfassung</h4>
+            <p>Eine Zeile pro Karte: <code>Frage | Antwort | Erklärung</code>. Alternativ funktioniert auch Tab-getrennt.</p>
+            <textarea id="ed-quick-add" rows="6" placeholder="house | Haus | Grundwortschatz&#10;tree | Baum | Natur" class="editor-input"></textarea>
+            <button class="btn-add-card" onclick="addQuickCards()">Textblock übernehmen</button>
+          </div>
         </div>
       </div>
     </div>

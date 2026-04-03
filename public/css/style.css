@@ -472,6 +472,10 @@ html, body {
 .editor-card-del:hover { color:var(--wrong); background:var(--wrong-light); }
 .editor-add-card { border-top:1px solid var(--border); padding-top:18px; }
 .editor-add-card h4 { font-size:13px; font-weight:600; color:var(--text-muted); margin-bottom:14px; text-transform:uppercase; letter-spacing:0.4px; }
+.editor-quick-add { border-top:1px solid var(--border); padding-top:18px; margin-top:18px; }
+.editor-quick-add h4 { font-size:13px; font-weight:600; color:var(--text-muted); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.4px; }
+.editor-quick-add p { font-size:12px; color:var(--text-muted); line-height:1.6; margin-bottom:12px; }
+.editor-quick-add code { font-family:'Courier New', monospace; font-size:11px; color:var(--text); }
 .editor-add-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
 .editor-field-full { grid-column:1/-1; }
 .btn-add-card { background:var(--surface-2); border:1.5px dashed var(--border); border-radius:var(--radius-sm); padding:9px 18px; font-family:var(--font-body); font-size:13px; font-weight:600; color:var(--text-muted); cursor:pointer; transition:all .2s; width:100%; }

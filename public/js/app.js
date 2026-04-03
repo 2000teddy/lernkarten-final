@@ -970,6 +970,7 @@ function showEditorNew() {
   document.getElementById('ed-subject').value=''; document.getElementById('ed-topic').value=''; document.getElementById('ed-grade').value='';
   document.getElementById('ed-language').value='de'; document.getElementById('ed-audience').value=''; document.getElementById('ed-tags').value='';
   document.getElementById('ed-new-q').value=''; document.getElementById('ed-new-a').value=''; document.getElementById('ed-new-e').value='';
+  document.getElementById('ed-quick-add').value='';
   document.getElementById('editor-heading').textContent='Neues Set erstellen';
   renderEditorCards(); renderColorPicker(); showView('editor');
 }
@@ -994,6 +995,7 @@ async function showEditorExisting(file) {
     document.getElementById('ed-audience').value=editorMeta.audience;
     document.getElementById('ed-tags').value=editorMeta.tags;
     document.getElementById('ed-new-q').value=''; document.getElementById('ed-new-a').value=''; document.getElementById('ed-new-e').value='';
+    document.getElementById('ed-quick-add').value='';
     document.getElementById('editor-heading').textContent='Set bearbeiten';
     renderEditorCards(); renderColorPicker(); showView('editor');
   } catch(e) { alert('Fehler beim Laden des Sets'); }
@@ -1034,6 +1036,37 @@ function addEditorCard() {
   editorCards.push({ id:editorCards.length+1, question:q, answer:a, explanation:e||null, quality:null });
   document.getElementById('ed-new-q').value=''; document.getElementById('ed-new-a').value=''; document.getElementById('ed-new-e').value='';
   document.getElementById('ed-new-q').focus();
+  renderEditorCards();
+}
+
+function addQuickCards() {
+  const input = document.getElementById('ed-quick-add');
+  const raw = input.value.trim();
+  if (!raw) { alert('Bitte zuerst einen Textblock eingeben.'); return; }
+
+  const lines = raw.split('\n').map(line => line.trim()).filter(Boolean);
+  const newCards = [];
+  for (const line of lines) {
+    const parts = line.includes('\t') ? line.split('\t') : line.split('|');
+    const [question, answer, ...rest] = parts.map(part => part.trim());
+    const explanation = rest.join(' | ').trim();
+    if (!question || !answer) continue;
+    newCards.push({
+      id: editorCards.length + newCards.length + 1,
+      question,
+      answer,
+      explanation: explanation || null,
+      quality: null
+    });
+  }
+
+  if (!newCards.length) {
+    alert('Keine gültigen Karten gefunden. Nutze pro Zeile mindestens Frage und Antwort.');
+    return;
+  }
+
+  editorCards.push(...newCards);
+  input.value = '';
   renderEditorCards();
 }
 

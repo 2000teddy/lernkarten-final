@@ -35,6 +35,7 @@ Als nächster Schritt ist geplant, Fragen automatisch per KI aus einem Verzeichn
 - **Problemkarten** – Statistiken zeigen die aktuell schwächsten Karten eines Profils
 - **Format-Export** – Sets lassen sich zusätzlich als CSV oder XLSX exportieren
 - **Karte des Tages** – Startseite zeigt täglich eine passende Karte, bei Profilen bevorzugt aus fälligen Sets
+- **Schnellerfassung** – Mehrere Karten lassen sich im Editor aus einem Textblock übernehmen
 
 ## Voraussetzungen
 

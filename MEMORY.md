@@ -33,6 +33,7 @@
 - Nächster Quick Win umgesetzt: bestehende Sets können jetzt als Originaldatei, CSV oder XLSX exportiert werden.
 - Export-Block nach Precommit nachgehärtet: CSV-Roundtrip robuster, Formel-Injection mit Whitespace abgefangen, lokaler Smoke-Test ergänzt.
 - Neuer Nacht-Quick-Win umgesetzt: „Karte des Tages“ auf der Startseite mit datumsstabiler Auswahl und Fälligkeits-Priorisierung.
+- Weiterer Quick Win umgesetzt: Schnellerfassung im Editor für viele Karten aus `Frage | Antwort | Erklärung`-Zeilen.
 
 ## Offene sinnvolle Nacharbeiten
 
