@@ -33,6 +33,7 @@ Als nächster Schritt ist geplant, Fragen automatisch per KI aus einem Verzeichn
 - **Filter** – Sets lassen sich nach Fach, Klassenstufe und Sprache einschränken
 - **Druckansicht** – Sets können als druckfreundliche Kartenübersicht geöffnet werden
 - **Problemkarten** – Statistiken zeigen die aktuell schwächsten Karten eines Profils
+- **Format-Export** – Sets lassen sich zusätzlich als CSV oder XLSX exportieren
 
 ## Voraussetzungen
 

@@ -14,7 +14,8 @@ This project is a lightweight flashcard application built with Node.js, Express,
 - Multiple learning modes: flip, multiple choice, typing, due cards
 - In-browser editor for creating and updating JSON sets
 - JSON, CSV, and XLSX import
-- Download/export of existing sets
+- Download of original set files
+- Export of existing sets as CSV or XLSX
 - User profiles with separate learning progress
 - Spaced repetition (SM-2)
 - Statistics dashboard

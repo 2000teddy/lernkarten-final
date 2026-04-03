@@ -244,6 +244,10 @@ html, body {
 .btn-download-set:hover { color:#2563EB; background:#DBEAFE; }
 .btn-print-set:hover { color:#7C3AED; background:#EDE9FE; }
 .btn-delete-set:hover { color:var(--wrong);  background:var(--wrong-light); }
+.export-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:8px; }
+.export-actions .btn-primary,
+.export-actions .btn-secondary { flex:1 1 180px; justify-content:center; }
+.export-hint { margin-top:14px; font-size:12px; color:var(--text-muted); line-height:1.5; }
 
 /* ========= LEARN VIEW ========= */
 .learn-wrapper {

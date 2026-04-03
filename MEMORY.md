@@ -30,9 +30,11 @@
 - Nächster logischer Schritt umgesetzt: clientseitige Filter für Fach, Klassenstufe und Sprache.
 - Nachtarbeit fortgeführt: Thema-/Tag-Filter ergänzt, Druckansicht pro Set implementiert, schwächste Karten in den Statistiken sichtbar gemacht.
 - Precommit-Review eingearbeitet: Druckfenster synchron geöffnet, Problemkarten enger gefiltert, leerer Filterzustand im UI präzisiert.
+- Nächster Quick Win umgesetzt: bestehende Sets können jetzt als Originaldatei, CSV oder XLSX exportiert werden.
+- Export-Block nach Precommit nachgehärtet: CSV-Roundtrip robuster, Formel-Injection mit Whitespace abgefangen, lokaler Smoke-Test ergänzt.
 
 ## Offene sinnvolle Nacharbeiten
 
 - Manuellen Browser-Smoke-Test für Upload, Stats und Lernmodi ausführen.
 - Prüfen, ob auch der Avatar-Picker mittelfristig ohne Inline-`onclick` vereinheitlicht werden soll.
-- Filteransicht für Fach/Klassenstufe/Sprache als nächster sinnvoller UI-Schritt umsetzen.
+- Als nächstes entweder Import-Vorschau oder Hierarchieansicht für Klasse/Fach/Thema umsetzen.

@@ -31,7 +31,8 @@ lernkarten-final/
 | GET | `/api/sets` | Alle Fragensätze auflisten |
 | GET | `/api/sets/:file` | Einzelnen Fragensatz laden |
 | PATCH | `/api/sets/:file/cards/:id/quality` | Kartenqualität bewerten |
-| POST | `/api/upload` | Neue Datei hochladen (JSON/CSV) |
+| GET | `/api/sets/:file/export?format=csv|xlsx` | Fragensatz als Austauschformat exportieren |
+| POST | `/api/upload` | Neue Datei hochladen (JSON/CSV/XLSX) |
 | DELETE | `/api/sets/:file` | Fragensatz löschen |
 | GET | `/api/sets/:file/stats` | Sitzungsstatistiken abrufen |
 | POST | `/api/sets/:file/stats` | Sitzungsstatistiken speichern |

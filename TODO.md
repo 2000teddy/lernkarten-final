@@ -24,7 +24,7 @@ Diese Roadmap wurde in dieser Runde mit PAL und Modellperspektiven von `gpt-5.4`
 - [x] **Themen-Filter ergänzen** – Zusätzlich zum Fach/Klassen-/Sprachfilter auch `topic` und ggf. `tags` aufnehmen `[Klein]`
 - [x] **Druckansicht / Print-Layout** – Karten oder ganze Sets auf A4 druckbar machen `[Klein]`
 - [x] **Schwächste Karten** – Häufig falsch beantwortete Karten in den Statistiken sichtbar machen `[Klein]`
-- [ ] **CSV- und XLSX-Export** – Vorhandene Sets nicht nur herunterladen, sondern in mehreren Formaten exportieren `[Mittel]`
+- [x] **CSV- und XLSX-Export** – Vorhandene Sets nicht nur herunterladen, sondern in mehreren Formaten exportieren `[Mittel]`
 - [ ] **Import-Vorschau** – Vor dem endgültigen Speichern eine Vorschau der importierten Karten anzeigen `[Mittel]`
 
 ### Priorität B – Struktur und Schulalltag
@@ -116,7 +116,7 @@ Baut auf Phase 1 auf. Erfordert Datenbankgrundlage (SQLite) und Benutzerkonzept.
 
 ### Statistiken
 - [x] **Statistik-Dashboard** – Diagramme mit Chart.js: Lernfortschritt über Zeit, Trefferquote je Thema `[Mittel]`
-- [ ] **Schwächste Karten** – Liste der am häufigsten falsch beantworteten Karten je Set `[Klein]`
+- [x] **Schwächste Karten** – Liste der am häufigsten falsch beantworteten Karten je Set `[Klein]`
 
 ### Offline & Mobile
 - [x] **PWA / Offline-Modus** – Service Worker + App-Manifest, App auf Startbildschirm installierbar `[Mittel]`

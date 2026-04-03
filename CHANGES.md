@@ -13,6 +13,10 @@ Alle abgeschlossenen Änderungen und implementierten Features, chronologisch abs
 - Upload-Dialog um direkte Template-Links für Schüler und Lehrkräfte erweitert
 - Neuer Download-Endpunkt für vorhandene Sets ergänzt
 - Download-Button auf den Set-Kacheln in der Oberfläche ergänzt
+- Export-Endpunkt für CSV und XLSX ergänzt
+- Export-Modal in der Oberfläche ergänzt, um Originaldatei, CSV oder XLSX gezielt herunterzuladen
+- CSV-Import/-Export für Metadaten mit Kommas und Zeilenumbrüchen robuster gemacht
+- Export gegen Spreadsheet-Formel-Injection gehärtet und mit lokalem Smoke-Test abgesichert
 
 #### Metadaten-Grundlage
 - Set-Schema um optionale Metadaten erweitert: `schemaVersion`, `subject`, `topic`, `grade`, `language`, `audience`, `tags`

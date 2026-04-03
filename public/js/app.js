@@ -16,6 +16,7 @@ let answeredMap   = new Map(); // index → true/false
 let sessionStart  = null;
 let pendingFile   = null;
 let pendingDue    = 0;         // due-card-count für mode-modal
+let pendingExportFile = null;
 let mcOptions     = [];
 let answerLocked  = false;
 let nextCardTimeout = null;
@@ -395,7 +396,7 @@ function renderSets(sets, due = {}) {
     if (!set) return;
     button.addEventListener('click', event => {
       event.stopPropagation();
-      downloadSet(set.file);
+      showExportModal(set.file, set.title);
     });
   });
 
@@ -415,7 +416,24 @@ async function deleteSet(file, title) {
   loadSets();
 }
 
-function downloadSet(file) {
+function showExportModal(file, title) {
+  pendingExportFile = file;
+  document.getElementById('export-set-title').textContent = title || 'dieses Set';
+  document.getElementById('export-modal').classList.add('open');
+}
+
+function closeExportModal() {
+  pendingExportFile = null;
+  document.getElementById('export-modal').classList.remove('open');
+}
+
+function downloadSet(file, format = 'original') {
+  if (!file) return;
+  closeExportModal();
+  if (format === 'csv' || format === 'xlsx') {
+    window.location.href = `/api/sets/${encodeURIComponent(file)}/export?format=${encodeURIComponent(format)}`;
+    return;
+  }
   window.location.href = `/api/sets/${encodeURIComponent(file)}/download`;
 }
 

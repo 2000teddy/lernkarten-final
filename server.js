@@ -69,28 +69,40 @@ function resolveStatsPath(name) {
 }
 
 function parseCsv(content) {
-  const lines = content.split('\n').filter(l => l.trim());
   let title = '', description = '', color = DEFAULT_SET_COLOR, dataStart = 0;
   let subject = '', topic = '', grade = '', language = 'de', audience = '', tags = '', schemaVersion = '';
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i].trim();
-    if (line.startsWith('title,'))       { title       = line.replace('title,','').trim();       dataStart = i+1; }
-    else if (line.startsWith('description,')) { description = line.replace('description,','').trim(); dataStart = i+1; }
-    else if (line.startsWith('color,'))  { color       = line.replace('color,','').trim();       dataStart = i+1; }
-    else if (line.startsWith('subject,')) { subject = line.replace('subject,','').trim(); dataStart = i+1; }
-    else if (line.startsWith('topic,')) { topic = line.replace('topic,','').trim(); dataStart = i+1; }
-    else if (line.startsWith('grade,')) { grade = line.replace('grade,','').trim(); dataStart = i+1; }
-    else if (line.startsWith('language,')) { language = line.replace('language,','').trim(); dataStart = i+1; }
-    else if (line.startsWith('audience,')) { audience = line.replace('audience,','').trim(); dataStart = i+1; }
-    else if (line.startsWith('tags,')) { tags = line.replace('tags,','').trim(); dataStart = i+1; }
-    else if (line.startsWith('schemaVersion,')) { schemaVersion = line.replace('schemaVersion,','').trim(); dataStart = i+1; }
-    else if (line.toLowerCase().startsWith('question,')) { dataStart = i+1; break; }
-  }
-  const csvBody = lines.slice(dataStart).join('\n');
   let rows = [];
-  try { rows = parse(csvBody, { skip_empty_lines:true, relax_quotes:true, trim:true }); }
-  catch(e) { rows = csvBody.split('\n').map(l => l.split(',')); }
-  const cards = rows.map((row,idx) => ({
+  try {
+    rows = parse(content, {
+      skip_empty_lines:true,
+      relax_quotes:true,
+      trim:true,
+      bom:true
+    });
+  } catch (e) {
+    rows = String(content || '')
+      .split('\n')
+      .filter(line => line.trim())
+      .map(line => line.split(','));
+  }
+
+  for (let i = 0; i < rows.length; i++) {
+    const key = String(rows[i][0] || '').toLowerCase().trim();
+    const value = String(rows[i][1] || '').trim();
+    if (key === 'title')       { title = value; dataStart = i + 1; }
+    else if (key === 'description') { description = value; dataStart = i + 1; }
+    else if (key === 'color')  { color = value; dataStart = i + 1; }
+    else if (key === 'subject') { subject = value; dataStart = i + 1; }
+    else if (key === 'topic') { topic = value; dataStart = i + 1; }
+    else if (key === 'grade') { grade = value; dataStart = i + 1; }
+    else if (key === 'language') { language = value; dataStart = i + 1; }
+    else if (key === 'audience') { audience = value; dataStart = i + 1; }
+    else if (key === 'tags') { tags = value; dataStart = i + 1; }
+    else if (key === 'schemaversion') { schemaVersion = value; dataStart = i + 1; }
+    else if (key === 'question') { dataStart = i + 1; break; }
+  }
+
+  const cards = rows.slice(dataStart).map((row,idx) => ({
     id: idx+1, question:(row[0]||'').trim(), answer:(row[1]||'').trim(),
     explanation:(row[2]||'').trim()||null, quality:null
   })).filter(c => c.question && c.answer);
@@ -152,10 +164,10 @@ function parseXlsx(buffer) {
 
 function normalizeTags(value) {
   if (Array.isArray(value)) return value.map(tag => String(tag).trim()).filter(Boolean);
-  return String(value || '')
-    .split(/[|;,]/)
-    .map(tag => tag.trim())
-    .filter(Boolean);
+  const text = String(value || '').trim();
+  if (!text) return [];
+  const parts = text.includes('|') ? text.split('|') : text.split(/[;,]/);
+  return parts.map(tag => tag.trim()).filter(Boolean);
 }
 
 function normalizeSetMetadata(data = {}) {
@@ -174,6 +186,11 @@ function normalizeSetMetadata(data = {}) {
   };
 }
 
+function sanitizeSpreadsheetCell(value) {
+  const text = String(value || '');
+  return /^[\s\uFEFF]*[=+\-@]/.test(text) ? `'${text}` : text;
+}
+
 function validateCardSet(data) {
   if (!data || typeof data!=='object')       return 'Ungültiges Format';
   const normalized = normalizeSetMetadata(data);
@@ -183,6 +200,37 @@ function validateCardSet(data) {
   for (const [i,c] of normalized.cards.entries())
     if (!c.question||!c.answer) return `Karte ${i+1}: question und answer sind Pflichtfelder`;
   return null;
+}
+
+function setToExportRows(data) {
+  const normalized = normalizeSetMetadata(data);
+  const rows = [
+    ['schemaVersion', normalized.schemaVersion],
+    ['title', normalized.title],
+    ['description', normalized.description],
+    ['subject', normalized.subject],
+    ['topic', normalized.topic],
+    ['grade', normalized.grade],
+    ['language', normalized.language],
+    ['audience', normalized.audience],
+    ['tags', (normalized.tags || []).join('|')],
+    ['color', normalized.color],
+    ['question', 'answer', 'explanation']
+  ];
+
+  for (const card of normalized.cards || []) {
+    rows.push([
+      sanitizeSpreadsheetCell(card.question),
+      sanitizeSpreadsheetCell(card.answer),
+      sanitizeSpreadsheetCell(card.explanation)
+    ]);
+  }
+  return rows.map(row => row.map(cell => sanitizeSpreadsheetCell(cell)));
+}
+
+function setToCsvContent(data) {
+  const ws = xlsx.utils.aoa_to_sheet(setToExportRows(data));
+  return xlsx.utils.sheet_to_csv(ws);
 }
 
 // ─── Card Sets ───────────────────────────────────────────────────────────────
@@ -221,6 +269,40 @@ app.get('/api/sets/:file/download', (req, res) => {
   catch (e) { return res.status(400).json({ error:e.message }); }
   if (!fs.existsSync(fp)) return res.status(404).json({ error:'Nicht gefunden' });
   res.download(fp, path.basename(fp));
+});
+
+app.get('/api/sets/:file/export', (req, res) => {
+  let fp;
+  try { fp = resolveSetPath(req.params.file); }
+  catch (e) { return res.status(400).json({ error:e.message }); }
+  if (!fs.existsSync(fp)) return res.status(404).json({ error:'Nicht gefunden' });
+
+  const format = String(req.query.format || '').toLowerCase();
+  if (!['csv', 'xlsx'].includes(format)) {
+    return res.status(400).json({ error:'Ungültiges Exportformat' });
+  }
+
+  try {
+    const content = fs.readFileSync(fp, 'utf8');
+    const data = fp.endsWith('.json') ? normalizeSetMetadata(JSON.parse(content)) : parseCsv(content);
+    const baseName = path.basename(fp, path.extname(fp));
+
+    if (format === 'csv') {
+      res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+      res.setHeader('Content-Disposition', `attachment; filename="${baseName}.csv"`);
+      return res.send(setToCsvContent(data));
+    }
+
+    const wb = xlsx.utils.book_new();
+    const ws = xlsx.utils.aoa_to_sheet(setToExportRows(data));
+    xlsx.utils.book_append_sheet(wb, ws, 'Lernkarten');
+    const buffer = xlsx.write(wb, { bookType:'xlsx', type:'buffer' });
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', `attachment; filename="${baseName}.xlsx"`);
+    return res.send(buffer);
+  } catch (e) {
+    return res.status(500).json({ error:'Export fehlgeschlagen: ' + e.message });
+  }
 });
 
 app.post('/api/sets', (req, res) => {
@@ -516,6 +598,18 @@ app.get('/api/users/:userId/stats', (req, res) => {
 
 // ─── Start ───────────────────────────────────────────────────────────────────
 
-app.listen(PORT, () => {
-  console.log(`🎴 Lernkarten-App läuft auf http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`🎴 Lernkarten-App läuft auf http://localhost:${PORT}`);
+  });
+}
+
+module.exports = {
+  app,
+  parseCsv,
+  parseXlsx,
+  normalizeSetMetadata,
+  sanitizeSpreadsheetCell,
+  setToCsvContent,
+  setToExportRows
+};
