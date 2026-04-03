@@ -7,6 +7,57 @@ Abgeschlossenes wird in `CHANGES.md` übertragen.
 
 - [ ] Manuellen Browser-Smoke-Test für Upload-Kollision, Profilnamen mit Sonderzeichen, Stats-Empty-State und Mehrfachklicks auf Antwortaktionen durchführen `[Klein]`
 
+## Nacht-Backlog – Ideen aus PAL, CLINK und Multi-Model-Brainstorm
+
+Diese Roadmap wurde in dieser Runde mit PAL und Modellperspektiven von `gpt-5.4`, `gemini-3-pro-preview`, `claude-sonnet`, `deepseek`, `kimi-k2` und `glm` verdichtet.
+
+### Bereits als Quick Wins umgesetzt
+
+- [x] **Downloadbare Startvorlagen** – Statische JSON/CSV-Vorlagen für Vokabeln und Lehrkräfte im Upload-Dialog bereitstellen `[Klein]`
+- [x] **Set-Download aus der Oberfläche** – Einzelne Fragensätze direkt herunterladen `[Klein]`
+- [x] **Englische README** – `README.en.md` ergänzen und mit deutscher README verlinken `[Klein]`
+- [x] **Metadaten-Grundlage im Schema** – Optionale Felder wie `subject`, `topic`, `grade`, `language`, `audience`, `tags`, `schemaVersion` einführen `[Mittel]`
+
+### Priorität A – Nächste sinnvolle Schritte
+
+- [ ] **Filter nach Fach, Thema, Klassenstufe und Sprache** – Set-Übersicht clientseitig und später serverseitig filterbar machen `[Mittel]`
+- [ ] **Druckansicht / Print-Layout** – Karten oder ganze Sets auf A4 druckbar machen `[Klein]`
+- [ ] **Schwächste Karten** – Häufig falsch beantwortete Karten in den Statistiken sichtbar machen `[Klein]`
+- [ ] **CSV- und XLSX-Export** – Vorhandene Sets nicht nur herunterladen, sondern in mehreren Formaten exportieren `[Mittel]`
+- [ ] **Import-Vorschau** – Vor dem endgültigen Speichern eine Vorschau der importierten Karten anzeigen `[Mittel]`
+
+### Priorität B – Struktur und Schulalltag
+
+- [ ] **Hierarchie in der Startansicht** – Gruppen wie `Klasse → Fach → Thema` visuell darstellen `[Mittel]`
+- [ ] **Lehrplan-/Vorlagen-Bibliothek** – Kuratierte Vorlagen nach Fach, Klassenstufe und Bundesland sammeln `[Mittel]`
+- [ ] **Lernpfade** – Mehrere Sets in feste Reihenfolgen bündeln, z.B. „Woche 1 Mathe Klasse 4“ `[Mittel]`
+- [ ] **Remediation-Pakete** – Aus schwachen Karten automatisch Wiederholungs-Sets erzeugen `[Mittel]`
+- [ ] **Template-Galerie** – Vorlagen direkt in der App ansehen und kopieren statt nur herunterladen `[Mittel]`
+
+### Priorität C – Mehrsprachigkeit und Sprache lernen
+
+- [ ] **UI-Mehrsprachigkeit (DE/EN zuerst)** – Alle festen UI-Texte in eine kleine i18n-Struktur auslagern `[Mittel]`
+- [ ] **Weitere Sprachen für die Oberfläche** – z.B. Französisch, Türkisch, Spanisch `[Klein]`
+- [ ] **Text-to-Speech** – Wörter oder Antworten über die Browser-Sprachausgabe vorlesen `[Klein]`
+- [ ] **Audio je Karte** – Eigene Aussprache oder Lehrer-Audio an Karten hängen `[Mittel]`
+- [ ] **Mehrsprachige Kartenpaare** – Fragen/Antworten mit expliziten Sprachfeldern erweitern `[Mittel]`
+
+### Priorität D – Kreative, aber realistische Ideen
+
+- [ ] **Karte des Tages** – Jeden Tag eine zufällige oder schwache Karte auf der Startseite zeigen `[Klein]`
+- [ ] **Schnellerfassung / Quick Add** – Viele Karten aus einfachem Textblock in einem Schritt erzeugen `[Klein]`
+- [ ] **Qualitätsbericht für Datensätze** – Leere Erklärungen, Dubletten, lange Antworten oder fehlende Metadaten melden `[Mittel]`
+- [ ] **Bildunterstützung** – Bilder pro Karte für Sachunterricht, Biologie oder Geografie `[Mittel]`
+- [ ] **PDF-Export** – Sets als druckfertiges PDF ausgeben `[Mittel]`
+
+### Priorität E – Größere Ausbaustufe
+
+- [ ] **Klassenmodus light** – Sets über einfachen Klassen-Code teilen `[Groß]`
+- [ ] **Lehrkraft-Dashboard** – Überblick über Fortschritte mehrerer Schülerprofile `[Groß]`
+- [ ] **Aufgabensets / Hausaufgaben** – Bestimmte Sets für Schüler markieren `[Groß]`
+- [ ] **Bulk-Export / Paket-Export** – Mehrere Sets oder ganze Themenbereiche gemeinsam exportieren `[Mittel]`
+- [ ] **Anki-kompatibler Export** – Brücke zu externen Lernsystemen `[Groß]`
+
 ---
 
 ## Tech-Stack-Empfehlung

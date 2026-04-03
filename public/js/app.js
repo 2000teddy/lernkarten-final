@@ -30,6 +30,7 @@ let selectedAvatar  = '🦊';
 let editorFile  = null;
 let editorCards = [];
 let editorColor = '#6366F1';
+let editorMeta  = { subject:'', topic:'', grade:'', language:'de', audience:'', tags:'' };
 
 // Stats chart instance
 let sessionsChart = null;
@@ -272,12 +273,21 @@ function renderSets(sets, due = {}) {
         <button class="btn-edit-set" data-set-edit="${i}" title="Bearbeiten">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         </button>` : ''}
+        <button class="btn-download-set" data-set-download="${i}" title="Herunterladen">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </button>
         <button class="btn-delete-set" data-set-delete="${i}" title="Löschen">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
         </button>
       </div>
       <div class="set-card-icon" style="background:${s.color}22">${getIcon(s.title)}</div>
       <h3>${escHtml(s.title)}</h3>
+      ${(s.subject || s.grade || s.language) ? `<div class="set-card-meta">
+        ${s.subject ? `<span class="set-meta-pill">${escHtml(s.subject)}</span>` : ''}
+        ${s.topic ? `<span class="set-meta-pill">${escHtml(s.topic)}</span>` : ''}
+        ${s.grade ? `<span class="set-meta-pill">Klasse ${escHtml(s.grade)}</span>` : ''}
+        ${s.language ? `<span class="set-meta-pill">${escHtml(String(s.language).toUpperCase())}</span>` : ''}
+      </div>` : ''}
       <p>${escHtml(s.description||'Keine Beschreibung')}</p>
       <div class="set-card-footer">
         <span class="card-count">${s.cardCount} Karte${s.cardCount!==1?'n':''}</span>
@@ -310,12 +320,25 @@ function renderSets(sets, due = {}) {
       deleteSet(set.file, set.title);
     });
   });
+
+  grid.querySelectorAll('.btn-download-set').forEach(button => {
+    const set = sets[Number(button.dataset.setDownload)];
+    if (!set) return;
+    button.addEventListener('click', event => {
+      event.stopPropagation();
+      downloadSet(set.file);
+    });
+  });
 }
 
 async function deleteSet(file, title) {
   if (!confirm(`"${title}" wirklich löschen?`)) return;
   await fetch(`/api/sets/${encodeURIComponent(file)}`, { method:'DELETE' });
   loadSets();
+}
+
+function downloadSet(file) {
+  window.location.href = `/api/sets/${encodeURIComponent(file)}/download`;
 }
 
 function goHome() {
@@ -726,7 +749,10 @@ async function uploadFileObj(file) {
 // ─── EDITOR ───────────────────────────────────────────────────────────────────
 function showEditorNew() {
   editorFile='null'; editorFile=null; editorCards=[]; editorColor='#6366F1';
+  editorMeta = { subject:'', topic:'', grade:'', language:'de', audience:'', tags:'' };
   document.getElementById('ed-title').value=''; document.getElementById('ed-desc').value='';
+  document.getElementById('ed-subject').value=''; document.getElementById('ed-topic').value=''; document.getElementById('ed-grade').value='';
+  document.getElementById('ed-language').value='de'; document.getElementById('ed-audience').value=''; document.getElementById('ed-tags').value='';
   document.getElementById('ed-new-q').value=''; document.getElementById('ed-new-a').value=''; document.getElementById('ed-new-e').value='';
   document.getElementById('editor-heading').textContent='Neues Set erstellen';
   renderEditorCards(); renderColorPicker(); showView('editor');
@@ -736,7 +762,21 @@ async function showEditorExisting(file) {
   try {
     const data = await (await fetch(`/api/sets/${encodeURIComponent(file)}`)).json();
     editorFile=file; editorCards=data.cards.map(c=>({...c})); editorColor=data.color||'#6366F1';
+    editorMeta = {
+      subject:data.subject||'',
+      topic:data.topic||'',
+      grade:data.grade||'',
+      language:data.language||'de',
+      audience:data.audience||'',
+      tags:Array.isArray(data.tags) ? data.tags.join(', ') : (data.tags||'')
+    };
     document.getElementById('ed-title').value=data.title||''; document.getElementById('ed-desc').value=data.description||'';
+    document.getElementById('ed-subject').value=editorMeta.subject;
+    document.getElementById('ed-topic').value=editorMeta.topic;
+    document.getElementById('ed-grade').value=editorMeta.grade;
+    document.getElementById('ed-language').value=editorMeta.language;
+    document.getElementById('ed-audience').value=editorMeta.audience;
+    document.getElementById('ed-tags').value=editorMeta.tags;
     document.getElementById('ed-new-q').value=''; document.getElementById('ed-new-a').value=''; document.getElementById('ed-new-e').value='';
     document.getElementById('editor-heading').textContent='Set bearbeiten';
     renderEditorCards(); renderColorPicker(); showView('editor');
@@ -789,9 +829,15 @@ function removeEditorCard(idx) {
 async function saveEditor() {
   const title=document.getElementById('ed-title').value.trim();
   const description=document.getElementById('ed-desc').value.trim();
+  const subject=document.getElementById('ed-subject').value.trim();
+  const topic=document.getElementById('ed-topic').value.trim();
+  const grade=document.getElementById('ed-grade').value.trim();
+  const language=document.getElementById('ed-language').value.trim() || 'de';
+  const audience=document.getElementById('ed-audience').value.trim();
+  const tags=document.getElementById('ed-tags').value.trim();
   if (!title) { alert('Bitte einen Titel eingeben.'); return; }
   if (!editorCards.length) { alert('Mindestens eine Karte erforderlich.'); return; }
-  const data={title,description,color:editorColor,cards:editorCards};
+  const data={schemaVersion:2,title,description,color:editorColor,subject,topic,grade,language,audience,tags,cards:editorCards};
   try {
     const res = await fetch(editorFile ? `/api/sets/${encodeURIComponent(editorFile)}` : '/api/sets', {
       method: editorFile ? 'PUT' : 'POST',

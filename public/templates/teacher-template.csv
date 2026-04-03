@@ -1,0 +1,13 @@
+schemaVersion,2
+title,Sachunterricht - Vorlage
+description,Leere Vorlage fuer eigene Lernkarten
+subject,Sachunterricht
+topic,Thema eintragen
+grade,3-4
+language,de
+audience,Klasse
+tags,schule|vorlage
+color,#10B981
+question,answer,explanation
+Frage 1,Antwort 1,Optional kurze Erklaerung
+Frage 2,Antwort 2,

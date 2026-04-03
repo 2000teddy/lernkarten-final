@@ -1,5 +1,7 @@
 # Lernkarten-App
 
+🇩🇪 Deutsch · 🇬🇧 [English](README.en.md)
+
 Interaktive Lernkarten-Anwendung für Schüler und Lernende – ähnlich wie NotebookLM, aber lokal und erweiterbar.
 
 ## Idee & Hintergrund
@@ -26,6 +28,8 @@ Als nächster Schritt ist geplant, Fragen automatisch per KI aus einem Verzeichn
 - **Themengebiete** – Beliebig viele Fragensätze verwaltbar (z.B. Deutsch, Englisch, Mathe, HSU)
 - **Import** – Neue Fragensätze per JSON oder CSV importieren
 - **Sicherer Import** – Upload-Dateinamen werden serverseitig normalisiert und bei Kollisionen abgewiesen
+- **Vorlagen** – Downloadbare Startvorlagen für Vokabeln und Unterrichtssätze
+- **Download** – Vorhandene Sets können direkt aus der Oberfläche heruntergeladen werden
 
 ## Voraussetzungen
 
@@ -56,6 +60,14 @@ Alternativ Dateien manuell in das Verzeichnis `data/` kopieren – beim nächste
 
 > Hinweis: Beim Upload normalisiert der Server Dateinamen. Wenn bereits ein Set mit demselben abgeleiteten Dateinamen existiert, wird der Import mit einer Fehlermeldung abgewiesen statt eine bestehende Datei zu überschreiben.
 
+### Vorlagen
+
+Im Upload-Dialog stehen fertige Startvorlagen zum Download bereit:
+
+- `CSV-Vorlage Vokabeln`
+- `JSON-Vorlage Vokabeln`
+- `CSV-Vorlage Lehrkraft`
+
 ---
 
 ### Format: JSON
@@ -64,8 +76,15 @@ Alternativ Dateien manuell in das Verzeichnis `data/` kopieren – beim nächste
 
 ```json
 {
+  "schemaVersion": 2,
   "title": "Mathe – Grundrechenarten",
   "description": "Kurze Beschreibung des Themas (optional)",
+  "subject": "Mathematik",
+  "topic": "Grundrechenarten",
+  "grade": "3-4",
+  "language": "de",
+  "audience": "Schüler",
+  "tags": ["grundschule", "zahlen"],
   "color": "#F59E0B",
   "cards": [
     {
@@ -90,8 +109,15 @@ Alternativ Dateien manuell in das Verzeichnis `data/` kopieren – beim nächste
 
 | Feld | Typ | Pflicht | Beschreibung |
 |------|-----|---------|--------------|
+| `schemaVersion` | Zahl | Nein | Schemaversion, aktuell `2` |
 | `title` | String | Ja | Themengebiet, erscheint als Überschrift auf der Kachel |
 | `description` | String | Nein | Kurzbeschreibung, wird unter dem Titel angezeigt |
+| `subject` | String | Nein | Fach, z.B. Deutsch, Englisch, Mathe |
+| `topic` | String | Nein | Unterthema oder Schwerpunkt |
+| `grade` | String | Nein | Klassenstufe oder Bereich, z.B. `3-4` |
+| `language` | String | Nein | Sprachkürzel wie `de` oder `en` |
+| `audience` | String | Nein | Zielgruppe, z.B. Schüler oder Lehrkraft |
+| `tags` | Array | Nein | Freie Schlagwörter für spätere Filter |
 | `color` | String | Nein | Hex-Farbcode für die Kachel (Standard: `#6366F1`) |
 | `cards` | Array | Ja | Liste aller Lernkarten |
 | `cards[].id` | Zahl | Ja | Eindeutige Nummer der Karte (fortlaufend ab 1) |
@@ -118,8 +144,15 @@ Alternativ Dateien manuell in das Verzeichnis `data/` kopieren – beim nächste
 #### Vollständige Struktur
 
 ```csv
+schemaVersion,2
 title,Mathe - Begriffe
 description,Mathematische Grundbegriffe für die Grundschule
+subject,Mathematik
+topic,Grundbegriffe
+grade,3-4
+language,de
+audience,Schüler
+tags,grundschule|zahlen
 color,#EF4444
 question,answer,explanation
 Was ist ein Produkt?,Das Ergebnis einer Multiplikation heißt Produkt.,"Beispiel: 3 × 4 = 12. Die 12 ist das Produkt, 3 und 4 heißen Faktoren."
@@ -135,8 +168,15 @@ Die Datei besteht aus zwei Bereichen: einem **Metadaten-Kopf** und dem **Kartent
 
 | Zeile | Format | Pflicht | Beschreibung |
 |-------|--------|---------|--------------|
+| `schemaVersion,…` | `schemaVersion,<Wert>` | Nein | Schemaversion |
 | `title,…` | `title,<Wert>` | Ja | Themengebiet |
 | `description,…` | `description,<Wert>` | Nein | Kurzbeschreibung |
+| `subject,…` | `subject,<Wert>` | Nein | Fach |
+| `topic,…` | `topic,<Wert>` | Nein | Unterthema |
+| `grade,…` | `grade,<Wert>` | Nein | Klassenstufe |
+| `language,…` | `language,<Wert>` | Nein | Sprachkürzel |
+| `audience,…` | `audience,<Wert>` | Nein | Zielgruppe |
+| `tags,…` | `tags,<Wert>` | Nein | Tags, getrennt durch `|`, `,` oder `;` |
 | `color,…` | `color,<Hex>` | Nein | Kachelfarbe (z.B. `#3B82F6`) |
 
 **Kopfzeile** (trennt Metadaten von Karten):

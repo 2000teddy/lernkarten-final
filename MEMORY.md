@@ -9,7 +9,7 @@
 
 ## Letzter relevanter Prompt
 
-„Schaue mal ob du hier am Code noch etwas verbessern kannst. Also einen Codereview machen. Evtl. hilft die Pal und Gemini 3 pro, GLM, MiniMax und Kimi K2 dabei.“
+„Prima als nächtliche Aufgabe habe ich nun folgende, dass Du zusammen mit pal und in clink mit gpt-5.4, gemini pro 3, Claude Sonnet, Minimax, Deekseek, kimi k2 und glm darüber nach denkt was man alles noch sinnvolles implementieren könnte ... und tragt dies alles in das TODO.md ein und wenn es dann bereits einfache Umsetzungen gibt, diese glaich implementieren ...“
 
 ## Zuletzt erledigt
 
@@ -24,8 +24,11 @@
 - `.gitignore` für SQLite- und Statistik-Laufzeitdateien ergänzt.
 - Defektes JSON in `data/hsu-bayern.json` repariert.
 - Offene `quality`-Änderung in `data/englisch-verben.json` zur Übernahme freigegeben.
+- Nächtlichen Feature-Brainstorm mit PAL, GPT-5.4, Gemini, Claude, DeepSeek, Kimi und GLM ausgewertet.
+- Quick Wins umgesetzt: Set-Download, Template-Dateien, englische README, Metadatenfelder im Set-Schema und Editor.
 
 ## Offene sinnvolle Nacharbeiten
 
 - Manuellen Browser-Smoke-Test für Upload, Stats und Lernmodi ausführen.
 - Prüfen, ob auch der Avatar-Picker mittelfristig ohne Inline-`onclick` vereinheitlicht werden soll.
+- Filteransicht für Fach/Klassenstufe/Sprache als nächster sinnvoller UI-Schritt umsetzen.

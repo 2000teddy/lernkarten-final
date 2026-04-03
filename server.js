@@ -13,6 +13,7 @@ const DATA_DIR = path.join(__dirname, 'data');
 const STATS_DIR = path.join(DATA_DIR, '.stats');
 const SET_EXTENSIONS = new Set(['.json', '.csv']);
 const UPLOAD_EXTENSIONS = new Set(['.json', '.csv', '.xlsx']);
+const DEFAULT_SET_COLOR = '#6366F1';
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -69,12 +70,20 @@ function resolveStatsPath(name) {
 
 function parseCsv(content) {
   const lines = content.split('\n').filter(l => l.trim());
-  let title = '', description = '', color = '#6366F1', dataStart = 0;
+  let title = '', description = '', color = DEFAULT_SET_COLOR, dataStart = 0;
+  let subject = '', topic = '', grade = '', language = 'de', audience = '', tags = '', schemaVersion = '';
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
     if (line.startsWith('title,'))       { title       = line.replace('title,','').trim();       dataStart = i+1; }
     else if (line.startsWith('description,')) { description = line.replace('description,','').trim(); dataStart = i+1; }
     else if (line.startsWith('color,'))  { color       = line.replace('color,','').trim();       dataStart = i+1; }
+    else if (line.startsWith('subject,')) { subject = line.replace('subject,','').trim(); dataStart = i+1; }
+    else if (line.startsWith('topic,')) { topic = line.replace('topic,','').trim(); dataStart = i+1; }
+    else if (line.startsWith('grade,')) { grade = line.replace('grade,','').trim(); dataStart = i+1; }
+    else if (line.startsWith('language,')) { language = line.replace('language,','').trim(); dataStart = i+1; }
+    else if (line.startsWith('audience,')) { audience = line.replace('audience,','').trim(); dataStart = i+1; }
+    else if (line.startsWith('tags,')) { tags = line.replace('tags,','').trim(); dataStart = i+1; }
+    else if (line.startsWith('schemaVersion,')) { schemaVersion = line.replace('schemaVersion,','').trim(); dataStart = i+1; }
     else if (line.toLowerCase().startsWith('question,')) { dataStart = i+1; break; }
   }
   const csvBody = lines.slice(dataStart).join('\n');
@@ -85,19 +94,39 @@ function parseCsv(content) {
     id: idx+1, question:(row[0]||'').trim(), answer:(row[1]||'').trim(),
     explanation:(row[2]||'').trim()||null, quality:null
   })).filter(c => c.question && c.answer);
-  return { title: title||'Unbekanntes Thema', description, color, cards };
+  return normalizeSetMetadata({
+    title: title||'Unbekanntes Thema',
+    description,
+    color,
+    subject,
+    topic,
+    grade,
+    language,
+    audience,
+    tags,
+    schemaVersion,
+    cards
+  });
 }
 
 function parseXlsx(buffer) {
   const wb = xlsx.read(buffer, { type:'buffer' });
   const ws = wb.Sheets[wb.SheetNames[0]];
   const rows = xlsx.utils.sheet_to_json(ws, { header:1, defval:'' });
-  let title = wb.SheetNames[0]||'Unbekanntes Thema', description='', color='#6366F1', dataStart=0;
+  let title = wb.SheetNames[0]||'Unbekanntes Thema', description='', color=DEFAULT_SET_COLOR, dataStart=0;
+  let subject = '', topic = '', grade = '', language = 'de', audience = '', tags = '', schemaVersion = '';
   for (let i=0; i<rows.length; i++) {
     const key = String(rows[i][0]||'').toLowerCase().trim();
     if (key==='title')       { title       = String(rows[i][1]||'').trim(); dataStart=i+1; }
     else if (key==='description') { description = String(rows[i][1]||'').trim(); dataStart=i+1; }
     else if (key==='color')  { color       = String(rows[i][1]||'').trim(); dataStart=i+1; }
+    else if (key==='subject') { subject = String(rows[i][1]||'').trim(); dataStart=i+1; }
+    else if (key==='topic') { topic = String(rows[i][1]||'').trim(); dataStart=i+1; }
+    else if (key==='grade') { grade = String(rows[i][1]||'').trim(); dataStart=i+1; }
+    else if (key==='language') { language = String(rows[i][1]||'').trim(); dataStart=i+1; }
+    else if (key==='audience') { audience = String(rows[i][1]||'').trim(); dataStart=i+1; }
+    else if (key==='tags') { tags = String(rows[i][1]||'').trim(); dataStart=i+1; }
+    else if (key==='schemaversion') { schemaVersion = String(rows[i][1]||'').trim(); dataStart=i+1; }
     else if (key==='question') { dataStart=i+1; break; }
   }
   const cards = rows.slice(dataStart)
@@ -106,15 +135,52 @@ function parseXlsx(buffer) {
       id:idx+1, question:String(r[0]||'').trim(), answer:String(r[1]||'').trim(),
       explanation:String(r[2]||'').trim()||null, quality:null
     }));
-  return { title, description, color, cards };
+  return normalizeSetMetadata({
+    title,
+    description,
+    color,
+    subject,
+    topic,
+    grade,
+    language,
+    audience,
+    tags,
+    schemaVersion,
+    cards
+  });
+}
+
+function normalizeTags(value) {
+  if (Array.isArray(value)) return value.map(tag => String(tag).trim()).filter(Boolean);
+  return String(value || '')
+    .split(/[|;,]/)
+    .map(tag => tag.trim())
+    .filter(Boolean);
+}
+
+function normalizeSetMetadata(data = {}) {
+  return {
+    schemaVersion: Number(data.schemaVersion) || 2,
+    title: String(data.title || '').trim(),
+    description: String(data.description || '').trim(),
+    color: String(data.color || DEFAULT_SET_COLOR).trim() || DEFAULT_SET_COLOR,
+    subject: String(data.subject || '').trim(),
+    topic: String(data.topic || '').trim(),
+    grade: String(data.grade || '').trim(),
+    language: String(data.language || 'de').trim() || 'de',
+    audience: String(data.audience || '').trim(),
+    tags: normalizeTags(data.tags),
+    cards: Array.isArray(data.cards) ? data.cards : []
+  };
 }
 
 function validateCardSet(data) {
   if (!data || typeof data!=='object')       return 'Ungültiges Format';
-  if (!data.title || !data.title.trim())     return 'Kein Titel (title) gefunden';
-  if (!Array.isArray(data.cards))            return 'Keine Karten (cards) gefunden';
-  if (!data.cards.length)                    return 'Mindestens eine Karte erforderlich';
-  for (const [i,c] of data.cards.entries())
+  const normalized = normalizeSetMetadata(data);
+  if (!normalized.title || !normalized.title.trim()) return 'Kein Titel (title) gefunden';
+  if (!Array.isArray(normalized.cards))      return 'Keine Karten (cards) gefunden';
+  if (!normalized.cards.length)              return 'Mindestens eine Karte erforderlich';
+  for (const [i,c] of normalized.cards.entries())
     if (!c.question||!c.answer) return `Karte ${i+1}: question und answer sind Pflichtfelder`;
   return null;
 }
@@ -127,9 +193,11 @@ app.get('/api/sets', (req, res) => {
     if (!file.match(/\.(json|csv)$/i)) continue;
     try {
       const content = fs.readFileSync(path.join(DATA_DIR, file),'utf8');
-      const data = file.endsWith('.json') ? JSON.parse(content) : parseCsv(content);
+      const data = file.endsWith('.json') ? normalizeSetMetadata(JSON.parse(content)) : parseCsv(content);
       sets.push({ id:file, title:data.title, description:data.description||'',
-        color:data.color||'#6366F1', cardCount:data.cards?.length||0, file });
+        color:data.color||DEFAULT_SET_COLOR, cardCount:data.cards?.length||0, file,
+        subject:data.subject||'', topic:data.topic||'', grade:data.grade||'', language:data.language||'de',
+        audience:data.audience||'', tags:data.tags||[], schemaVersion:data.schemaVersion||2 });
     } catch(e) { console.error(`Error reading ${file}:`, e.message); }
   }
   sets.sort((a,b) => a.title.localeCompare(b.title,'de'));
@@ -143,18 +211,27 @@ app.get('/api/sets/:file', (req, res) => {
   if (!fs.existsSync(fp)) return res.status(404).json({ error:'Nicht gefunden' });
   try {
     const content = fs.readFileSync(fp,'utf8');
-    res.json(fp.endsWith('.json') ? JSON.parse(content) : parseCsv(content));
+    res.json(fp.endsWith('.json') ? normalizeSetMetadata(JSON.parse(content)) : parseCsv(content));
   } catch(e) { res.status(500).json({ error:e.message }); }
+});
+
+app.get('/api/sets/:file/download', (req, res) => {
+  let fp;
+  try { fp = resolveSetPath(req.params.file); }
+  catch (e) { return res.status(400).json({ error:e.message }); }
+  if (!fs.existsSync(fp)) return res.status(404).json({ error:'Nicht gefunden' });
+  res.download(fp, path.basename(fp));
 });
 
 app.post('/api/sets', (req, res) => {
   const err = validateCardSet(req.body);
   if (err) return res.status(400).json({ error:err });
-  const filename = titleToFilename(req.body.title);
+  const normalized = normalizeSetMetadata(req.body);
+  const filename = titleToFilename(normalized.title);
   const fp = path.join(DATA_DIR, filename);
   if (fs.existsSync(fp)) return res.status(409).json({ error:'Ein Set mit diesem Titel existiert bereits', file:filename });
-  req.body.cards.forEach((c,i) => { c.id = i+1; });
-  fs.writeFileSync(fp, JSON.stringify(req.body, null, 2));
+  normalized.cards.forEach((c,i) => { c.id = i+1; });
+  fs.writeFileSync(fp, JSON.stringify(normalized, null, 2));
   res.json({ success:true, file:filename });
 });
 
@@ -166,8 +243,9 @@ app.put('/api/sets/:file', (req, res) => {
     return res.status(400).json({ error:'Nur JSON-Dateien können bearbeitet werden' });
   const err = validateCardSet(req.body);
   if (err) return res.status(400).json({ error:err });
-  req.body.cards.forEach((c,i) => { c.id = i+1; });
-  fs.writeFileSync(fp, JSON.stringify(req.body, null, 2));
+  const normalized = normalizeSetMetadata(req.body);
+  normalized.cards.forEach((c,i) => { c.id = i+1; });
+  fs.writeFileSync(fp, JSON.stringify(normalized, null, 2));
   res.json({ success:true });
 });
 

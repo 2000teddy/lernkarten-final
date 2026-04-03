@@ -6,6 +6,25 @@ Alle abgeschlossenen Änderungen und implementierten Features, chronologisch abs
 
 ## 2026-04-03
 
+### 21:15 – Quick Wins aus nächtlichem Feature-Brainstorm umgesetzt
+
+#### Vorlagen & Austausch
+- Downloadbare Startvorlagen unter `public/templates/` ergänzt
+- Upload-Dialog um direkte Template-Links für Schüler und Lehrkräfte erweitert
+- Neuer Download-Endpunkt für vorhandene Sets ergänzt
+- Download-Button auf den Set-Kacheln in der Oberfläche ergänzt
+
+#### Metadaten-Grundlage
+- Set-Schema um optionale Metadaten erweitert: `schemaVersion`, `subject`, `topic`, `grade`, `language`, `audience`, `tags`
+- CSV- und XLSX-Parser so erweitert, dass diese Metadaten bereits mitgelesen werden
+- Editor um Eingabefelder für die neuen Metadaten ergänzt
+- Set-Kacheln zeigen nun erste Metadaten-Badges an
+
+#### Dokumentation & Roadmap
+- `README.en.md` als englische Projektübersicht ergänzt
+- `README.md` um neue Felder, Vorlagen und Download-Hinweise erweitert
+- `TODO.md` mit priorisierter Roadmap aus PAL/CLINK- und Multi-Model-Brainstorm ergänzt
+
 ### 11:30 – Sicherheits- und Stabilitätsfixes nach Codereview
 
 #### Frontend-Härtung

@@ -248,6 +248,30 @@
             <label>Farbe</label>
             <div class="color-swatches" id="ed-colors"></div>
           </div>
+          <div class="editor-field">
+            <label>Fach</label>
+            <input type="text" id="ed-subject" placeholder="z.B. Englisch" class="editor-input">
+          </div>
+          <div class="editor-field">
+            <label>Thema</label>
+            <input type="text" id="ed-topic" placeholder="z.B. Vokabeln" class="editor-input">
+          </div>
+          <div class="editor-field">
+            <label>Klassenstufe</label>
+            <input type="text" id="ed-grade" placeholder="z.B. 5-6" class="editor-input">
+          </div>
+          <div class="editor-field">
+            <label>Sprache</label>
+            <input type="text" id="ed-language" placeholder="z.B. de oder en" class="editor-input" value="de">
+          </div>
+          <div class="editor-field">
+            <label>Zielgruppe</label>
+            <input type="text" id="ed-audience" placeholder="z.B. Schüler" class="editor-input">
+          </div>
+          <div class="editor-field">
+            <label>Tags</label>
+            <input type="text" id="ed-tags" placeholder="z.B. vokabeln, reisen, unregelmäßig" class="editor-input">
+          </div>
         </div>
         <div class="editor-section">
           <div class="editor-cards-header">
@@ -340,15 +364,30 @@
         <input type="file" id="file-input" accept=".json,.csv,.xlsx" style="display:none" onchange="uploadFile(this)">
       </div>
       <div id="upload-status"></div>
+      <div class="template-links">
+        <p>Vorlagen herunterladen:</p>
+        <div class="template-link-row">
+          <a href="/templates/vokabeln-template.csv" download>CSV-Vorlage Vokabeln</a>
+          <a href="/templates/vokabeln-template.json" download>JSON-Vorlage Vokabeln</a>
+          <a href="/templates/teacher-template.csv" download>CSV-Vorlage Lehrkraft</a>
+        </div>
+      </div>
       <div class="format-hint">
         <details>
           <summary>Format-Hilfe</summary>
-          <pre>JSON: { "title": "Fach - Thema", "color": "#3B82F6",
+          <pre>JSON: { "schemaVersion": 2, "title": "Fach - Thema", "subject": "Englisch",
+  "topic": "Vokabeln", "grade": "5-6", "language": "en", "tags": ["reise"],
+  "color": "#3B82F6",
   "cards": [{ "question": "...", "answer": "...",
     "explanation": "..." }] }
 
 CSV / XLSX:
 title,Fach - Thema
+subject,Englisch
+topic,Vokabeln
+grade,5-6
+language,en
+tags,reisen|schule
 color,#3B82F6
 question,answer,explanation
 Frage 1,Antwort 1,Erklärung...</pre>
