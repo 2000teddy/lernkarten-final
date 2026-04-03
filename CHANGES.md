@@ -50,6 +50,12 @@ Alle abgeschlossenen Änderungen und implementierten Features, chronologisch abs
 - `.gitignore` für SQLite-Laufzeitdateien und Legacy-Statistikordner ergänzt
 - Laufzeitdateien (`lernkarten.db`, `*.wal`, `*.shm`, `data/.stats/`) damit künftig nicht mehr versehentlich als untracked auftauchen
 
+### 12:25 – Restdaten bereinigt
+
+#### Datensätze
+- Syntaxfehler in `data/hsu-bayern.json` behoben, sodass das Set wieder korrekt geladen werden kann
+- Offene Kartenbewertung in `data/englisch-verben.json` bewusst übernommen statt verworfen
+
 ## 2026-03-25
 
 ### 10:00 – Phase 2 vollständig implementiert

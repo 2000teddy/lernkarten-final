@@ -22,9 +22,10 @@
 - Verwaisten Worktree-Stand geprüft: fehlende Weiter-Button-Markup/Styles als sinnvoller Nachzug erkannt.
 - Fünf neue HSU-Datensätze als plausible Inhalts-Erweiterung eingeordnet.
 - `.gitignore` für SQLite- und Statistik-Laufzeitdateien ergänzt.
+- Defektes JSON in `data/hsu-bayern.json` repariert.
+- Offene `quality`-Änderung in `data/englisch-verben.json` zur Übernahme freigegeben.
 
 ## Offene sinnvolle Nacharbeiten
 
 - Manuellen Browser-Smoke-Test für Upload, Stats und Lernmodi ausführen.
 - Prüfen, ob auch der Avatar-Picker mittelfristig ohne Inline-`onclick` vereinheitlicht werden soll.
-- Offenen Einzelstand in `data/englisch-verben.json` bewusst entscheiden: Inhaltsänderung übernehmen oder verwerfen.
