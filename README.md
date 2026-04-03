@@ -34,6 +34,7 @@ Als nächster Schritt ist geplant, Fragen automatisch per KI aus einem Verzeichn
 - **Druckansicht** – Sets können als druckfreundliche Kartenübersicht geöffnet werden
 - **Problemkarten** – Statistiken zeigen die aktuell schwächsten Karten eines Profils
 - **Format-Export** – Sets lassen sich zusätzlich als CSV oder XLSX exportieren
+- **Karte des Tages** – Startseite zeigt täglich eine passende Karte, bei Profilen bevorzugt aus fälligen Sets
 
 ## Voraussetzungen
 

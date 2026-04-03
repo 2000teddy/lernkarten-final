@@ -32,6 +32,7 @@
 - Precommit-Review eingearbeitet: Druckfenster synchron geöffnet, Problemkarten enger gefiltert, leerer Filterzustand im UI präzisiert.
 - Nächster Quick Win umgesetzt: bestehende Sets können jetzt als Originaldatei, CSV oder XLSX exportiert werden.
 - Export-Block nach Precommit nachgehärtet: CSV-Roundtrip robuster, Formel-Injection mit Whitespace abgefangen, lokaler Smoke-Test ergänzt.
+- Neuer Nacht-Quick-Win umgesetzt: „Karte des Tages“ auf der Startseite mit datumsstabiler Auswahl und Fälligkeits-Priorisierung.
 
 ## Offene sinnvolle Nacharbeiten
 

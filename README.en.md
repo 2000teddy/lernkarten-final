@@ -16,6 +16,7 @@ This project is a lightweight flashcard application built with Node.js, Express,
 - JSON, CSV, and XLSX import
 - Download of original set files
 - Export of existing sets as CSV or XLSX
+- Daily card spotlight on the home screen
 - User profiles with separate learning progress
 - Spaced repetition (SM-2)
 - Statistics dashboard

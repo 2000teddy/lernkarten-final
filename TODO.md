@@ -45,7 +45,7 @@ Diese Roadmap wurde in dieser Runde mit PAL und Modellperspektiven von `gpt-5.4`
 
 ### Priorität D – Kreative, aber realistische Ideen
 
-- [ ] **Karte des Tages** – Jeden Tag eine zufällige oder schwache Karte auf der Startseite zeigen `[Klein]`
+- [x] **Karte des Tages** – Jeden Tag eine zufällige oder schwache Karte auf der Startseite zeigen `[Klein]`
 - [ ] **Schnellerfassung / Quick Add** – Viele Karten aus einfachem Textblock in einem Schritt erzeugen `[Klein]`
 - [ ] **Qualitätsbericht für Datensätze** – Leere Erklärungen, Dubletten, lange Antworten oder fehlende Metadaten melden `[Mittel]`
 - [ ] **Bildunterstützung** – Bilder pro Karte für Sachunterricht, Biologie oder Geografie `[Mittel]`

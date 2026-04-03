@@ -180,6 +180,20 @@ html, body {
   color:var(--text); letter-spacing:-1px; margin-bottom:4px;
 }
 .welcome-text p { color:var(--text-muted); font-size:15px; }
+.card-of-day {
+  display:flex; align-items:center; justify-content:space-between; gap:18px;
+  margin-bottom:22px; padding:20px 22px; border-radius:24px; border:1px solid var(--border);
+  background:
+    radial-gradient(circle at top right, rgba(59,130,246,0.14), transparent 36%),
+    linear-gradient(135deg, var(--surface) 0%, var(--surface-2) 100%);
+}
+.card-of-day-copy { display:flex; flex-direction:column; gap:6px; }
+.card-of-day-label {
+  font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent);
+}
+.card-of-day h3 { font-family:var(--font-display); font-size:22px; color:var(--text); letter-spacing:-0.4px; }
+.card-of-day-question { font-size:15px; color:var(--text); line-height:1.5; }
+.card-of-day-answer { font-size:13px; color:var(--text-muted); line-height:1.6; }
 .sets-filters { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:22px; }
 .sets-filter {
   min-width:150px; background:var(--surface); color:var(--text);
@@ -512,6 +526,7 @@ html, body {
 @media (max-width:600px) {
   .home-main { padding:20px 14px; }
   .home-header { padding:14px 16px; }
+  .card-of-day { flex-direction:column; align-items:flex-start; }
   .learn-wrapper { padding:0 14px 28px; }
   .card-face { padding:24px 20px; }
   .results-chart { flex-direction:column; text-align:center; }

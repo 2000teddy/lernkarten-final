@@ -31,6 +31,7 @@ Alle abgeschlossenen Änderungen und implementierten Features, chronologisch abs
 - Statistik-API und Statistikansicht um eine Liste der schwächsten Karten ergänzt
 - Druckfenster so abgesichert, dass Browser-Popup-Blocker die Funktion seltener unterbrechen
 - Leerer Filterzustand in der Set-Ansicht zeigt nun eine passende Meldung statt eines generischen No-Data-Texts
+- Startseite zeigt jetzt eine tägliche Karte, bei Profilen bevorzugt aus fälligen Themen
 
 #### Dokumentation & Roadmap
 - `README.en.md` als englische Projektübersicht ergänzt

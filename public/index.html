@@ -68,6 +68,15 @@
         <h2 id="home-greeting">Deine Themenbereiche</h2>
         <p>Wähle ein Thema und einen Lernmodus</p>
       </div>
+      <section id="card-of-day" class="card-of-day" style="display:none">
+        <div class="card-of-day-copy">
+          <span class="card-of-day-label">Karte des Tages</span>
+          <h3 id="card-of-day-title">Heute kurz wiederholen</h3>
+          <p id="card-of-day-question" class="card-of-day-question"></p>
+          <p id="card-of-day-answer" class="card-of-day-answer"></p>
+        </div>
+        <button id="card-of-day-action" class="btn-primary" type="button">Set öffnen</button>
+      </section>
       <div class="sets-filters">
         <select id="filter-subject" class="sets-filter" onchange="applySetFilters()">
           <option value="">Alle Fächer</option>

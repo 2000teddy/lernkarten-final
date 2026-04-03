@@ -252,11 +252,62 @@ async function loadSets() {
     ]);
     allSets = await setsRes.json();
     dueCounts = dueRes ? await dueRes.json() : {};
+    await renderCardOfDay(allSets);
     renderSetFilterOptions(allSets);
     applySetFilters();
   } catch(e) {
     document.getElementById('sets-grid').innerHTML =
       '<p class="loading-state" style="color:#DC2626">Fehler beim Laden.</p>';
+  }
+}
+
+function getDailySeed(offset = 0) {
+  const dayKey = `${new Date().toISOString().slice(0, 10)}|${currentUserId || 'guest'}|${offset}`;
+  let hash = 0;
+  for (let i = 0; i < dayKey.length; i++) hash = (hash * 31 + dayKey.charCodeAt(i)) >>> 0;
+  return hash;
+}
+
+async function renderCardOfDay(sets) {
+  const root = document.getElementById('card-of-day');
+  const titleEl = document.getElementById('card-of-day-title');
+  const questionEl = document.getElementById('card-of-day-question');
+  const answerEl = document.getElementById('card-of-day-answer');
+  const actionEl = document.getElementById('card-of-day-action');
+  if (!root || !titleEl || !questionEl || !answerEl || !actionEl) return;
+
+  if (!Array.isArray(sets) || !sets.length) {
+    root.style.display = 'none';
+    return;
+  }
+
+  const dueFirst = currentUserId
+    ? sets.filter(set => (dueCounts[set.file] || 0) > 0)
+    : [];
+  const sourceSets = dueFirst.length ? dueFirst : sets;
+  const chosenSet = sourceSets[getDailySeed() % sourceSets.length];
+  if (!chosenSet) {
+    root.style.display = 'none';
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/sets/${encodeURIComponent(chosenSet.file)}`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Set konnte nicht geladen werden');
+    if (!Array.isArray(data.cards) || !data.cards.length) throw new Error('Set enthält keine Karten');
+
+    const card = data.cards[getDailySeed(1) % data.cards.length];
+    titleEl.textContent = dueFirst.length
+      ? `Heute fällig aus ${chosenSet.title}`
+      : `Heute aus ${chosenSet.title}`;
+    questionEl.textContent = card.question || '';
+    answerEl.textContent = card.answer || '';
+    actionEl.textContent = `${dueCounts[chosenSet.file] ? 'Jetzt üben' : 'Set öffnen'}`;
+    actionEl.onclick = () => showModeSelector(chosenSet.file, chosenSet.title, dueCounts[chosenSet.file] || 0);
+    root.style.display = 'flex';
+  } catch (error) {
+    root.style.display = 'none';
   }
 }
 
