@@ -82,6 +82,30 @@ Frage 2?,Antwort 2,
 - Nach abgeschlossener Änderung einen gezielten Commit mit nur den passenden Dateien erstellen; bestehende fremde Worktree-Änderungen nicht ungeprüft mit committen.
 - `MEMORY.md` als kurze Arbeitsnotiz pflegen: letzter relevanter Prompt, letzte umgesetzte Arbeiten, offene Punkte.
 
+## Rollenmodell / Orchestrierung
+
+- Die aktuelle CLI-AI arbeitet als **Lead Developer & Orchestrator**:
+  - schreibt den Code
+  - trifft Umsetzungsentscheidungen
+  - steuert den Gesamtprozess
+- Sub-Agenten und PAL/CLINK-Modelle werden gezielt für klar umrissene Nebenaufgaben eingesetzt, nicht als Ersatz für die Hauptumsetzung.
+
+## Empfohlener Werkzeugeinsatz
+
+- **Modul fertig / allgemeiner Gegencheck**
+  - `pal:codereview` mit `gpt-5.4` oder Gemini nutzen
+  - Grund: andere Modelle finden oft andere Bugs und Regressionen
+- **Design-Frage / Richtungsentscheidung**
+  - `pal:consensus` mit 2-3 Modellen nutzen
+  - Grund: vermeidet Tunnelblick
+- **Tests schreiben oder isolierte Teilaufgabe**
+  - `clink` mit Gemini für klar abgegrenzte Outputs nutzen
+- **Vor dem Commit**
+  - `pal:precommit` zur automatischen Validierung nutzen
+- **Security-Check**
+  - `pal:codereview` mit Security-Fokus nutzen
+  - Besonders wichtig bei sensiblen Bereichen wie Auth, Secrets, Vault- oder Crypto-nahem Code
+
 ## Start
 
 ```bash

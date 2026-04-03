@@ -30,6 +30,7 @@ Als nächster Schritt ist geplant, Fragen automatisch per KI aus einem Verzeichn
 - **Sicherer Import** – Upload-Dateinamen werden serverseitig normalisiert und bei Kollisionen abgewiesen
 - **Vorlagen** – Downloadbare Startvorlagen für Vokabeln und Unterrichtssätze
 - **Download** – Vorhandene Sets können direkt aus der Oberfläche heruntergeladen werden
+- **Filter** – Sets lassen sich nach Fach, Klassenstufe und Sprache einschränken
 
 ## Voraussetzungen
 

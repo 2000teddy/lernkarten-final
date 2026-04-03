@@ -180,6 +180,17 @@ html, body {
   color:var(--text); letter-spacing:-1px; margin-bottom:4px;
 }
 .welcome-text p { color:var(--text-muted); font-size:15px; }
+.sets-filters { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:22px; }
+.sets-filter {
+  min-width:150px; background:var(--surface); color:var(--text);
+  border:1px solid var(--border); border-radius:12px; padding:10px 12px;
+  font-family:var(--font-body); font-size:13px;
+}
+.sets-filter-reset {
+  background:var(--surface-2); color:var(--text-muted); border:1px solid var(--border);
+  border-radius:12px; padding:10px 14px; font-family:var(--font-body); font-size:13px; cursor:pointer;
+}
+.sets-filter-reset:hover { color:var(--text); background:var(--border); }
 
 .sets-grid {
   display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:18px;

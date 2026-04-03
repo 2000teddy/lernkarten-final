@@ -26,6 +26,8 @@
 - Offene `quality`-Änderung in `data/englisch-verben.json` zur Übernahme freigegeben.
 - Nächtlichen Feature-Brainstorm mit PAL, GPT-5.4, Gemini, Claude, DeepSeek, Kimi und GLM ausgewertet.
 - Quick Wins umgesetzt: Set-Download, Template-Dateien, englische README, Metadatenfelder im Set-Schema und Editor.
+- Arbeitsweise in `AGENTS.md` um Lead-Developer-/Orchestrator-Rolle und gezielten PAL-/CLINK-Einsatz ergänzt.
+- Nächster logischer Schritt umgesetzt: clientseitige Filter für Fach, Klassenstufe und Sprache.
 
 ## Offene sinnvolle Nacharbeiten
 

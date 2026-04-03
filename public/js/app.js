@@ -19,6 +19,8 @@ let pendingDue    = 0;         // due-card-count für mode-modal
 let mcOptions     = [];
 let answerLocked  = false;
 let nextCardTimeout = null;
+let allSets       = [];
+let dueCounts     = {};
 
 // User state
 let currentUserId   = null;
@@ -247,13 +249,58 @@ async function loadSets() {
       fetch('/api/sets'),
       currentUserId ? fetch(`/api/users/${currentUserId}/due`) : null
     ]);
-    const sets = await setsRes.json();
-    const due  = dueRes ? await dueRes.json() : {};
-    renderSets(sets, due);
+    allSets = await setsRes.json();
+    dueCounts = dueRes ? await dueRes.json() : {};
+    renderSetFilterOptions(allSets);
+    applySetFilters();
   } catch(e) {
     document.getElementById('sets-grid').innerHTML =
       '<p class="loading-state" style="color:#DC2626">Fehler beim Laden.</p>';
   }
+}
+
+function renderSetFilterOptions(sets) {
+  const subjectSel = document.getElementById('filter-subject');
+  const gradeSel = document.getElementById('filter-grade');
+  const languageSel = document.getElementById('filter-language');
+  if (!subjectSel || !gradeSel || !languageSel) return;
+
+  const fillSelect = (el, values, defaultLabel, formatter = value => value) => {
+    const current = el.value;
+    el.innerHTML = `<option value="">${defaultLabel}</option>` + values.map(value =>
+      `<option value="${escHtml(value)}">${escHtml(formatter(value))}</option>`
+    ).join('');
+    el.value = values.includes(current) ? current : '';
+  };
+
+  const subjects = [...new Set(sets.map(set => String(set.subject || '').trim()).filter(Boolean))].sort((a,b) => a.localeCompare(b,'de'));
+  const grades = [...new Set(sets.map(set => String(set.grade || '').trim()).filter(Boolean))].sort((a,b) => a.localeCompare(b,'de', { numeric:true }));
+  const languages = [...new Set(sets.map(set => String(set.language || '').trim()).filter(Boolean))].sort((a,b) => a.localeCompare(b,'de'));
+
+  fillSelect(subjectSel, subjects, 'Alle Fächer');
+  fillSelect(gradeSel, grades, 'Alle Klassen', value => `Klasse ${value}`);
+  fillSelect(languageSel, languages, 'Alle Sprachen', value => value.toUpperCase());
+}
+
+function applySetFilters() {
+  const subject = document.getElementById('filter-subject')?.value || '';
+  const grade = document.getElementById('filter-grade')?.value || '';
+  const language = document.getElementById('filter-language')?.value || '';
+
+  const filtered = allSets.filter(set => {
+    if (subject && String(set.subject || '') !== subject) return false;
+    if (grade && String(set.grade || '') !== grade) return false;
+    if (language && String(set.language || '') !== language) return false;
+    return true;
+  });
+  renderSets(filtered, dueCounts);
+}
+
+function resetSetFilters() {
+  document.getElementById('filter-subject').value = '';
+  document.getElementById('filter-grade').value = '';
+  document.getElementById('filter-language').value = '';
+  applySetFilters();
 }
 
 function renderSets(sets, due = {}) {

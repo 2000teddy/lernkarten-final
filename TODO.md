@@ -17,10 +17,11 @@ Diese Roadmap wurde in dieser Runde mit PAL und Modellperspektiven von `gpt-5.4`
 - [x] **Set-Download aus der Oberfläche** – Einzelne Fragensätze direkt herunterladen `[Klein]`
 - [x] **Englische README** – `README.en.md` ergänzen und mit deutscher README verlinken `[Klein]`
 - [x] **Metadaten-Grundlage im Schema** – Optionale Felder wie `subject`, `topic`, `grade`, `language`, `audience`, `tags`, `schemaVersion` einführen `[Mittel]`
+- [x] **Filter nach Fach, Klassenstufe und Sprache** – Erste clientseitige Filterleiste in der Set-Übersicht `[Mittel]`
 
 ### Priorität A – Nächste sinnvolle Schritte
 
-- [ ] **Filter nach Fach, Thema, Klassenstufe und Sprache** – Set-Übersicht clientseitig und später serverseitig filterbar machen `[Mittel]`
+- [ ] **Themen-Filter ergänzen** – Zusätzlich zum Fach/Klassen-/Sprachfilter auch `topic` und ggf. `tags` aufnehmen `[Klein]`
 - [ ] **Druckansicht / Print-Layout** – Karten oder ganze Sets auf A4 druckbar machen `[Klein]`
 - [ ] **Schwächste Karten** – Häufig falsch beantwortete Karten in den Statistiken sichtbar machen `[Klein]`
 - [ ] **CSV- und XLSX-Export** – Vorhandene Sets nicht nur herunterladen, sondern in mehreren Formaten exportieren `[Mittel]`

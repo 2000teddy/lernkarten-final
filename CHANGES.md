@@ -19,6 +19,7 @@ Alle abgeschlossenen Änderungen und implementierten Features, chronologisch abs
 - CSV- und XLSX-Parser so erweitert, dass diese Metadaten bereits mitgelesen werden
 - Editor um Eingabefelder für die neuen Metadaten ergänzt
 - Set-Kacheln zeigen nun erste Metadaten-Badges an
+- Erste Filterleiste in der Startansicht für Fach, Klassenstufe und Sprache ergänzt
 
 #### Dokumentation & Roadmap
 - `README.en.md` als englische Projektübersicht ergänzt

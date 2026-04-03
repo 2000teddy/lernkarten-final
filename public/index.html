@@ -68,6 +68,18 @@
         <h2 id="home-greeting">Deine Themenbereiche</h2>
         <p>Wähle ein Thema und einen Lernmodus</p>
       </div>
+      <div class="sets-filters">
+        <select id="filter-subject" class="sets-filter" onchange="applySetFilters()">
+          <option value="">Alle Fächer</option>
+        </select>
+        <select id="filter-grade" class="sets-filter" onchange="applySetFilters()">
+          <option value="">Alle Klassen</option>
+        </select>
+        <select id="filter-language" class="sets-filter" onchange="applySetFilters()">
+          <option value="">Alle Sprachen</option>
+        </select>
+        <button class="sets-filter-reset" onclick="resetSetFilters()">Filter zurücksetzen</button>
+      </div>
       <div id="sets-grid" class="sets-grid">
         <div class="loading-state">Lade Lernkarten...</div>
       </div>
