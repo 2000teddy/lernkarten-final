@@ -69,6 +69,14 @@ function escHtml(s) {
     .replace(/'/g,'&#39;');
 }
 
+function escJsString(s) {
+  return String(s ?? '')
+    .replace(/\\/g, '\\\\')
+    .replace(/'/g, "\\'")
+    .replace(/\r/g, '\\r')
+    .replace(/\n/g, '\\n');
+}
+
 function formatDate(iso) {
   return new Date(iso).toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'2-digit', hour:'2-digit', minute:'2-digit' });
 }
@@ -221,7 +229,7 @@ function hideCreateProfile() {
 function renderAvatarPicker() {
   selectedAvatar = AVATARS[0];
   document.getElementById('avatar-picker').innerHTML = AVATARS.map(a => `
-    <button class="avatar-opt${a===selectedAvatar?' selected':''}" onclick="pickAvatar('${a}')">${a}</button>
+    <button class="avatar-opt${a===selectedAvatar?' selected':''}" onclick="pickAvatar('${escJsString(a)}')">${a}</button>
   `).join('');
 }
 
@@ -620,13 +628,13 @@ async function startLearn(file) {
 
     document.getElementById('learn-title').textContent = currentSet.title;
     document.getElementById('mode-badge').textContent  = MODE_LABELS[currentMode] || '';
+    document.getElementById('flash-card').style.setProperty('--topic-color', currentSet.color || '#6366F1');
 
     if (currentMode === 'mc' && currentCards.length < 2) {
       alert('Multiple Choice benötigt mindestens 2 Karten.');
       currentMode = 'flip';
       document.getElementById('mode-badge').textContent = MODE_LABELS.flip;
     }
-
     updateProgress();
     renderCard();
     updateScore();
@@ -1020,7 +1028,7 @@ function closeEditor() { goHome(); }
 function renderColorPicker() {
   document.getElementById('ed-colors').innerHTML = COLORS.map(c => `
     <button class="color-swatch${editorColor===c?' active':''}" style="background:${c}"
-            onclick="selectEditorColor('${c}')" title="${c}"></button>`).join('');
+            onclick="selectEditorColor('${escJsString(c)}')" title="${c}"></button>`).join('');
 }
 function selectEditorColor(c) { editorColor=c; renderColorPicker(); }
 

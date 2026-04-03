@@ -92,6 +92,21 @@ Alle abgeschlossenen Änderungen und implementierten Features, chronologisch abs
 
 ## 2026-03-25
 
+### 18:10 – Qualitätsbewertung im Englisch-Datensatz übernommen
+- In `data/englisch-verben.json` wurde die Karte zum Verb `take` mit `quality: "good"` als positiv bewertete Frage übernommen
+- Datensatz auf gültiges JSON geprüft
+
+### 18:05 – Git- und Sicherheits-Härtungen ergänzt
+- SQLite-Dateien (`data/*.db`, `data/*.db-shm`, `data/*.db-wal`) in `.gitignore` aufgenommen, damit lokale Laufzeitdaten nicht versehentlich versioniert werden
+- Dateizugriffe in `server.js` gegen Pfad-Traversal gehärtet: API-Dateinamen werden jetzt vor Lesen, Schreiben und Löschen auf das `data/`-Verzeichnis begrenzt
+- Upload-Dateinamen werden beim Speichern normalisiert, statt den Originalnamen ungeprüft ins Dateisystem zu übernehmen
+- Frontend-Rendering in `public/js/app.js` für Inline-Handler abgesichert: Werte für `onclick`-Parameter werden jetzt getrennt für JavaScript-Strings escaped, damit Namen/Dateien mit `'` das Markup nicht brechen
+
+### 17:59 – Fehlende npm-Abhängigkeiten nach Neustart nachinstalliert
+- Ursache für die Meldung „Server nicht erreichbar“ analysiert: Startseite war erreichbar, aber der aktuelle Server konnte nach Neustart nicht starten, weil `xlsx` und `better-sqlite3` lokal noch nicht installiert waren
+- Fehlende Abhängigkeiten mit `npm install` nachinstalliert
+- `launchd`-Agent danach erneut gestartet und `GET /api/users` erfolgreich mit `200 OK` verifiziert
+
 ### 10:00 – Phase 2 vollständig implementiert
 
 #### SQLite-Datenbasis
@@ -124,6 +139,12 @@ Alle abgeschlossenen Änderungen und implementierten Features, chronologisch abs
 - `public/sw.js`: Service Worker mit Cache-First (statische Assets) + Network-First (`/api/`)
 - `public/icon.svg`: App-Icon mit grünem Hintergrund und 🎴-Emoji
 - App auf Startbildschirm installierbar (iOS/Android/Desktop)
+
+### 17:36 – Themenfarbe auf Fragekarte, launchd-Setup und Datensatz repariert
+- Vorderseite der Lernkarte verwendet jetzt die jeweilige Themenfarbe des aktiven Fragensatzes als hellen Verlauf (`public/js/app.js`, `public/css/style.css`)
+- `launchd`-Konfiguration für macOS als `LaunchAgent` ergänzt und in `README.md` dokumentiert (`launchd/de.lernkarten.app.plist`)
+- App lokal als `launchd`-Agent `de.lernkarten.app` eingerichtet und Start über `launchctl load -w` verifiziert
+- Syntaxfehler in `data/hsu-bayern.json` behoben, sodass der Datensatz wieder korrekt in `/api/sets` erscheint
 
 ---
 
