@@ -81,6 +81,54 @@ function formatDate(iso) {
   return new Date(iso).toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'2-digit', hour:'2-digit', minute:'2-digit' });
 }
 
+const SUBJECT_ALIASES = {
+  mathe: 'mathe',
+  mathematik: 'mathe',
+  deutsch: 'deutsch',
+  englisch: 'englisch',
+  english: 'englisch',
+  hsu: 'hsu',
+  sachunterricht: 'hsu',
+  heimat: 'hsu',
+  musik: 'musik',
+  kunst: 'kunst',
+  sport: 'sport'
+};
+
+const SUBJECT_LABELS = {
+  mathe: 'Mathe',
+  deutsch: 'Deutsch',
+  englisch: 'Englisch',
+  hsu: 'HSU',
+  musik: 'Musik',
+  kunst: 'Kunst',
+  sport: 'Sport'
+};
+
+function canonicalizeSubject(value) {
+  const normalized = String(value || '').trim().toLowerCase();
+  return SUBJECT_ALIASES[normalized] || normalized;
+}
+
+function getSubjectLabel(value) {
+  const canonical = canonicalizeSubject(value);
+  return SUBJECT_LABELS[canonical] || String(value || '').trim();
+}
+
+function getEffectiveSubject(set) {
+  const explicit = canonicalizeSubject(set.subject || '');
+  if (explicit) return explicit;
+
+  const title = String(set.title || '').trim();
+  if (title.includes(' - ')) {
+    const titlePrefix = canonicalizeSubject(title.split(' - ')[0]);
+    if (titlePrefix) return titlePrefix;
+  }
+
+  const filePrefix = canonicalizeSubject(String(set.file || '').split('-')[0]);
+  return filePrefix;
+}
+
 // ─── DARK MODE ────────────────────────────────────────────────────────────────
 function initDarkMode() {
   const saved = localStorage.getItem('darkMode');
@@ -334,12 +382,12 @@ function renderSetFilterOptions(sets) {
     el.value = values.includes(current) ? current : '';
   };
 
-  const subjects = [...new Set(sets.map(set => String(set.subject || '').trim()).filter(Boolean))].sort((a,b) => a.localeCompare(b,'de'));
+  const subjects = [...new Set(sets.map(set => getEffectiveSubject(set)).filter(Boolean))].sort((a,b) => getSubjectLabel(a).localeCompare(getSubjectLabel(b),'de'));
   const topics = [...new Set(sets.map(set => String(set.topic || '').trim()).filter(Boolean))].sort((a,b) => a.localeCompare(b,'de'));
   const grades = [...new Set(sets.map(set => String(set.grade || '').trim()).filter(Boolean))].sort((a,b) => a.localeCompare(b,'de', { numeric:true }));
   const languages = [...new Set(sets.map(set => String(set.language || '').trim()).filter(Boolean))].sort((a,b) => a.localeCompare(b,'de'));
 
-  fillSelect(subjectSel, subjects, 'Alle Fächer');
+  fillSelect(subjectSel, subjects, 'Alle Fächer', value => getSubjectLabel(value));
   fillSelect(topicSel, topics, 'Alle Themen');
   fillSelect(gradeSel, grades, 'Alle Klassen', value => `Klasse ${value}`);
   fillSelect(languageSel, languages, 'Alle Sprachen', value => value.toUpperCase());
@@ -353,7 +401,7 @@ function applySetFilters() {
   const tag = (document.getElementById('filter-tag')?.value || '').trim().toLowerCase();
 
   const filtered = allSets.filter(set => {
-    if (subject && String(set.subject || '') !== subject) return false;
+    if (subject && getEffectiveSubject(set) !== subject) return false;
     if (topic && String(set.topic || '') !== topic) return false;
     if (grade && String(set.grade || '') !== grade) return false;
     if (language && String(set.language || '') !== language) return false;
@@ -392,6 +440,7 @@ function renderSets(sets, due = {}) {
   }
   grid.innerHTML = sets.map((s,i) => {
     const dueCount = due[s.file] || 0;
+    const effectiveSubject = getEffectiveSubject(s);
     return `
     <div class="set-card" data-set-index="${i}" style="--card-color:${s.color};animation-delay:${i*60}ms">
       <div class="set-card-actions">
@@ -411,8 +460,8 @@ function renderSets(sets, due = {}) {
       </div>
       <div class="set-card-icon" style="background:${s.color}22">${getIcon(s.title)}</div>
       <h3>${escHtml(s.title)}</h3>
-      ${(s.subject || s.grade || s.language) ? `<div class="set-card-meta">
-        ${s.subject ? `<span class="set-meta-pill">${escHtml(s.subject)}</span>` : ''}
+      ${(effectiveSubject || s.grade || s.language) ? `<div class="set-card-meta">
+        ${effectiveSubject ? `<span class="set-meta-pill">${escHtml(getSubjectLabel(effectiveSubject))}</span>` : ''}
         ${s.topic ? `<span class="set-meta-pill">${escHtml(s.topic)}</span>` : ''}
         ${s.grade ? `<span class="set-meta-pill">Klasse ${escHtml(s.grade)}</span>` : ''}
         ${s.language ? `<span class="set-meta-pill">${escHtml(String(s.language).toUpperCase())}</span>` : ''}

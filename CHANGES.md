@@ -25,6 +25,7 @@ Alle abgeschlossenen Änderungen und implementierten Features, chronologisch abs
 - Set-Kacheln zeigen nun erste Metadaten-Badges an
 - Erste Filterleiste in der Startansicht für Fach, Klassenstufe und Sprache ergänzt
 - Filter um Thema und freie Tag-Suche erweitert
+- Fachfilter leitet Fächer jetzt notfalls aus dem Titelpräfix `Fach - Thema` oder dem Dateinamen ab
 
 #### Druck & Statistik
 - Druckansicht pro Set ergänzt, um Karten in einem eigenen Druckfenster auszugeben
